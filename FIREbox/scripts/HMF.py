@@ -149,7 +149,7 @@ def plot_HMF_SMF():
 
     wgal = np.zeros_like(dnhalo)
     wgal[dnhalo>0] = obs_HMF(np.power(10,mid_bins))[dnhalo>0] /dnhalo[dnhalo>0]
-    weights = np.array([wgal[np.where(np.log10(M)>logmbins)[0][-1]] for M in Mvir])
+    weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mvir), logmbins)])
     # New mass bins for the SMF
     logmbins = np.linspace(8., 12., nbins)
     mid_bins = (logmbins[:-1]+logmbins[1:]) /2

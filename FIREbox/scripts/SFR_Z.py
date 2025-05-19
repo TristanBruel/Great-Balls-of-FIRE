@@ -53,7 +53,7 @@ def plot_SFR_Zdist(Zsun=0.017):
     wgal = np.zeros_like(dnhalo)
     obs_HMF = HaloMassFunction() # number density, unit is Mpc^-3
     wgal[dnhalo>0] = obs_HMF(np.power(10,mid_bins))[dnhalo>0] /dnhalo[dnhalo>0]
-    weights = np.array([wgal[np.where(np.log10(M)>logmbins)[0][-1]] for M in Mvir])
+    weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mvir), logmbins)])
 
     #####################################
     # Plot your result
