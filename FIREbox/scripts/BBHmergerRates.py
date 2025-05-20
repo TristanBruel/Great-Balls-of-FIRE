@@ -1,5 +1,5 @@
 import numpy as np
-import h5py
+import h5py, json
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from scipy.interpolate import interp1d
@@ -18,7 +18,7 @@ def HaloMassFunction():
     return dndM
 
 
-def plot_mergerRates(seed=42):
+def plot_mergerRates(seed=1):
 
     snapshot_file = os.path.join(FIREbox_dir, 'snapshot_times.txt')
     redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
@@ -26,10 +26,7 @@ def plot_mergerRates(seed=42):
     times_to_redshifts = interp1d(times, redshifts, fill_value='extrapolate')
     redshifts_to_times = interp1d(redshifts, times, fill_value='extrapolate')
     tmax = times.max()
-    #deltat = 0.1 # time interval to define plotting bins, in Gyr
-    #nbins=round((times.max()-times.min()) /deltat)
-    #tbins=np.linspace(times.min(),times.max(),nbins)
-    deltat = 200 # width of the time bins (in Myr)
+    deltat = 150 # width of the time bins (in Myr)
     nbins = round(1e3*tmax /deltat) + 1
     tbins = np.linspace(0, tmax, nbins)
 
@@ -68,41 +65,58 @@ def plot_mergerRates(seed=42):
 
     fig, axes = plt.subplots(1, 3, figsize=(10.,3.))
 
+    LVK_dir = '/home/tristan-bruel/Documents/Science/GWTC-3-population-data'
+    color_plpeak = "#1f78b4"
+    # Load new O3b fits
+    tf = os.path.join(LVK_dir, 'analyses/PowerLawPeak/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_result.json')
+    with open(tf) as jf:
+        data = json.load(jf)['posterior']['content']
+    # Extra local merger rates and kappa parameters
+    kappas = np.array(data['lamb'])
+    R0 = np.array(data['rate'])
+    # Downselect to a reasonable number of hyperparameter samples
+    inds = np.random.choice(np.arange(kappas.size),size=1000,replace=False)
+    # Define a grid of redshifts, and prepare corresponding arrays to hold R(z)
+    zs = np.linspace(0,1.5,100)
+    ts = redshifts_to_times(zs)
+    Rz = np.zeros((inds.size,zs.size))
+    # For each of our randomly selected samples, compute and save R(z)
+    for i,ind in enumerate(inds):
+        Rz[i,:] = R0[ind]*(1.+zs)**kappas[ind]
+
+
     sampling_methods = np.array(['Gamma', 'ElBadry', 'SFR'])
     sampling_names = np.array([r'Gamma', r'EB18', r'SFRpeak'])
-    xtext = np.array([4.1, 3.7, 4.6])
-    for s,sample in enumerate(['Gamma', 'ElBadry', 'SFR']):
-        print('\nCluster sampling method:', sample)
+    xtext = np.array([3.5, 2.7, 3.9])
+    for s,sample in enumerate(sampling_methods):
         ax = axes[s]
+        print('\nCluster sampling method:', sample)
         bbhfile = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed{}.h5'.format(sample,seed))
         with h5py.File(bbhfile, 'r') as bbhs:
-                tform = bbhs['tform'][()]
-                tmerger = bbhs['tmerger'][()]
-                Mgal = bbhs['Mgal'][()]
-                Mhalo = bbhs['Mvir'][()]
+            tmerger = bbhs['tmerger'][()]
+            Mgal = bbhs['Mgal'][()]
+            Mhalo = bbhs['Mvir'][()]
 
         # Compute weight associated to each galaxy in which there's a BBH merger
         weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mhalo), logmbins)])
 
-        merger_nbr, _ = np.histogram(tform, bins=tbins, weights=weights)
+        merger_nbr, _ = np.histogram(tmerger, bins=tbins, weights=weights)
         mergerrate = merger_nbr /np.diff(tbins) /FIREbox_volume # unit Gpc-3 yr-1
         mergerrate = np.append(0, mergerrate)
-        print(tbins)
-        print(mergerrate)
         ax.plot(tmax-tbins, mergerrate, 
-                c='k', label=r'Total',
+                c='k', lw=lw+0.5, label=r'Total',
                 )
 
         logMgal = np.log10(Mgal)
         Mgal_bins = np.linspace(8,12,9)[::-1]
         for n in range(len(Mgal_bins)-1):
             inbin = (logMgal<Mgal_bins[n])&(logMgal>=Mgal_bins[n+1])
-            merger_nbr, _ = np.histogram(tform[inbin], bins=tbins, weights=weights[inbin])
+            merger_nbr, _ = np.histogram(tmerger[inbin], bins=tbins, weights=weights[inbin])
             mergerrate = merger_nbr /np.diff(tbins) /FIREbox_volume
             mergerrate = np.append(0, mergerrate)
             ax.plot(tmax-tbins, mergerrate, 
                     c=CB_color_cycle[n],
-                    label=r'$%.1f\geq\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)\geq %.1f\ (%i)$' %(Mgal_bins[n],Mgal_bins[n+1],np.sum(inbin)),
+                    label=r'$%.1f\geq\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)\geq %.1f$' %(Mgal_bins[n],Mgal_bins[n+1]),
                     )
 
         ax.text(x=xtext[s], y=2e2, s=sampling_names[s], 
@@ -110,11 +124,20 @@ def plot_mergerRates(seed=42):
                 bbox=dict(facecolor='none', edgecolor='black', boxstyle='round'),
                 )
 
+        ### ADD BBH MERGER RATE LVK GWTC-3 ##
+        ax.fill_between(tmax-ts, np.quantile(Rz,0.1,axis=0), np.quantile(Rz,0.9,axis=0), color=color_plpeak, alpha=0.3)
+        #ax.fill_between(ts, np.quantile(Rz,0.25,axis=0), np.quantile(Rz,0.75,axis=0), color=color_plpeak, alpha=0.3)
+        ax.plot(tmax-ts, np.median(Rz,axis=0),
+                c=color_plpeak, alpha=1, lw=lw,
+                )
+        if s==0:
+            ax.text(x=13.5, y=1e2, s=r'GWTC-3', color=color_plpeak, fontsize=fs)
+
         ax.set_xlabel(r'Lookback time [Gyr]', fontsize=fs)
         ax.set_xlim(xmin=tmax, xmax=0)
         ax.set_xticks(np.linspace(12,0,7))
         if s==0:
-            ax.set_ylabel('BBH merger rate '+r'$[\mathrm{M}_\odot\mathrm{Mpc}^{-3}\mathrm{Gyr}^{-1}]$', fontsize=fs)
+            ax.set_ylabel('BBH merger rate '+r'$[\mathrm{Gpc}^{-3}\mathrm{yr}^{-1}]$', fontsize=fs)
         ax.set_yscale('log')
         ax.set_ylim(ymin=1e-3, ymax=1e3)
         ax.set_box_aspect(1)

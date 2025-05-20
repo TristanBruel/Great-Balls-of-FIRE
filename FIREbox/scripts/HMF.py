@@ -137,7 +137,7 @@ def plot_HMF_SMF():
     ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{vir}/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(9.2, 14.8)
     ax.set_ylabel(r'$\mathrm{log}\left(\mathrm{dn}/\mathrm{dlog}(M_\mathrm{vir}/\mathrm{M}_\odot)/\mathrm{Mpc}^{-3} \right)$', fontsize=fs)
-    ax.set_ylim(-5, 0)
+    ax.set_ylim(ymin=-5, ymax=0)
 
     ax.legend(bbox_to_anchor=(0.5,1.01), loc='lower center', 
               fontsize=fs, title=r'HMF $(z\sim0)$')
@@ -195,7 +195,7 @@ def plot_HMF_SMF():
     ax.set_xlabel(r'$\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(7.5, 12)
     ax.set_ylabel(r'$\mathrm{log}(\mathrm{dn}/\mathrm{dlog}(\mathcal{M}_\star/\mathrm{M}_\odot)/\mathrm{Mpc}^{-3})$', fontsize=fs)
-    ax.set_ylim(-5, 0)
+    ax.set_ylim(ymin=-5, ymax=0)
     ax.legend(handles=handles, labels=legends, 
               bbox_to_anchor=(0.5,1.01), loc='lower center', 
               fontsize=fs, title=r'GSMF $(z\sim0)$')

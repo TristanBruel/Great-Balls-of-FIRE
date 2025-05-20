@@ -18,7 +18,7 @@ def HaloMassFunction():
     return dndM
 
 
-def plot_formationRates(seed=42):
+def plot_formationRates(seed=1):
 
     snapshot_file = os.path.join(FIREbox_dir, 'snapshot_times.txt')
     redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
@@ -26,9 +26,9 @@ def plot_formationRates(seed=42):
     times_to_redshifts = interp1d(times, redshifts, fill_value='extrapolate')
     redshifts_to_times = interp1d(redshifts, times, fill_value='extrapolate')
     tmax = times.max()
-    deltat = 0.1 # time interval to define plotting bins, in Gyr
-    nbins=round((times.max()-times.min()) /deltat)
-    tbins=np.linspace(times.min(),times.max(),nbins)
+    deltat = 150 # width of the time bins (in Myr)
+    nbins = round(1e3*tmax /deltat) + 1
+    tbins = np.linspace(0, tmax, nbins)
 
     Mstar_file = os.path.join(FIREbox_dir, 'Mstar90.dat')
     haloids, Mvir, Mstar = np.loadtxt(Mstar_file, usecols=[0,1,3], skiprows=1).T
@@ -67,8 +67,8 @@ def plot_formationRates(seed=42):
 
     sampling_methods = np.array(['Gamma', 'ElBadry', 'SFR'])
     sampling_names = np.array([r'Gamma', r'EB18', r'SFRpeak'])
-    xtext = np.array([4.1, 3.7, 4.6])
-    for s,sample in enumerate(['Gamma', 'ElBadry', 'SFR']):
+    xtext = np.array([3.5, 2.7, 3.9])
+    for s,sample in enumerate(sampling_methods):
         print('\nCluster sampling method:', sample)
         ax = axes[s]
         clusterfile = os.path.join(FIREbox_dir, 'clusters/Clusters_{}_compiled_seed{}.h5'.format(sample,seed))
@@ -85,7 +85,7 @@ def plot_formationRates(seed=42):
         formrate = cluster_nbr /np.diff(tbins) /FIREbox_volume # unit Gpc-3 yr-1
         formrate = np.append(0, formrate)
         ax.plot(tmax-tbins, formrate, 
-                c='k', label=r'Total',
+                c='k', lw=lw+0.5, label=r'Total',
                 )
 
         logMgal = np.log10(Mgal)
@@ -97,7 +97,7 @@ def plot_formationRates(seed=42):
             formrate = np.append(0, formrate)
             ax.plot(tmax-tbins, formrate, 
                     c=CB_color_cycle[n],
-                    label=r'$%.1f\geq\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)\geq %.1f\ (%i)$' %(Mgal_bins[n],Mgal_bins[n+1],np.sum(inbin)),
+                    label=r'$%.1f\geq\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)\geq %.1f$' %(Mgal_bins[n],Mgal_bins[n+1]),
                     )
 
         ax.text(x=xtext[s], y=2e7, s=sampling_names[s], 

@@ -29,9 +29,9 @@ def plot_SFR_Zdist(Zsun=0.017):
     times_to_redshifts = interp1d(times, redshifts, fill_value='extrapolate')
     redshifts_to_times = interp1d(redshifts, times, fill_value='extrapolate')
     tmax = times.max()
-    deltat = 0.1 # time interval to define plotting bins, in Gyr
-    nbins=round((times.max()-times.min()) /deltat)
-    tbins=np.linspace(times.min(),times.max(),nbins)
+    deltat = 150 # width of the time bins (in Myr)
+    nbins = round(1e3*tmax /deltat) + 1
+    tbins = np.linspace(0, tmax, nbins)
 
     Mstar_file = os.path.join(FIREbox_dir, 'Mstar90.dat')
     haloids, Mvir, Mstar = np.loadtxt(Mstar_file, usecols=[0,1,3], skiprows=1).T
@@ -84,12 +84,12 @@ def plot_SFR_Zdist(Zsun=0.017):
     Mform_plot, _ = np.histogram(times, weights=Mform_tot, bins=tbins)
     SFR_tot = Mform_plot /np.diff(tbins*1e9) /FIREbox_volume
     ax.plot(tmax-tbins[:-1], SFR_tot,
-            c='k', label=r'Total SFRD in $\texttt{FIREbox}$',
+            c='k', lw=lw+0.5, label=r'Total SFRD in $\texttt{FIREbox}$',
             )
     ax.plot(tmax-times, Madau(redshifts),
-            c='gray', linestyle='--', label=r'Madau \& Dickinson 2014',
+            c='gray', lw=lw+0.5, linestyle='--', label=r'Madau \& Dickinson 2014',
             )
-    top_leg = ax.legend(loc='upper center', fontsize=fs)
+    top_leg = ax.legend(loc='upper left', fontsize=fs)
     ax.add_artist(top_leg)
 
     Mgal_bins = np.linspace(8,12,9)[::-1]
@@ -110,8 +110,7 @@ def plot_SFR_Zdist(Zsun=0.017):
     ax.set_xticks(np.linspace(12,0,7))
     ax.set_ylabel(r'$\mathrm{SFRD}\ [\mathrm{M}_{\odot}\mathrm{Mpc}^{-3}\mathrm{yr}^{-1}]$', fontsize=fs)
     ax.set_yscale('log')
-    ax.set_ylim(1e-4,1e0)
-    ax.legend(loc='upper center', fontsize=fs)
+    ax.set_ylim(ymin=1e-4, ymax=1e0)
     ax.set_box_aspect(1)
 
     # Add time axis
@@ -137,7 +136,7 @@ def plot_SFR_Zdist(Zsun=0.017):
     Zmean_plot, _ = np.histogram(times, weights=Zmean_tot, bins=tbins)
     Zmean_plot[Mform_plot>0] /= Mform_plot[Mform_plot>0]
     ax.plot(tmax-tbins[:-1], Zmean_plot /Zsun,
-            c='k', label=r'Mean Z in $\texttt{FIREbox}$',
+            c='k', lw=lw+0.5, label=r'Mean Z in $\texttt{FIREbox}$',
             )
 
     Mgal_bins = np.linspace(8,12,9)[::-1]
@@ -159,9 +158,9 @@ def plot_SFR_Zdist(Zsun=0.017):
     ax.set_xticks(np.linspace(12,0,7))
     ax.set_ylabel('Average metallicity\n'+r'of newly formed stars $[\mathrm{Z}_\odot]$', fontsize=fs)
     ax.set_yscale('log')
-    ax.set_ylim(1e-3,1e1)
+    ax.set_ylim(ymin=1e-3, ymax=1e1)
     ax.set_box_aspect(1)
-    ax.legend(loc='upper left', fontsize=fs)
+    ax.legend(loc='lower right', fontsize=fs)
 
     # Add time axis
     # convert redshifts to times and convert to Gyr
