@@ -1,0 +1,5 @@
+*.hdf5
+*.h5
+FIRE-2/m12i_res7100/halo_files/AHF_halos.tar
+FIRE-2/core/
+zurich/

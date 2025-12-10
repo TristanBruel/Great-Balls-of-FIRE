@@ -110,6 +110,7 @@ def plot_HMF_SMF():
     nbins = round((logMmax-logMmin)*5 + 1)
     logmbins = np.linspace(logMmin, logMmax, nbins)
     mid_bins = (logmbins[:-1]+logmbins[1:]) /2
+    bin_width = np.diff(logmbins)[0]
     Nhalo, _ = np.histogram(np.log10(Mvir), bins=logmbins)
     dnhalo = Nhalo /np.diff(logmbins) /FIREbox_volume
 
@@ -122,10 +123,23 @@ def plot_HMF_SMF():
             )
 
     toplot = dnhalo>0
-    ax.plot(mid_bins[toplot], np.log10(dnhalo[toplot]),
-            c='firebrick', marker='o', markersize=2**2, 
-            label=r'\texttt{FIREbox} halos',
-            )
+    #ax.plot(mid_bins[toplot], np.log10(dnhalo[toplot]),
+    #        c='firebrick', marker='o', markersize=2**2, 
+    #        label=r'\texttt{FIREbox} halos',
+    #        )
+    ax.errorbar(mid_bins[toplot], np.log10(dnhalo[toplot]), 
+                xerr=bin_width/2, elinewidth=lw, fmt='.', capsize=2**2,
+                c='firebrick', label=r'\texttt{FIREbox} halos',
+                )
+
+    yerr = np.log10(obs_HMF(10**(mid_bins[toplot])))-np.log10(dnhalo[toplot])
+    up = yerr<0
+    down = yerr>0
+    yerr = np.abs(yerr)
+    ax.errorbar(mid_bins[toplot], np.log10(dnhalo[toplot]),
+                yerr=.5*yerr, uplims=up, lolims=down, 
+                elinewidth=lw-.5, fmt='none', c='gray', capsize=2,
+                )
 
     ax.axvline(x=logMmin, 
                c='k', linestyle='--', lw=lw,
@@ -135,7 +149,7 @@ def plot_HMF_SMF():
                )
 
     ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{vir}/\mathrm{M}_\odot)$', fontsize=fs)
-    ax.set_xlim(9.2, 14.8)
+    ax.set_xlim(9.5, 14.5)
     ax.set_ylabel(r'$\mathrm{log}\left(\mathrm{dn}/\mathrm{dlog}(M_\mathrm{vir}/\mathrm{M}_\odot)/\mathrm{Mpc}^{-3} \right)$', fontsize=fs)
     ax.set_ylim(ymin=-5, ymax=0)
 
@@ -158,45 +172,47 @@ def plot_HMF_SMF():
     Ngal_w, _ = np.histogram(np.log10(Mstar), bins=logmbins, weights=weights)
     dngal_w = Ngal_w /np.diff(logmbins) /FIREbox_volume
 
-    handles = []
-    legends = []
     logMstar_plot = np.linspace(7,12,1000)
     gsmf = Tomczak2014(logMstar_plot)
-    line, = ax.plot(logMstar_plot, np.log10(gsmf), 
-                    c='k', 
-                    )
-    handles.append(line)
-    legends.append(r'Tomczak et al. 2014')
+    ax.plot(logMstar_plot, np.log10(gsmf), 
+            c='k', label=r'Tomczak et al. 2014',
+            )
     phi_50, phi_84, phi_16 = Leja2020(logm=logMstar_plot[:,None], z0=0.0)
     ax.fill_between(logMstar_plot, np.log10(phi_16), np.log10(phi_84), 
                     color='gray', alpha=.4,
                     )
-    line, = ax.plot(logMstar_plot, np.log10(phi_50), 
-                    c='k', linestyle='--', 
-                    )
+    ax.plot(logMstar_plot, np.log10(phi_50), 
+            c='k', linestyle='--', label=r'Leja et al. 2020',
+            )
     patch = Patch(color='gray', alpha=.4)
-    handles.append((patch,line))
-    legends.append(r'Leja et al. 2020')
 
     toplot = dngal>0
-    line, = ax.plot(mid_bins[toplot], np.log10(dngal[toplot]), 
-                    c='firebrick', linestyle='--', 
-                    )
-    handles.append(line)
-    legends.append(r'\texttt{FIREbox} galaxies')
+    #ax.plot(mid_bins[toplot], np.log10(dngal[toplot]), 
+    #        c='firebrick', linestyle='--', label=r'\texttt{FIREbox} galaxies',
+    #        )
+    ax.errorbar(mid_bins[toplot], np.log10(dngal[toplot]),
+                xerr=bin_width/2, elinewidth=lw, fmt='.', capsize=2**2,
+                c='firebrick', label=r'\texttt{FIREbox} galaxies',
+                )
 
     toplot = dngal_w>0
-    line, = ax.plot(mid_bins[toplot], np.log10(dngal_w[toplot]),
-                    c='firebrick', marker='o', markersize=2**2, 
-                    )
-    handles.append(line)
-    legends.append(r'\texttt{FIREbox} galaxies - re-weighted')
+    #ax.plot(mid_bins[toplot], np.log10(dngal_w[toplot]), 
+    #        c='firebrick', marker='o', markersize=2**2, 
+    #        label=r'\texttt{FIREbox} galaxies - re-weighted',
+    #        )
+    ax.errorbar(mid_bins[toplot], np.log10(dngal_w[toplot]),
+                xerr=bin_width/2, elinewidth=lw, fmt='.', capsize=2**2,
+                c='orange', label=r'\texttt{FIREbox} galaxies - re-weighted',
+                )
 
     ax.set_xlabel(r'$\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(7.5, 12)
     ax.set_ylabel(r'$\mathrm{log}(\mathrm{dn}/\mathrm{dlog}(\mathcal{M}_\star/\mathrm{M}_\odot)/\mathrm{Mpc}^{-3})$', fontsize=fs)
     ax.set_ylim(ymin=-5, ymax=0)
-    ax.legend(handles=handles, labels=legends, 
+
+    handles, labels = ax.get_legend_handles_labels()
+    handles[1] = (patch, handles[1])
+    ax.legend(handles=handles, labels=labels, 
               bbox_to_anchor=(0.5,1.01), loc='lower center', 
               fontsize=fs, title=r'GSMF $(z\sim0)$')
     ax.set_box_aspect(1)

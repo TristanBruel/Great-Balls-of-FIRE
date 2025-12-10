@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Patch
 from scipy.interpolate import interp1d
 
 import os
@@ -124,11 +123,11 @@ def plot_SFR_Zdist(Zsun=0.017):
     ax2.set_xlabel('Redshift', fontsize=fs)
     ax2.set_box_aspect(1)
 
-    ax.legend(bbox_to_anchor=(1.05,-0.5), loc='upper center',
+    ax.legend(bbox_to_anchor=(1.15,-0.2), loc='upper center',
               handles=handles, fontsize=fs, ncol=2,
               )
 
-    ## Right-hand plot: SMF ##
+    ## Right-hand plot: Z dist ##
     ax = axes[1]
 
     Mform_plot, _ = np.histogram(times, weights=Mform_tot, bins=tbins)

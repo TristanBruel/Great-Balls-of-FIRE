@@ -5,20 +5,16 @@ import matplotlib as mpl
 
 import os
 
-FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
-
 
 def plot_clusterGrid(Zsun=0.017):
 
-    cluster_file = os.path.join(FIREbox_dir, 'gridClusters.hdf5')
+    cluster_file = os.path.join(grid_dir, 'gridClusters.hdf5')
     with h5py.File(cluster_file) as c:
         cluster_masses = c['Mass'][()]
         cluster_radii = c['HalfMassRadius'][()]
         cluster_Z = c['Metallicity'][()]
-        cluster_ids = c['id'][()]
         cluster_nBBHs = c['nBBHs'][()]
-    cluster_ids = np.astype(cluster_ids, np.str_)
-    print('Number of clusters in the grid:', len(cluster_ids))
+    print('Number of clusters in the grid:', len(cluster_Z))
     print('Number of clusters having at least 1 BBH merger:', np.sum(cluster_nBBHs>0))
     print('Max number of BBH mergers in a single cluster:', np.max(cluster_nBBHs))
 
@@ -41,7 +37,7 @@ def plot_clusterGrid(Zsun=0.017):
     cmap = plt.get_cmap('viridis')
     norm = mpl.colors.LogNorm(vmin=1e0, vmax=2e3)
 
-    fig = plt.figure(figsize=(3.5,3.5))
+    fig = plt.figure(figsize=(4.5,4.5))
     ax = fig.add_subplot(111, projection='3d')
 
     # Clusters with no BBH merger
@@ -72,11 +68,19 @@ def plot_clusterGrid(Zsun=0.017):
     ax.set_zticks(np.linspace(-1.5,0.,4))
 
     ax.view_init(azim=-60, elev=15)
+    #ax.set_box_aspect(None, zoom=0.75)
+    #plt.subplots_adjust(left=0.01,right=.8,
+    #                    bottom=0.01, top=1.3)
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.05, pad=0.2, aspect=10)
+    cbar.set_label(r'Number of merging BBHs', fontsize=fs)
+    cbar.ax.tick_params(labelsize=0.8*fs)
 
     # Save
     plot_dir = os.path.join(FIREbox_dir, 'plots')
-    plt.savefig(os.path.join(plot_dir,'3DGrid.pdf'), format='pdf', bbox_inches='tight')
-
+    plt.savefig(os.path.join(plot_dir,'3Dgrid.pdf'), format='pdf', 
+                bbox_inches='tight',
+                )
 
 
 ##################################################################
@@ -84,6 +88,9 @@ def plot_clusterGrid(Zsun=0.017):
 ###
 ##################################################################
 if __name__ == "__main__":
+
+    FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
+    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
 
     plot_clusterGrid()
     plt.show()

@@ -5,6 +5,7 @@ import matplotlib as mpl
 from scipy.interpolate import interp1d
 
 import os
+import argparse
 
 from colossus.cosmology import cosmology
 cosmology.setCosmology('planck18');
@@ -64,7 +65,7 @@ def plot_hist2D(sample='Gamma', seed=1):
                   '#f781bf', '#a65628', '#984ea3',
                   '#999999', '#e41a1c', '#dede00']
 
-    fig, ax = plt.subplots(1, 1, figsize=(3.5,3.5))
+    fig, ax = plt.subplots(1, 1, figsize=(2.2,2.2))
 
     print('Cluster sampling method:', sample)
     bbhfile = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed{}.h5'.format(sample,seed))
@@ -81,15 +82,19 @@ def plot_hist2D(sample='Gamma', seed=1):
     Mgal_bins = np.linspace(7, 12, 26)
     H, xedges, yedges = np.histogram2d(x=tmerger, y=np.log10(Mgal), bins=[tbins,Mgal_bins], weights=weights)
     H /= FIREbox_volume *np.diff(tbins)[:,None] *np.diff(Mgal_bins) 
-    print(H[H>0].min(), H.max())
+    #print(H[H>0].min(), H.max())
+    logvmin = (int(10*np.log10(H[H>0].min()))-1) /10
+    logvmax = (int(10*np.log10(H[H>0].max()))+1) /10
     H[H==0] = 1e-32
 
     cmap = plt.get_cmap('plasma')
-    norm = mpl.colors.LogNorm(vmin=8e-3, vmax=3e1)
+    vmin = 10**logvmin
+    vmax = 10**logvmax
+    norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
 
     X, Y = np.meshgrid(tmax-xedges[1:], yedges[:-1])
     im = ax.contourf(X, Y, H.T,
-                     levels=np.logspace(-2,2,20),
+                     levels=np.logspace(logvmin,logvmax,20),
                      cmap=cmap,
                      norm=norm,
                     )
@@ -101,8 +106,6 @@ def plot_hist2D(sample='Gamma', seed=1):
     sampling_names = np.array([r'Gamma', r'EB18', r'SFRpeak'])
     sampling_colors = np.array(['gold', 'darkorange', 'firebrick'])
     for s,sample in enumerate(sampling_methods):
-    #for s,sample in enumerate(['Gamma']):
-
         print('\nCluster sampling method:', sample)
         bbhfile = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed{}.h5'.format(sample,seed))
         with h5py.File(bbhfile, 'r') as bbhs:
@@ -141,7 +144,7 @@ def plot_hist2D(sample='Gamma', seed=1):
     ax_left.plot(MF, Mgal_bins[1:], c='k')
 
 
-    ax_left.set_xlabel(r'$\mathrm{Host\ MF}\ [\mathrm{Gpc}^{-3}]$')
+    ax_left.set_xlabel(r'$\mathrm{Host\ MF}\ [\mathrm{Gpc}^{-3}]$', fontsize=fs, x=1e-7)
     ax_left.set_xscale('log')
     ax_left.set_xlim(xmin=1e-2, xmax=1e4)
     ax_left.set_xticks(np.logspace(-3,3,3))
@@ -166,12 +169,12 @@ def plot_hist2D(sample='Gamma', seed=1):
     ax_top.set_yticks([])
     ax_top.set_yticks([], minor=True)
     ax3 = ax_top.twinx()
-    ax3.set_ylabel('Rate density\n'+r'$[\mathrm{Gpc}^{-3}\mathrm{yr}^{-1}]$')
+    ax3.set_ylabel('Rate density\n'+r'$[\mathrm{Gpc}^{-3}\mathrm{yr}^{-1}]$', fontsize=fs, y=1)
     ax3.set_yscale('log')
     ax3.set_ylim(ymin=1e-1, ymax=1e3)
     ax3.set_yticks(np.logspace(-1,3,3))
 
-    ax_top.legend(bbox_to_anchor=(-0.05,0), loc='lower right', fontsize=fs)
+    ax_top.legend(bbox_to_anchor=(0.,-0.1), loc='lower right', fontsize=fs)
 
     ax.set_xlabel(r'Lookback time [Gyr]', fontsize=fs)
     ax.set_xlim(xmin=tmax, xmax=0)
@@ -182,7 +185,8 @@ def plot_hist2D(sample='Gamma', seed=1):
 
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     cbar = fig.colorbar(sm, ax=ax, fraction=0.045, pad=0.06)
-    cbar.set_label(r'$\mathrm{d}\mathcal{R}/\mathrm{dlog}(\mathcal{M}_\star/\mathrm{M}_\odot)\ [\mathrm{Gpc}^{-3}\mathrm{yr}-1]$', fontsize=fs)
+    cbar.set_label(r'$\mathrm{d}\mathcal{R}/\mathrm{dlog}(\mathcal{M}_\star/\mathrm{M}_\odot)$'+'\n'
+                   +r'$[\mathrm{Gpc}^{-3}\mathrm{yr}-1]$', fontsize=fs)
     cbar.ax.tick_params(labelsize=0.8*fs)
   
     # Save
@@ -196,6 +200,12 @@ def plot_hist2D(sample='Gamma', seed=1):
 ###
 ##################################################################
 if __name__ == "__main__":
+    #####################################
+    # Define command line option for the path to the simulations and the path to save the plots
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sample", dest='sample', help="Sampling method for massive clusters in FIREbox", type=str, default='SFR')
+    parser.add_argument("--seed", dest='seed', help="Random seed used to sample massive clusters in FIREbox", type=int, default=3)
+    args = parser.parse_args()
 
-    plot_hist2D()
+    plot_hist2D(sample=args.sample, seed=args.seed)
     plt.show()

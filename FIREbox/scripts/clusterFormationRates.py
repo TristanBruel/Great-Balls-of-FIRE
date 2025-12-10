@@ -1,10 +1,10 @@
 import numpy as np
 import h5py
 import matplotlib.pyplot as plt
-from matplotlib.patches import Patch
 from scipy.interpolate import interp1d
 
 import os
+from glob import glob
 
 from colossus.cosmology import cosmology
 cosmology.setCosmology('planck18');
@@ -18,7 +18,7 @@ def HaloMassFunction():
     return dndM
 
 
-def plot_formationRates(seed=1):
+def plot_formationRates():
 
     snapshot_file = os.path.join(FIREbox_dir, 'snapshot_times.txt')
     redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
@@ -63,30 +63,42 @@ def plot_formationRates(seed=1):
                   '#f781bf', '#a65628', '#984ea3',
                   '#999999', '#e41a1c', '#dede00']
 
-    fig, axes = plt.subplots(1, 3, figsize=(10.,3.))
+    fig, axes = plt.subplots(1, 3, figsize=(8.25,2.35))
 
     sampling_methods = np.array(['Gamma', 'ElBadry', 'SFR'])
     sampling_names = np.array([r'Gamma', r'EB18', r'SFRpeak'])
-    xtext = np.array([3.5, 2.7, 3.9])
+    xtext = np.array([4.2, 3.1, 4.7])
     for s,sample in enumerate(sampling_methods):
-        print('\nCluster sampling method:', sample)
         ax = axes[s]
-        clusterfile = os.path.join(FIREbox_dir, 'clusters/Clusters_{}_compiled_seed{}.h5'.format(sample,seed))
-        with h5py.File(clusterfile, 'r') as clusters:
-            tform = clusters['FormationTime'][()]
-            Mcl = clusters['Mass'][()]
-            Mgal = clusters['Mgal'][()]
-            Mhalo = clusters['Mvir'][()]
+        print('\nCluster sampling method:', sample)
+        formRates = []
+        #for seed in np.linspace(1,20,20, dtype='int'):
+        #    clusterfile = os.path.join(FIREbox_dir, 'clusters/Clusters_{}_compiled_seed{}.h5'.format(sample,seed))
+        for clusterfile in glob(os.path.join(FIREbox_dir, 'clusters/Clusters_{}_compiled_seed*.h5'.format(sample))):
+            with h5py.File(clusterfile, 'r') as clusters:
+                tform = clusters['FormationTime'][()]
+                Mcl = clusters['Mass'][()]
+                Mgal = clusters['Mgal'][()]
+                Mhalo = clusters['Mvir'][()]
 
-        # Compute weight associated to each galaxy in which there's a massive cluster
-        weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mhalo), logmbins)])
+            # Compute weight associated to each galaxy in which there's a massive cluster
+            weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mhalo), logmbins)])
 
-        cluster_nbr, _ = np.histogram(tform, bins=tbins, weights=Mcl*weights)
-        formrate = cluster_nbr /np.diff(tbins) /FIREbox_volume # unit Gpc-3 yr-1
-        formrate = np.append(0, formrate)
-        ax.plot(tmax-tbins, formrate, 
+            cluster_nbr, _ = np.histogram(tform, bins=tbins, weights=Mcl*weights)
+            formrate = cluster_nbr /np.diff(tbins) /FIREbox_volume # unit Gpc-3 yr-1
+            formrate = np.append(0, formrate)
+            formRates.append(formrate)
+
+        formRates = np.asarray(formRates)
+        R_lower = np.percentile(formRates, 10, axis=0)
+        R_upper = np.percentile(formRates, 90, axis=0)
+
+        ax.plot(tmax-tbins, np.mean(formRates, axis=0), 
                 c='k', lw=lw+0.5, label=r'Total',
                 )
+        ax.fill_between(tmax-tbins, R_lower, R_upper,
+                        alpha=0.4, color='gray',
+                        )
 
         logMgal = np.log10(Mgal)
         Mgal_bins = np.linspace(8,12,9)[::-1]
@@ -112,6 +124,7 @@ def plot_formationRates(seed=1):
             ax.set_ylabel('Massive cluster formation rate\n'+r'$[\mathrm{M}_\odot\mathrm{Mpc}^{-3}\mathrm{Gyr}^{-1}]$', fontsize=fs)
         ax.set_yscale('log')
         ax.set_ylim(ymin=1e2, ymax=1e8)
+        ax.set_yticks(np.logspace(2,8,7))
         ax.set_box_aspect(1)
 
         # Add time axis
@@ -125,7 +138,7 @@ def plot_formationRates(seed=1):
         ax2.set_xlabel('Redshift', fontsize=fs)
         ax2.set_box_aspect(1)
 
-    axes[1].legend(bbox_to_anchor=(.5,-0.3), loc='upper center', 
+    axes[1].legend(bbox_to_anchor=(.4,-0.3), loc='upper center', 
                    fontsize=fs, ncol=3,
                    )
     
