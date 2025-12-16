@@ -50,7 +50,7 @@ def plot_mBH_spin_q(Zsun=0.017, n=1000):
     logm1bins = np.linspace(0.1,2.1,41)
     qbins = np.linspace(0.1,1.,19)
 
-    bbh_file = os.path.join(grid_dir, 'allBBHs.dat')
+    bbh_file = os.path.join(grid_dir, 'allBBHs_withKremer.dat')
     Z, m1, m2, tmerge, a1, a2 = np.loadtxt(bbh_file, usecols=[1,4,5,7,8,9]).T
     a1[m1<m2], a2[m1<m2] = a2[m1<m2], a1[m1<m2]
     m1, m2 = np.maximum(m1,m2), np.minimum(m1,m2)

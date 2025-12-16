@@ -9,7 +9,7 @@ def addKremerClusters():
     bbh_file_Kremer = os.path.join(GW24_dir, 'external_cluster_simulations/BBHmergers.dat')
     cluster_id, rv, Z, N, tmerge, m1, m2, a1, a2, vkick, vesc, ecc = np.loadtxt(bbh_file_Kremer, usecols=(0,1,3,4,5,8,9,10,11,12,13,20)).T
     cluster_id = cluster_id.astype(int)
-    Mcl = N *0.6 # mean mass for Kroupa 2001 IMF
+    Mcl = N *1e5 *0.6 # mean mass for Kroupa 2001 IMF
     rhm = rv *0.833 # conversion from virial to half-mass radius for king profile (w_0=5)
     tmerge *= 1e-3 # convert to Gyr
     save_file = os.path.join(grid_dir, 'allBBHs_withKremer.dat')

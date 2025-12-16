@@ -1,8 +1,6 @@
 import numpy as np
-import h5py, json
-import matplotlib.pyplot as plt
+import h5py 
 from scipy.interpolate import interp1d
-import random
 from tqdm import tqdm
 
 import os
@@ -17,12 +15,10 @@ from gwbench import Network, M_of_Mc_eta, f_isco_Msolar, injections
 
 import popsummary
 dir_GWTC4 = '/home/tristan-bruel/Documents/Science/o4a-astro'
-sys.path.append(os.path.join(dir_GWTC4,'figure_scripts'))
-import plot_funcs_bbh_mass as pf
 
 FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
 FIREbox_volume = (22.1)**3 # in unit Mpc^3
-Tobs = 2 # LVK observation time in yrs
+Tobs = 1 # LVK observation time in yrs
 
 
 def HaloMassFunction():
@@ -89,7 +85,10 @@ def sample_detections(sample='SFR'):
     print('Total number of BBH mergers up to redshift 1.5 (GWTC-4.0): %i' %Ntot)
     print('\n')
 
-    bbh_file = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed42.h5'.format(sample))
+
+    #bbh_file = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed9.h5'.format(sample))
+    bbh_file = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_withKremer_seed9.h5'.format(sample))
+    print(bbh_file)
     with h5py.File(bbh_file, 'r') as bbhs:
         m1 = bbhs['m1'][()]
         m2 = bbhs['m2'][()]
@@ -115,7 +114,7 @@ def sample_detections(sample='SFR'):
     # Compute weight associated to each galaxy in which there's a BBH merger
     weights = np.array([wgal[k-1] for k in np.digitize(np.log10(Mhalo), logmbins)])
     weights *= 1/FIREbox_volume *Tobs/(1+zmerger) *dVcdz(zmerger) *dzdt(zmerger)
-    print('Estimated number of BBH mergers up to z=1.5 over 2 years of observation time at LIGO design sensitivity')
+    print('Estimated number of BBH mergers up to z=1.5 over 1 year of observation time at LIGO design sensitivity')
     print('%i' %np.sum(weights))
 
     ## BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
@@ -124,8 +123,70 @@ def sample_detections(sample='SFR'):
     print('Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses')
     ofinterest = (m1 < 30) & (q < 0.85) & (a1 > 0.05)
     print('Unweighted number of these BBH mergers in FIREbox at z<1.5: %i' %np.sum(ofinterest))
-    print('Estimated number of these BBH mergers up to z=1.5 over 2 years of observation time at LIGO design sensitivity')
+    print('Estimated number of these BBH mergers up to z=1.5 over 1 year of observation time at LIGO design sensitivity')
     print('%i' %np.sum(weights[ofinterest]))
+
+    ## Find how many could be detectable ##
+    m1s = m1[ofinterest]
+    m2s = m2[ofinterest]
+    a1s = a1[ofinterest]
+    a2s = a2[ofinterest]
+    zs = zmerger[ofinterest]
+    isobservable = np.zeros(len(m1s), dtype=bool)
+
+    ## Compute SNRs ##
+    deriv_symbs_string  = 'Mc eta chi1z chi2z DL tc phic iota ra dec psi'
+    conv_log            = ('Mc','DL')
+    use_rot             = True
+    only_net            = True
+    # initialize the network with the desired detectors
+    #network_spec = ['aLIGO_LHO', 'aLIGO_LLO']
+    # single detector
+    network_spec = ['aLIGO_LHO']
+    nnet = Network(network_spec,logger_name='Network',logger_level='WARNING')
+    # pick the desired frequency range
+    f_lo = 1.
+    df   = 2.**-4
+
+    iota_vec, ra_vec, dec_vec, psi_vec = injections.angle_sampler(len(m1s), seed=42)
+    for i in tqdm(range(len(m1s))):
+        Mc = (m1s[i]*m2s[i])**(3/5) /(m1s[i]+m2s[i])**(1/5)
+        eta = m1s[i]*m2s[i] /(m1s[i]+m2s[i])**2
+        chi1 = a1s[i]
+        chi2 = a2s[i]
+        Dl = planck.luminosity_distance(z=zs[i]).value # in unit Mpc
+        inj_params = {
+            'Mc'    : Mc,
+            'eta'   : eta,
+            'chi1x' : chi1,
+            'chi1y' : 0.0,
+            'chi1z' : 0.0,
+            'chi2x' : 0.0,
+            'chi2y' : chi2,
+            'chi2z' : 0.0,
+            'DL'    : Dl,
+            'tc'    : 0.0,
+            'phic'  : 0.0,
+            'iota'  : iota_vec[i],
+            'ra'    : ra_vec[i],
+            'dec'   : dec_vec[i],
+            'psi'   : psi_vec[i],
+        }
+        #print('injections parameter: ', inj_params)
+        f_hi = f_isco_Msolar(M_of_Mc_eta(inj_params['Mc'],inj_params['eta']))
+        f    = np.arange(f_lo,f_hi+df,df)
+        nnet.reset_det_responses()
+        nnet.set_net_vars(wf_model_name='tf2', f=f, inj_params=inj_params,
+                      deriv_symbs_string=deriv_symbs_string, conv_log=conv_log, use_rot=use_rot)
+        nnet.setup_ant_pat_lpf_psds()
+        nnet.calc_wf_polarizations()
+        nnet.calc_snrs()
+        if nnet.snr>8:
+            isobservable[i] = True
+
+    print('Unweighted number of these BBH mergers with single-detector SNR>8: %i' %np.sum(isobservable))
+    print('Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity')
+    print('%i' %np.sum(weights[ofinterest][isobservable]))
 
 
 ##################################################################
@@ -133,7 +194,5 @@ def sample_detections(sample='SFR'):
 ###
 ##################################################################
 if __name__ == "__main__":
-
-    w_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical'
 
     sample_detections()
