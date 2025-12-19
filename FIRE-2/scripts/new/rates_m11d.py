@@ -41,7 +41,7 @@ def plot_rates(simu='m11d'):
             label=r'$\mathrm{SFR}/10^5\mathrm{M}_\odot$',
             )
 
-    cluster_file = os.path.join(sim_dir, 'AllMassiveClusters.hdf5')
+    cluster_file = os.path.join(sim_dir, 'AllMassiveClusters_m11d.hdf5')
     with h5py.File(cluster_file) as c:
         mass = c['Mass'][()]
         tform = c['FormationTime'][()]
@@ -71,6 +71,7 @@ def plot_rates(simu='m11d'):
     sfr = mbin /np.diff(tbins*1e9)
     ax.plot(tbins[:-1], sfr/1e5,
             c='k', lw=lw, ls='--',
+            label='sfr in gal',
             )
     Rbin, _ = np.histogram(tmax-t, weights=Rstar, bins=tbins)
     Nbin, _ = np.histogram(tmax-t, bins=tbins)
@@ -78,6 +79,7 @@ def plot_rates(simu='m11d'):
     SigmaSFR = sfr /(np.pi*Rstar_mean**2)
     ax_right.plot(tbins[:-1], SigmaSFR,
                   c='red', lw=lw,
+                  label='surface density',
                   )
     ax_right.set_ylabel(r'$\Sigma_\mathrm{SFR}\ [\mathrm{M}_\odot \mathrm{yr}^{-1} \mathrm{kpc}^{-1}]$', fontsize=fs)
     ax_right.set_yscale('log')
