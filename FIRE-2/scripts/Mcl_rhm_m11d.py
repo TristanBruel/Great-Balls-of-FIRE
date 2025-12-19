@@ -1,0 +1,124 @@
+import numpy as np
+import h5py
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+import os
+
+
+def plot_Mcl_rhm(Zsun=0.017):
+
+    #####################################
+    # Plot your result
+    fs = 10
+    lw = 1.4
+    plt.rc('font', family='serif')
+    plt.rc('lines', linewidth=lw)
+    plt.rc('text', usetex=True)
+
+    CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
+                  '#f781bf', '#a65628', '#e41a1c']
+
+    fig, ax = plt.subplots(1, 1, figsize=(3.5,3.5))
+
+    logmbins = np.linspace(3, 7, 81)
+    logrbins = np.linspace(-2, 3, 101)
+    X, Y = np.meshgrid(logmbins[:-1],logrbins[:-1])
+    cmap = plt.get_cmap('plasma')
+    norm = mpl.colors.LogNorm(vmin=1,vmax=6e2)
+
+    simu = 'm11d'
+    sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+
+    ## All star clusters ##
+    cluster_file = os.path.join(sim_dir, 'AllClusters_m11d.hdf5')
+    with h5py.File(cluster_file) as c:
+        mass = c['Mass'][()]
+        radius = c['HalfMassRadius'][()]
+
+    tokeep = mass>=1e4
+    mass = mass[tokeep]
+    radius = radius[tokeep]
+    H, _, _ = np.histogram2d(x=np.log10(mass), y=np.log10(radius), bins=[logmbins,logrbins])
+    ax.pcolormesh(X, Y, H.T,
+                  cmap=cmap,
+                  norm=norm,
+                  )
+    #H[H==0] = 1e-32
+    #ax.contourf(X, Y, H.T, 
+    #            levels=np.logspace(0,4,100),
+    #            cmap=cmap,
+    #            norm=norm,
+    #            )
+
+    ## Clusters that produce merging BBHs ##
+    grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
+    with h5py.File(grid_cluster_file) as c:
+        mass = c['Mass'][()]
+        radius = c['HalfMassRadius'][()]
+        clid = c['id'][()]
+    clid = np.array(clid, dtype=str)
+    bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
+    cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
+    in_sim = np.array([c.split('_')[0]=='m11d' for c in cluster_id])
+    unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
+    lochost = np.array([np.where(clid==i)[0][0] for i in unique])
+    size = (2 + 3*np.log10(nbbhs))**2 
+    ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
+               c='r', s=size, edgecolor='white', lw=lw-.5,
+               )
+
+    ## Print lines of constant density ##
+    densities = np.array([1, 1e3, 1e6, 1e9])
+    Mplot = np.logspace(-4,8,4001)
+    labels = np.array([r'$10^{%i}$' %np.log10(rho) for rho in densities[:-1]])
+    labels = np.append(labels, r'$\rho_\mathrm{cl}= 10^9\ \mathrm{M}_\odot \mathrm{pc}^{-3}$')
+    xtext = np.array([5.8, 6.7, 6.7, 5.3])
+    ytext = np.log10((np.power(10,xtext) /(4/3 *np.pi *densities))**(1/3)) +0.05
+    ytext[-1] += 0.05
+    for k,rho in enumerate(densities):
+        rplot = (Mplot /(4/3 *np.pi *rho))**(1/3)
+        ax.plot(np.log10(Mplot), np.log10(rplot),
+                c='dimgray', linestyle='--', zorder=0,
+                )
+        ax.text(xtext[k], ytext[k], labels[k],
+                c='dimgray', fontsize=fs,
+                rotation=12, rotation_mode='anchor',
+                )
+
+
+    ax.fill_between(logmbins[logmbins<np.log10(6e4)], y1=-2, y2=2.25,
+                    facecolor='gray', alpha=.5, zorder=10,
+                    )
+
+
+    ax.set_xlabel(r'$M_\mathrm{cl}\ [\mathrm{M}_\odot]$', fontsize=fs)
+    #ax.set_xscale('log')
+    ax.set_xlim(xmin=4, xmax=7.25)
+    ax.set_xticks(np.linspace(4,7,4),[r'$10^4$',r'$10^5$',r'$10^6$',r'$10^7$'])
+    ax.set_ylabel(r'$r_\mathrm{hm}\ [\mathrm{pc}]$', fontsize=fs)
+    #ax.set_yscale('log')
+    ax.set_ylim(ymin=-2, ymax=2.25)
+    ax.set_yticks(np.linspace(-2,2,5),[r'$0.01$',r'$0.1$',r'$1$',r'$10$',r'$100$'])
+    ax.set_box_aspect(1)
+
+    ax.text(6.75, 1.75, 'm11d', fontsize=fs, 
+            bbox=dict(boxstyle='round',facecolor='none',edgecolor='k'),
+            )
+    
+    # Save
+    plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'clusters_m11d.pdf'), format='pdf', bbox_inches='tight')
+
+
+
+##################################################################
+### Run it!
+###
+##################################################################
+if __name__ == "__main__":
+
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+
+    plot_Mcl_rhm()
+    plt.show()

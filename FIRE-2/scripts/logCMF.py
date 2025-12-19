@@ -77,23 +77,11 @@ def plot_CMF():
                 )
         print('Best-fit powerlaw dN/dMcl = A * Mcl^alpha is: alpha=%.2f' %(popt[1]-1))
 
-    """
-    MHD_dir = os.path.join(FIRE_dir, 'm12i_MHD_res7100')
-    print(MHD_dir)
-    cluster_file = os.path.join(MHD_dir, 'ClusterPopulation_1_reduced.hdf5')
-    with h5py.File(cluster_file) as c:
-        mass = c['Mass'][()]
-    print('Number of massive star clusters:', np.sum(mass>6e4))
-    Ncl, _ = np.histogram(np.log10(mass), bins=logmbins)
-    Ncl = Ncl /np.diff(logmbins)
-    ax.stairs(np.log10(Ncl), logmbins,
-            color=CB_color_cycle[n+1], lw=lw, label='mhd',
-            )
-    """
-    print('Total number of clusters:', ntot)
+
     ax.fill_between(logmbins[logmbins<np.log10(6e4)], y1=1, y2=8,
                     facecolor='gray', alpha=.5, zorder=10,
                     )
+
 
     ax.set_xlabel(r'$\mathrm{log}_{10}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(xmin=3, xmax=7)
