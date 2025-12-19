@@ -9,7 +9,7 @@ import gizmo_analysis as gizmo
 import utilities as ut
 
 
-def plot_CMF(Zsun=0.017):
+def plot_Zdist(Zsun=0.017):
 
     #####################################
     # Plot your result
@@ -28,6 +28,7 @@ def plot_CMF(Zsun=0.017):
 
     simu = 'm11d'
     sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    ## All stars ##
     snap_dir = os.path.join(sim_dir,'output')
     part = gizmo.io.Read.read_snapshots(['star'], 'redshift', 0,
             simulation_directory=sim_dir,
@@ -45,35 +46,64 @@ def plot_CMF(Zsun=0.017):
               color='k', lw=lw, label='All stars',
               )
 
-    cluster_file = os.path.join(sim_dir, 'AllClusters.hdf5')
+
+    ## All star clusters ##
+    cluster_file = os.path.join(sim_dir, 'AllClusters_m11d.hdf5')
     with h5py.File(cluster_file) as c:
         mass = c['Mass'][()]
         metal = c['Metallicity'][()]
 
+    #tokeep = mass>=1e4
+    #mass = mass[tokeep]
+    #metal = metal[tokeep]
     Mcl, _ = np.histogram(np.log10(metal/Zsun), bins=logZbins, weights=mass)
     Mcl = Mcl /np.diff(logZbins) /np.sum(Mcl)
     ax.stairs(Mcl, logZbins, 
               color=CB_color_cycle[1], lw=lw, label='All clusters',
               )
 
+    ## Massive clusters ##
     massive = mass>6e4
     Mmassive, _ = np.histogram(np.log10(metal[massive]/Zsun), bins=logZbins, weights=mass[massive])
     Mmassive = Mmassive /np.diff(logZbins) /np.sum(Mmassive)
     ax.stairs(Mmassive, logZbins, 
-              color=CB_color_cycle[1], lw=lw, label='Massive clusters', 
-              fill=True, alpha=.4,
+              color=CB_color_cycle[1], lw=lw, fill=True, alpha=.4,
+              label='Massive clusters',
+            )
+
+    ## Clusters that produce merging BBHs ##
+    grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
+    with h5py.File(grid_cluster_file) as c:
+        mass = c['Mass'][()]
+        metal = c['Metallicity'][()]
+        clid = c['id'][()]
+    clid = np.array(clid, dtype=str)
+    bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
+    cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
+    in_m11d = np.array([c.split('_')[0]=='m11d' for c in cluster_id])
+    unique, indexes = np.unique(cluster_id[in_m11d], return_index=True)
+    lochost = np.array([np.where(clid==i)[0][0] for i in unique])
+    #lochost = np.array([int(u.split('_')[1]) for u in unique])
+    Mhost, _ = np.histogram(np.log10(metal[lochost]/Zsun), bins=logZbins, weights=mass[lochost])
+    Mhost = Mhost /np.diff(logZbins) /np.sum(Mhost)
+    ax.stairs(Mhost, logZbins,
+              color=CB_color_cycle[1], lw=lw, hatch='//',
+              label='BBH-forming',
             )
 
 
-    ax.set_xlabel(r'$\mathrm{log}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
+    ax.set_xlabel(r'$\mathrm{log}_{10}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
     ax.set_xlim(xmin=-4.2, xmax=1.2)
     ax.set_xticks(np.linspace(-4,1,6))
-    ax.set_ylabel(r'$\mathrm{dn}/\mathrm{dlog}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
+    ax.set_ylabel(r'$\mathrm{dn}/\mathrm{dlog}_{10}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
     ax.set_yscale('log')
     ax.set_ylim(ymin=1e-3, ymax=1e1)
     ax.set_box_aspect(1)
     ax.legend(loc='upper left', fontsize=fs)
 
+    ax.text(0.3, 4, 'm11d', fontsize=fs, 
+            bbox=dict(boxstyle='round',facecolor='none',edgecolor='k'),
+            )
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
@@ -89,5 +119,5 @@ if __name__ == "__main__":
 
     FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
 
-    plot_CMF()
+    plot_Zdist()
     plt.show()

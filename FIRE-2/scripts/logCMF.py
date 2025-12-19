@@ -2,8 +2,15 @@ import numpy as np
 import h5py
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+from scipy.optimize import curve_fit
 
 import os
+
+def func_linear(x, A, B):
+    return A + B*x
+
+def func_powerlaw(x, A, B, alpha):
+    return A + B*x**alpha
 
 
 def plot_CMF():
@@ -23,9 +30,31 @@ def plot_CMF():
     fig, ax = plt.subplots(1, 1, figsize=(3.5,3.5))
 
     logmbins = np.linspace(3, 7, 41)
+    midbins = (logmbins[1:]+logmbins[:-1])/2
     ntot = 0
+    
+    ## Start with m12i, the MHD version of GBoF I & II ##
+    MHD_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    print(MHD_dir)
+    cluster_file = os.path.join(MHD_dir, 'ClusterPopulation_1_reduced.hdf5')
+    with h5py.File(cluster_file) as c:
+        mass = c['Mass'][()]
+    print('Number of massive star clusters:', np.sum(mass>6e4))
+    Ncl, _ = np.histogram(np.log10(mass), bins=logmbins)
+    Ncl = Ncl /np.diff(logmbins)
+    ax.stairs(np.log10(Ncl), logmbins,
+            color=CB_color_cycle[0], lw=lw, label='m12i',
+            )
 
-    for n,simu in enumerate(['m12i','m11d','m11h','m11e','m11q','m11i']):
+    # Best-fit power-law #
+    popt, pcov = curve_fit(func_linear, midbins[Ncl>0], np.log10(Ncl[Ncl>0]))
+    ax.plot(logmbins, func_linear(logmbins, *popt),
+            color=CB_color_cycle[0], ls='--',
+            )
+    print('Best-fit powerlaw dN/dMcl = A * Mcl^alpha is: alpha=%.2f' %(popt[1]-1))
+
+    ## Dwarf galaxies ##
+    for n,simu in enumerate(['m11d','m11h','m11e','m11q','m11i']):
         sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
         print(sim_dir)
 
@@ -37,11 +66,18 @@ def plot_CMF():
         Ncl, _ = np.histogram(np.log10(mass), bins=logmbins)
         Ncl = Ncl /np.diff(logmbins)
         ax.stairs(np.log10(Ncl), logmbins,
-                color=CB_color_cycle[n], lw=lw, label=simu,
+                color=CB_color_cycle[n+1], lw=lw, label=simu,
                 )
 
         ## ADD BEST FIT POWER LAW MODEL ##
+        # Best-fit power-law #
+        popt, pcov = curve_fit(func_linear, midbins[Ncl>0], np.log10(Ncl[Ncl>0]))
+        ax.plot(logmbins, func_linear(logmbins, *popt),
+                color=CB_color_cycle[n+1], ls='--',
+                )
+        print('Best-fit powerlaw dN/dMcl = A * Mcl^alpha is: alpha=%.2f' %(popt[1]-1))
 
+    """
     MHD_dir = os.path.join(FIRE_dir, 'm12i_MHD_res7100')
     print(MHD_dir)
     cluster_file = os.path.join(MHD_dir, 'ClusterPopulation_1_reduced.hdf5')
@@ -53,16 +89,16 @@ def plot_CMF():
     ax.stairs(np.log10(Ncl), logmbins,
             color=CB_color_cycle[n+1], lw=lw, label='mhd',
             )
-
+    """
     print('Total number of clusters:', ntot)
     ax.fill_between(logmbins[logmbins<np.log10(6e4)], y1=1, y2=8,
-                    facecolor='gray', alpha=.5,
+                    facecolor='gray', alpha=.5, zorder=10,
                     )
 
-    ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
+    ax.set_xlabel(r'$\mathrm{log}_{10}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(xmin=3, xmax=7)
     ax.set_xticks(np.linspace(3,7,5))
-    ax.set_ylabel(r'$\mathrm{log}(\mathrm{dN}/\mathrm{dlog}(M_\mathrm{cl}/\mathrm{M}_\odot))$', fontsize=fs)
+    ax.set_ylabel(r'$\mathrm{log}_{10}(\mathrm{dN}/\mathrm{dlog}_{10}(M_\mathrm{cl}/\mathrm{M}_\odot))$', fontsize=fs)
     ax.set_ylim(ymin=1, ymax=7.5)
     ax.set_box_aspect(1)
     ax.legend(loc='upper right', fontsize=fs)

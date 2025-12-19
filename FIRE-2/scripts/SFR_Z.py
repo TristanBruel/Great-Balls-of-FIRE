@@ -38,7 +38,8 @@ def plot_SFR_Zdist(Zsun=0.017):
 
         mform_plot, _ = np.histogram(times, weights=mform, bins=tbins)
         SFR = mform_plot /np.diff(tbins*1e9)
-        ax.plot(tmax-tbins[:-1], SFR,
+        SFR = np.append(0,SFR)
+        ax.plot(tmax-tbins, SFR,
                 c=CB_color_cycle[n], lw=lw, label=simu,
                 )
 
@@ -47,7 +48,8 @@ def plot_SFR_Zdist(Zsun=0.017):
 
         Zmean_plot, _ = np.histogram(times, weights=Z*mform, bins=tbins)
         Zmean_plot[mform_plot>0] /= mform_plot[mform_plot>0]
-        ax.plot(tmax-tbins[:-1], Zmean_plot /Zsun,
+        Zmean_plot = np.append(0,Zmean_plot)
+        ax.plot(tmax-tbins, Zmean_plot /Zsun,
                 c=CB_color_cycle[n], lw=lw, 
                 )
 
@@ -61,7 +63,7 @@ def plot_SFR_Zdist(Zsun=0.017):
     ax.set_xlabel(r'Lookback time [Gyr]', fontsize=fs)
     ax.set_xlim(xmin=tmax, xmax=0)
     ax.set_xticks(np.linspace(12,0,7))
-    ax.set_ylabel('Galactic star formation rate\n' + r'$[\mathrm{M}_{\odot}\mathrm{Mpc}^{-3}\mathrm{yr}^{-1}]$', fontsize=fs)
+    ax.set_ylabel('Galactic star formation rate ' + r'$[\mathrm{M}_{\odot}\mathrm{yr}^{-1}]$', fontsize=fs)
     ax.set_yscale('log')
     ax.set_ylim(ymin=1e-4, ymax=5e1)
     ax.set_box_aspect(1)

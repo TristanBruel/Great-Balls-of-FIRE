@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 import os
 
 
-def plot_CMF(Zsun=0.017):
+def plot_Zdist(Zsun=0.017):
 
     #####################################
     # Plot your result
@@ -23,23 +23,42 @@ def plot_CMF(Zsun=0.017):
 
     logZbins = np.linspace(-4, 1, 51)
 
-    for n,simu in enumerate(['m12i','m11d','m11h','m11e','m11q','m11i']):
+    ## Use the m12i MHD version of GBoF I & II ##
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    print(sim_dir)
+    ## All star clusters ##
+    cluster_file = os.path.join(sim_dir, 'ClusterPopulation_1_reduced.hdf5')
+    with h5py.File(cluster_file) as c:
+        mass = c['Mass'][()]
+        metal = c['Metallicity'][()]
+
+    Mcl, _ = np.histogram(np.log10(metal/Zsun), bins=logZbins, weights=mass)
+    Mcl = Mcl /np.diff(logZbins) /np.sum(Mcl)
+    ax.stairs(Mcl, logZbins,
+              color=CB_color_cycle[0], lw=lw, label='m12i',
+              )
+
+    for n,simu in enumerate(['m11d','m11h','m11e','m11q','m11i']):
         sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
-        cluster_file = os.path.join(sim_dir, 'AllClusters.hdf5')
+        cluster_file = os.path.join(sim_dir, 'AllClusters_%s.hdf5' %simu)
         with h5py.File(cluster_file) as c:
             mass = c['Mass'][()]
             metal = c['Metallicity'][()]
 
+        #tokeep = mass>=1e4
+        #mass = mass[tokeep]
+        #metal = metal[tokeep]
         Mcl, _ = np.histogram(np.log10(metal/Zsun), bins=logZbins, weights=mass)
         Mcl = Mcl /np.diff(logZbins) /np.sum(Mcl)
         ax.stairs(Mcl, logZbins,
-                  color=CB_color_cycle[n], lw=lw, label=simu,
+                  color=CB_color_cycle[n+1], lw=lw, label=simu,
               )
 
-    ax.set_xlabel(r'$\mathrm{log}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
+
+    ax.set_xlabel(r'$\mathrm{log}_{10}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
     ax.set_xlim(xmin=-4.2, xmax=1.2)
     ax.set_xticks(np.linspace(-4,1,6))
-    ax.set_ylabel(r'$\mathrm{dn}/\mathrm{dlog}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
+    ax.set_ylabel(r'$\mathrm{dn}/\mathrm{dlog}_{10}(Z/\mathrm{Z}_\odot)$', fontsize=fs)
     ax.set_yscale('log')
     ax.set_ylim(ymin=1e-3, ymax=1e1)
     ax.set_box_aspect(1)
@@ -60,5 +79,5 @@ if __name__ == "__main__":
 
     FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
 
-    plot_CMF()
+    plot_Zdist()
     plt.show()
