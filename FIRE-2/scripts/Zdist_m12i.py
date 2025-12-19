@@ -31,7 +31,6 @@ def plot_Zdist(Zsun=0.017):
 
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
-    print(sim_dir)
     ## All stars ##
     snap_dir = os.path.join(sim_dir,'output')
     part = gizmo.io.Read.read_snapshots(['star'], 'redshift', 0,
@@ -82,8 +81,8 @@ def plot_Zdist(Zsun=0.017):
     clid = np.array(clid, dtype=str)
     bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
     cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
-    in_m12i = np.array([c.split('_')[0]=='m12i' for c in cluster_id])
-    unique, indexes = np.unique(cluster_id[in_m12i], return_index=True)
+    in_sim = np.array([c.split('_')[0]=='m12i' for c in cluster_id])
+    unique, indexes = np.unique(cluster_id[in_sim], return_index=True)
     lochost = np.array([np.where(clid==i)[0][0] for i in unique])
     #lochost = np.array([int(u.split('_')[1]) for u in unique])
     Mhost, _ = np.histogram(np.log10(metal[lochost]/Zsun), bins=logZbins, weights=mass[lochost])

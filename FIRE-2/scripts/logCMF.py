@@ -34,9 +34,8 @@ def plot_CMF():
     ntot = 0
     
     ## Start with m12i, the MHD version of GBoF I & II ##
-    MHD_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
-    print(MHD_dir)
-    cluster_file = os.path.join(MHD_dir, 'ClusterPopulation_1_reduced.hdf5')
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    cluster_file = os.path.join(sim_dir, 'ClusterPopulation_1_reduced.hdf5')
     with h5py.File(cluster_file) as c:
         mass = c['Mass'][()]
     print('Number of massive star clusters:', np.sum(mass>6e4))

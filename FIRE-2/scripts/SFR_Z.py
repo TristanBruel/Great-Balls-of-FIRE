@@ -20,13 +20,53 @@ def plot_SFR_Zdist(Zsun=0.017):
 
     fig, axes = plt.subplots(1, 2, figsize=(8.,3.))
 
-    for n,simu in enumerate(['m12i','m11d','m11h','m11e','m11q','m11i']):
+    #simu = 'm12i'
+    #sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+
+    ## Use the m12i MHD version of GBoF I & II ##
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    snapshot_file = os.path.join(sim_dir, 'snapshot_times.txt')
+    redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
+
+    tmax = times.max()
+    deltat = 250 # width of the time bins (in Myr)
+    nbins = round(1e3*tmax /deltat) + 1
+    tbins = np.linspace(0, tmax, nbins)
+
+    SFR_file = os.path.join(sim_dir, 'SFR_m12i_MHD.txt')
+    t, Z, sigmaZ, mform, sfr = np.loadtxt(SFR_file).T
+
+    ## Left-hand plot: SFRs per bins of galaxy mass ##
+    ax = axes[0]
+
+    mform_plot, _ = np.histogram(times, weights=mform, bins=tbins)
+    SFR = mform_plot /np.diff(tbins*1e9)
+    SFR = np.append(0,SFR)
+    ax.plot(tmax-tbins, SFR,
+            c=CB_color_cycle[0], lw=lw, label='m12i',
+            )
+
+    ## Right-hand plot: SMF ##
+    ax = axes[1]
+
+    Zmean_plot, _ = np.histogram(times, weights=Z*mform, bins=tbins)
+    Zmean_plot[mform_plot>0] /= mform_plot[mform_plot>0]
+    Zmean_plot = np.append(0,Zmean_plot)
+    ax.plot(tmax-tbins, Zmean_plot /Zsun,
+            c=CB_color_cycle[0], lw=lw,
+            )
+
+    times_to_redshifts = interp1d(times, redshifts, fill_value='extrapolate')
+    redshifts_to_times = interp1d(redshifts, times, fill_value='extrapolate')
+
+
+    for n,simu in enumerate(['m11d','m11h','m11e','m11q','m11i']):
         sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
         snapshot_file = os.path.join(sim_dir, 'snapshot_times.txt')
         redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
 
         tmax = times.max()
-        deltat = 200 # width of the time bins (in Myr)
+        deltat = 250 # width of the time bins (in Myr)
         nbins = round(1e3*tmax /deltat) + 1
         tbins = np.linspace(0, tmax, nbins)
 
@@ -40,7 +80,7 @@ def plot_SFR_Zdist(Zsun=0.017):
         SFR = mform_plot /np.diff(tbins*1e9)
         SFR = np.append(0,SFR)
         ax.plot(tmax-tbins, SFR,
-                c=CB_color_cycle[n], lw=lw, label=simu,
+                c=CB_color_cycle[n+1], lw=lw, label=simu,
                 )
 
         ## Right-hand plot: SMF ##
@@ -50,12 +90,10 @@ def plot_SFR_Zdist(Zsun=0.017):
         Zmean_plot[mform_plot>0] /= mform_plot[mform_plot>0]
         Zmean_plot = np.append(0,Zmean_plot)
         ax.plot(tmax-tbins, Zmean_plot /Zsun,
-                c=CB_color_cycle[n], lw=lw, 
+                c=CB_color_cycle[n+1], lw=lw, 
                 )
 
 
-    times_to_redshifts = interp1d(times, redshifts, fill_value='extrapolate')
-    redshifts_to_times = interp1d(redshifts, times, fill_value='extrapolate')
 
     ## Left-hand plot: SFRs per bins of galaxy mass ##
     ax = axes[0]

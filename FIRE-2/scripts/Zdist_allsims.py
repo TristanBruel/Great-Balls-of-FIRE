@@ -25,7 +25,6 @@ def plot_Zdist(Zsun=0.017):
 
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
-    print(sim_dir)
     ## All star clusters ##
     cluster_file = os.path.join(sim_dir, 'ClusterPopulation_1_reduced.hdf5')
     with h5py.File(cluster_file) as c:
