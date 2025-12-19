@@ -7,7 +7,7 @@ from matplotlib.patches import Patch
 import os
 
 
-def plot_mBH1():
+def plot_tdelay():
 
 
     #####################################
@@ -24,9 +24,11 @@ def plot_mBH1():
     deltat = .250 # width of the time bins (in Gyr)
     nbins = round(tmax /deltat) + 1
     tbins = np.linspace(0,tmax,nbins)
+    tbins = np.logspace(-3,2,51)
 
     ### Show clusters that host GW241011-like BBH mergers ###
-    bbhfile = os.path.join(grid_dir, 'allBBHs.dat')
+    #bbhfile = os.path.join(grid_dir, 'allBBHs.dat')
+    bbhfile = os.path.join(grid_dir, 'allBBHs_withKremer.dat')
     cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
     tform, m1, m2, tmerge, a1, a2 = np.loadtxt(bbhfile, usecols=[2,4,5,7,8,9], skiprows=1).T
     a1[m1<m2], a2[m1<m2] = a2[m1<m2], a1[m1<m2]
@@ -34,99 +36,35 @@ def plot_mBH1():
     q = m2 /m1
     tdelay = tmerge-tform
     
-    # GW241110 posterior #
-    gw241110_qm = np.loadtxt('gw241110_qm.txt')
-    q_bins_241110 = gw241110_qm[1:,0]
-    log_m1_bins_241110 = gw241110_qm[0,1:]
-    heights_241110_q = gw241110_qm[1:,1:]
-    c90_241110_q = [gw241110_qm[0,0]]
-    gw241110_am = np.loadtxt('gw241110_am.txt')
-    s1_bins_241110 = gw241110_am[1:,0]
-    heights_241110_a = gw241110_am[1:,1:]
-    c90_241110_a = [gw241110_am[0,0]]
-
-    # GW241011-like BBH mergers #
-    GW241110 = np.zeros(m1.size, dtype='bool')
-    for i in range(m1.size):
-            m = np.log10(m1)[i]
-            mr = q[i]
-            a = a1[i]
-            if m<log_m1_bins_241110.min() or mr<q_bins_241110.min() or a<s1_bins_241110.min():
-                continue
-            which_mbin = np.where(m>=log_m1_bins_241110)[0][-1]
-            which_qbin = np.where(mr>=q_bins_241110)[0][-1]
-            which_abin = np.where(a>=s1_bins_241110)[0][-1]
-            if heights_241110_q.reshape(q_bins_241110.size, log_m1_bins_241110.size)[which_qbin,which_mbin]>c90_241110_q:
-                if heights_241110_a.reshape(s1_bins_241110.size, log_m1_bins_241110.size)[which_abin,which_mbin]>c90_241110_a:
-                    GW241110[i] = 1
-    print('Number of GW241110-like BBH mergers:', np.sum(GW241110))
-    unique, indexes = np.unique(cluster_id[GW241110], return_index=True)
+    # BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+    GW24x = (m1 < 30) & (q < 0.85) & (a1 > 0.05)
+    unique, indexes = np.unique(cluster_id[GW24x], return_index=True)
+    print('Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses')
+    print('Number of events found:', np.sum(GW24x))
     print('Number of clusters hosting these events:', len(unique))
-    td = np.array([])
-    for i in range(len(unique)):
-        td = np.append(td,tdelay[cluster_id==unique[i]])
-    print('Total number of BBH mergers from these clusters:',len(td),'\n')
-    hist, _ = np.histogram(td, bins=tbins)
+    #td = np.array([])
+    #for i in range(len(unique)):
+    #    td = np.append(td,tdelay[cluster_id==unique[i]])
+    #print('Total number of BBH mergers from these clusters:',len(td),'\n')
+    hist, _ = np.histogram(tdelay, bins=tbins)
     ax.stairs(hist, tbins,
-              color='firebrick', label='my sims',
+              color='firebrick', label='all BBH mergers from CMC sims',
               )
-    hist, _ = np.histogram(tdelay[GW241110], bins=tbins)
+    hist, _ = np.histogram(tdelay[GW24x], bins=tbins)
     ax.stairs(hist, tbins,
-              color='firebrick', fill=True,
+              color='firebrick', fill=True, label='GW241x1x-like mergers',
               )
 
-    ## BBH mergers from Kremer CMC catalog ##
-    bbh_file = os.path.join(GW24_dir, 'external_cluster_simulations/BBHmergers.dat')
-    cluster_id, rv, Z, N, tmerge, m1, m2, a1, a2 = np.loadtxt(bbh_file, usecols=(0,1,3,4,5,8,9,10,11)).T
-    Mcl = N *0.6 # mean mass for Kroupa 2001 IMF
-    rhm = rv *0.833 # conversion from virial to half-mass radius for king profile (w_0=5)
-    a1[m1<m2], a2[m1<m2] = a2[m1<m2], a1[m1<m2]
-    m1, m2 = np.maximum(m1,m2), np.minimum(m1,m2)
-    q = m2 /m1
-    tmerge /= 1e3 # covnert to Gyr
-    print('Total number of BBH mergers in Kremer CMC catalog: {}'.format(len(m1)))
-    print('Number of hierarchical BBH mergers: {}'.format(np.sum(a1+a2>0)))
-    GW241110 = np.zeros(m1.size, dtype='bool')
-    for i in range(m1.size):
-            m = np.log10(m1)[i]
-            mr = q[i]
-            a = a1[i]
-            if m<log_m1_bins_241110.min() or mr<q_bins_241110.min() or a<s1_bins_241110.min():
-                continue
-            which_mbin = np.where(m>=log_m1_bins_241110)[0][-1]
-            which_qbin = np.where(mr>=q_bins_241110)[0][-1]
-            which_abin = np.where(a>=s1_bins_241110)[0][-1]
-            if heights_241110_q.reshape(q_bins_241110.size, log_m1_bins_241110.size)[which_qbin,which_mbin]>c90_241110_q:
-                if heights_241110_a.reshape(s1_bins_241110.size, log_m1_bins_241110.size)[which_abin,which_mbin]>c90_241110_a:
-                    GW241110[i] = 1
-    print('Number of GW241110-like mergers:', np.sum(GW241110))
-    unique, indexes = np.unique(cluster_id[GW241110], return_index=True)
-    print('Number of clusters hosting these events:', len(unique))
-    td = np.array([])
-    for i in range(len(unique)):
-        td = np.append(td,tmerge[cluster_id==unique[i]])
-    print('Total number of BBH mergers from these clusters:',len(td),'\n')
-    hist, _ = np.histogram(td, bins=tbins)
-    ax.stairs(hist, tbins,
-              color='darkorange', label='Kremer',
-              )
-    hist, _ = np.histogram(tmerge[GW241110], bins=tbins)
-    ax.stairs(hist, tbins,
-              color='darkorange', fill=True, zorder=0,
-              )
 
-    ax.stairs(np.zeros_like(hist), tbins,
-              color='gray', fill=True,
-              label='GW241110-like mergers',
-              )
-
-    ax.set_xlabel(r'$t_\mathrm{delay}\ [\mathrm{Gyr}]$', fontsize=fs)
-    ax.set_xlim(xmin=0, xmax=tmax)
+    ax.set_xlabel(r'$t_\mathrm{delay}$', fontsize=fs)
+    ax.set_xlim(xmin=1e-3, xmax=2e1)
+    ax.set_xscale('log')
+    ax.set_xticks([1e-3,1e-2,1e-1,1,10],['1 Myr','10 Myr','100 Myr','1 Gyr','10 Gyr'])
     ax.set_ylabel(r'$\mathrm{N}_\mathrm{BBHs}$', fontsize=fs)
     ax.set_yscale('log')
     #ax.set_ylim(ymin=1e-3, ymax=1e1)
     ax.set_box_aspect(1)
-    ax.legend(loc='upper right', fontsize=fs)
+    ax.legend(loc='upper left', fontsize=fs)
 
 
     # Save
@@ -143,7 +81,5 @@ if __name__ == "__main__":
 
     grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
 
-    GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
-
-    plot_mBH1()
+    plot_tdelay()
     plt.show()

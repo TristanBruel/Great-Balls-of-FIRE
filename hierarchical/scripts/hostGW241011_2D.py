@@ -201,7 +201,7 @@ def plot_clusterGrid(Zsun=0.017):
                np.log10(cluster_metallicities[lochost] /Zsun),
                edgecolor='r', facecolor=cmap(norm(cluster_nBBHs[lochost])),
                linewidth=.6, s=5**2,
-               label='hosts of GW24x\n-like mergers',
+               label='hosts of GW241x1x\n-like mergers',
                )
 
 
@@ -209,9 +209,9 @@ def plot_clusterGrid(Zsun=0.017):
     ax.set_xlim(xmin=4.5, xmax=7.1)
     ax.set_xticks(np.linspace(5.,7.,5))
     ax.set_ylabel(r'$\mathrm{log}(Z_\mathrm{cl}/\mathrm{Z}_\odot)$', fontsize=fs)
-    #ax.set_ylim(ymin=-2, ymax=.5)
-    ax.set_yticks(np.linspace(-2.,0.5,6))
-    ax.legend(loc='lower right', fontsize=fs)
+    ax.set_ylim(ymin=-2, ymax=1)
+    ax.set_yticks(np.linspace(-2.,1.,7))
+    ax.legend(loc='upper right', fontsize=fs)
     ax.set_box_aspect(1)
 
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)

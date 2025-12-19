@@ -50,14 +50,14 @@ def plot_clusterGrid(Zsun=0.017):
                np.log10(cluster_radii[quiet]), 
                np.log10(cluster_Z[quiet] /Zsun),
                marker='o', c='gray', s=2**2, 
-               zorder=0, depthshade=False,
+               depthshade=False,
                )
     # Clusters that produce at least 1 BBH merger
     ax.scatter(np.log10(cluster_masses[~quiet]),
                np.log10(cluster_radii[~quiet]),
                np.log10(cluster_Z[~quiet] /Zsun),
                marker='o', c=cmap(norm(cluster_nBBHs[~quiet])), s=3**2, 
-               zorder=1, depthshade=False,
+               depthshade=False,
                )
 
     # Clusters from Kyle Kremer simulations
@@ -65,7 +65,7 @@ def plot_clusterGrid(Zsun=0.017):
                np.log10(cluster_radii[isKremer]),
                np.log10(cluster_Z[isKremer] /Zsun),
                marker='o', c='r', s=5**2,
-               zorder=1, depthshade=False,
+               depthshade=False,
                )
 
 
