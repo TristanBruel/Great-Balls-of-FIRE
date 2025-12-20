@@ -12,7 +12,7 @@ def sampleBBHs(halo_idx, sample=None, Zsun=0.017):
     tmax = times.max()
 
     #SFR_file = './SFRs/Mstar90/FB15N1024_halo{}_SFR.txt'.format(halo_idx, halo_idx)
-    SFR_file = './SFRs/Rvir/FB15N1024_halo{}_SFR.txt'.format(halo_idx, halo_idx)
+    SFR_file = './SFRs/FB15N1024_halo{}_SFR.txt'.format(halo_idx, halo_idx)
     times, Zmean, Zscatter, mform, sfr = np.loadtxt(SFR_file).T
 
     ## Load sampled clusters ##
@@ -74,7 +74,7 @@ def sampleBBHs(halo_idx, sample=None, Zsun=0.017):
             cluster_id[start:stop] = grid_ids[closest]
             start = stop
     """
-    all_bbh_file = '/home/tbruel/GBoF_IV/grid/allBBHs_withKremer.dat'
+    all_bbh_file = './grid/allBBHs_withKremer.dat'
     bbh_ids = np.loadtxt(all_bbh_file, dtype='str', usecols=[0], skiprows=1)
     dat = np.loadtxt(all_bbh_file, usecols=np.arange(1,12), skiprows=1)
 

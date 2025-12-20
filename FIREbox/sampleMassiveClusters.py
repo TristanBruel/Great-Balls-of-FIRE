@@ -21,7 +21,7 @@ def sampleMassiveClusters(halo_idx, seed=42):
     tmax = times.max()
 
     #SFR_file = './SFRs/Mstar90/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
-    SFR_file = './SFRs/Rvir/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
+    SFR_file = './SFRs/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
     if not os.path.exists(SFR_file):
         print('No SFR file found for halo {}.'.format(halo_idx))
         return

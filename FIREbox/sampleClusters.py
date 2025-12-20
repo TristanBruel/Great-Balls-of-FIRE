@@ -14,14 +14,14 @@ def linear(x, a, b):
 
 def sampleClusters(halo_idx, seed=42):
     ### Sample massive clusters in the halo identified by {halo_idx} in snapshot 1200
-    print('Sampling massive clusters in halo', halo_idx)
+
     #print('sampleClusters:: Random seed is:', seed)
     np.random.seed(seed)
     redshifts, times = np.loadtxt("./snapshot_times.txt", usecols=[2,3]).T
     tmax = times.max()
 
     #SFR_file = './SFRs/Mstar90/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
-    SFR_file = './SFRs/Rvir/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
+    SFR_file = './SFRs/FB15N1024_halo{}_SFR.txt'.format(halo_idx)
     if not os.path.exists(SFR_file):
         print('No SFR file found for this halo.')
         return
