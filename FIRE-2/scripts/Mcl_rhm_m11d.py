@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 import os
+import argparse
 
 
-def plot_Mcl_rhm():
+def plot_Mcl_rhm(add_bar=False):
 
     #####################################
     # Plot your result
@@ -14,7 +15,7 @@ def plot_Mcl_rhm():
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    #plt.rc('text', usetex=True)
+    plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#e41a1c']
@@ -102,9 +103,17 @@ def plot_Mcl_rhm():
     ax.set_yticks(np.linspace(-2,2,5),[r'$0.01$',r'$0.1$',r'$1$',r'$10$',r'$100$'])
     ax.set_box_aspect(1)
 
-    ax.text(6.75, 1.75, 'm11d', fontsize=fs, 
+    ax.text(6.5, 1.75, 'm11d', fontsize=fs, 
             bbox=dict(boxstyle='round',facecolor='none',edgecolor='k'),
             )
+
+    if add_bar:
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+        cbar = fig.colorbar(sm, ax=ax, fraction=0.046, pad=0.04, aspect=20)
+        cbar.set_label(r'Number of clusters', fontsize=fs)
+        cbar.ax.tick_params(labelsize=0.8*fs)
+        cbar.set_ticks([1,10,100])
+        cbar.set_ticklabels([r'$1$',r'$10$',r'$10^2$'])
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
@@ -118,8 +127,13 @@ def plot_Mcl_rhm():
 ##################################################################
 if __name__ == "__main__":
 
-    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
-    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
 
-    plot_Mcl_rhm()
+    #####################################
+    # Define command line options
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--bar', dest='bar', action='store_true', help='Whether to add colorbar to the plot', default=False)
+    args = parser.parse_args()
+
+    plot_Mcl_rhm(add_bar=args.bar)
     plt.show()

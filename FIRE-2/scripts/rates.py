@@ -14,7 +14,7 @@ def plot_rates():
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    #plt.rc('text', usetex=True)
+    plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#e41a1c']
@@ -203,7 +203,7 @@ def plot_rates():
     axes[0].stairs([1e-10], [0,1], color='gray', fill=True, alpha=.5,
                    label='Massive cluster formation\n'+r'$(\Sigma M_\mathrm{cl}/10^5\mathrm{M}_\odot)$',
                    )
-    axes[0].legend(bbox_to_anchor=(2,-0.25), loc='upper center', fontsize=fs, ncols=4)
+    axes[0].legend(bbox_to_anchor=(2.25,-0.25), loc='upper center', fontsize=fs, ncols=4)
 
 
     # Save
@@ -218,8 +218,7 @@ def plot_rates():
 ##################################################################
 if __name__ == "__main__":
 
-    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
-    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
 
     plot_rates()
     plt.show()

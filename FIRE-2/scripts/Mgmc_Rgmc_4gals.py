@@ -14,12 +14,12 @@ def plot_Mgmc_Rgmc():
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    #plt.rc('text', usetex=True)
+    plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#e41a1c']
 
-    fig, axes = plt.subplots(2, 2, figsize=(4.,3.5))
+    fig, axes = plt.subplots(2, 2, figsize=(3.97,3.5))
     # Remove vertical and horizontal space between Axes
     fig.subplots_adjust(hspace=0, wspace=0)
     axes = axes.flatten()
@@ -89,7 +89,7 @@ def plot_Mgmc_Rgmc():
         ax.tick_params(axis='y', which='minor', left=False)
         ax.set_box_aspect(1)
 
-        ax.text(6.75, 0.25, simu, fontsize=fs, 
+        ax.text(7., 0.25, simu, fontsize=fs, 
                 bbox=dict(boxstyle='round',facecolor='none',edgecolor='k'),
                 )
 
@@ -113,6 +113,8 @@ def plot_Mgmc_Rgmc():
     cbar = fig.colorbar(sm, ax=axes, fraction=0.086, pad=0.04)#, aspect=10)
     cbar.set_label(r'Number of GMCs', fontsize=fs)
     cbar.ax.tick_params(labelsize=0.8*fs)
+    cbar.set_ticks([1,10,100,1000])
+    cbar.set_ticklabels([r'$1$',r'$10$',r'$10^2$',r'$10^3$'])
         
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
@@ -126,8 +128,7 @@ def plot_Mgmc_Rgmc():
 ##################################################################
 if __name__ == "__main__":
 
-    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
-    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
 
     plot_Mgmc_Rgmc()
     plt.show()
