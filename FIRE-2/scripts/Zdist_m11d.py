@@ -26,8 +26,7 @@ def plot_Zdist(Zsun=0.017):
 
     logZbins = np.linspace(-4, 1, 51)
 
-    simu = 'm11d'
-    sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    sim_dir = os.path.join(FIRE_dir,'m11d_res7100')
     ## All stars ##
     snap_dir = os.path.join(sim_dir,'output')
     part = gizmo.io.Read.read_snapshots(['star'], 'redshift', 0,

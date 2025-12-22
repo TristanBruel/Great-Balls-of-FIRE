@@ -7,7 +7,7 @@ import os
 import argparse
 
 
-def plot_Mcl_rhm(add_bar=False):
+def plot_Mcl_rhm(add_leg=True, add_bar=False):
 
     #####################################
     # Plot your result
@@ -28,8 +28,7 @@ def plot_Mcl_rhm(add_bar=False):
     cmap = plt.get_cmap('plasma')
     norm = mpl.colors.LogNorm(vmin=1,vmax=6e2)
 
-    simu = 'm11d'
-    sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    sim_dir = os.path.join(FIRE_dir,'m11d_res7100')
 
     ## All star clusters ##
     cluster_file = os.path.join(sim_dir, 'AllClusters_m11d.hdf5')
@@ -65,9 +64,14 @@ def plot_Mcl_rhm(add_bar=False):
     unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
     lochost = np.array([np.where(clid==i)[0][0] for i in unique])
     size = (2 + 3*np.log10(nbbhs))**2 
-    ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
-               c='r', s=size, edgecolor='white', lw=lw-.5,
-               )
+    sc = ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
+                    c='r', s=size, edgecolor='white', lw=lw-.5,
+                    )
+
+    if add_leg:
+        kw = dict(prop="sizes", num=[1,10,100,1000], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
+        ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers")
+
 
     ## Print lines of constant density ##
     densities = np.array([1, 1e3, 1e6, 1e9])
@@ -130,8 +134,9 @@ if __name__ == "__main__":
     #####################################
     # Define command line options
     parser = argparse.ArgumentParser()
+    parser.add_argument('--leg', dest='leg', action='store_true', help='Whether to add legend to the plot', default=False)
     parser.add_argument('--bar', dest='bar', action='store_true', help='Whether to add colorbar to the plot', default=False)
     args = parser.parse_args()
 
-    plot_Mcl_rhm(add_bar=args.bar)
+    plot_Mcl_rhm(add_leg=args.leg, add_bar=args.bar)
     plt.show()

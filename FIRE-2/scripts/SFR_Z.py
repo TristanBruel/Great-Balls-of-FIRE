@@ -20,9 +20,6 @@ def plot_SFR_Zdist(Zsun=0.017):
 
     fig, axes = plt.subplots(1, 2, figsize=(8.,3.))
 
-    #simu = 'm12i'
-    #sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
-
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
     snapshot_file = os.path.join(sim_dir, 'snapshot_times.txt')

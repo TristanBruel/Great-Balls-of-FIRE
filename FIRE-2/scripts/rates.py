@@ -45,7 +45,6 @@ def plot_rates():
             )
 
     ## Massive cluster formation rate ##
-    #cluster_file = os.path.join(sim_dir, 'AllMassiveClusters_{}.hdf5'.format(simu))
     cluster_file = os.path.join(sim_dir, 'ClusterPopulation_1_reduced.hdf5')
     with h5py.File(cluster_file) as c:
         mass = c['Mass'][()]

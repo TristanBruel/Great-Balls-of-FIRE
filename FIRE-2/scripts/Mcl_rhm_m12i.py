@@ -28,8 +28,7 @@ def plot_Mcl_rhm(add_bar=False):
     cmap = plt.get_cmap('plasma')
     norm = mpl.colors.LogNorm(vmin=1,vmax=6e2)
 
-    #simu = 'm12i'
-    #sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    #sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
 
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
@@ -71,7 +70,7 @@ def plot_Mcl_rhm(add_bar=False):
                     )
 
     kw = dict(prop="sizes", num=[1,10,100,1000], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
-    legend2 = ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers", ncols=2)
+    ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers", ncols=2)
 
 
     ## Print lines of constant density ##

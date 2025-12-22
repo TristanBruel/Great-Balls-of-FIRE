@@ -26,8 +26,7 @@ def plot_Zdist(Zsun=0.017):
 
     logZbins = np.linspace(-4, 1, 51)
 
-    #simu = 'm12i'
-    #sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    #sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
 
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')

@@ -7,7 +7,7 @@ import os
 import argparse
 
 
-def plot_Mgmc_Rgmc(add_bar=False):
+def plot_Mgmc_Rgmc(add_leg=False, add_bar=False):
 
     #####################################
     # Plot your result
@@ -26,10 +26,9 @@ def plot_Mgmc_Rgmc(add_bar=False):
     logrbins = np.linspace(0, 4, 81)
     X, Y = np.meshgrid(logmbins[:-1],logrbins[:-1])
     cmap = plt.get_cmap('viridis')
-    norm = mpl.colors.LogNorm(vmin=1,vmax=2e3)
+    norm = mpl.colors.LogNorm(vmin=1,vmax=1e3)
 
-    simu = 'm11d'
-    sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    sim_dir = os.path.join(FIRE_dir,'m11d_res7100')
 
     ## All clouds ##
     cloud_file = os.path.join(sim_dir, 'AllGMCs_m11d.hdf5')
@@ -37,36 +36,38 @@ def plot_Mgmc_Rgmc(add_bar=False):
         mass = c['Mass'][()]
         #radius = c['HalfMassRadius'][()]
         radius = c['Reff'][()]
+        snap = c['Snapshot'][()]
 
     H, _, _ = np.histogram2d(x=np.log10(mass), y=np.log10(radius), bins=[logmbins,logrbins])
-    #print(H[H>0].min())
-    #print(H.max())
     ax.pcolormesh(X, Y, H.T,
                   cmap=cmap,
                   norm=norm,
                   )
-    #H[H==0] = 1e-32
-    #ax.contourf(X, Y, H.T, 
-    #            levels=np.logspace(0,4,100),
-    #            cmap=cmap,
-    #            norm=norm,
-    #            )
 
     ## GMCs that produce massive clusters #
-    #cluster_file = os.path.join(sim_dir, 'AllMassiveClusters.hdf5')
-    #with h5py.File(cluster_file) as c:
-    #    mass = c['Mass'][()]
-    #    radius = c['HalfMassRadius'][()]
-    #    clid = c['id'][()]
-    #clid = np.array(clid, dtype=str)
-    #cloud_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
-    #in_sim = np.array([c.split('_')[0]=='m11d' for c in cluster_id])
-    #unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
-    #lochost = np.array([np.where(clid==i)[0][0] for i in unique])
-    #size = (2 + 3*np.log10(nbbhs))**2 
-    #ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
-    #           c='r', s=size, edgecolor='white', lw=lw-.5,
-    #           )
+    cluster_file = os.path.join(sim_dir, 'AllMassiveClusters_m11d.hdf5')
+    with h5py.File(cluster_file) as c:
+        cluster_mass = c['Mass'][()]
+        cluster_radius = c['HalfMassRadius'][()]
+        GMC_id = c['GMC_ID'][()]
+        snap_cluster = c['Snapshot'][()]
+    host_id = np.zeros(len(cluster_mass),dtype='U10')
+    host_mass = np.zeros(len(cluster_mass))
+    host_radius = np.zeros(len(cluster_mass))
+    for n in range(len(cluster_mass)):
+        host_id[n] = 'snap%i_%i' %(snap_cluster[n],GMC_id[n])
+        host_mass[n] = mass[snap==snap_cluster[n]][GMC_id[n]]
+        host_radius[n] = radius[snap==snap_cluster[n]][GMC_id[n]]
+    unique, indices, n_clusters = np.unique(host_id, return_index=True, return_counts=True)
+    size = (2 + 3*np.log10(n_clusters))**2 
+    sc = ax.scatter(np.log10(host_mass[indices]), np.log10(host_radius[indices]), 
+                    c='r', s=size, edgecolor='white', lw=lw-.5,
+                    )
+
+    if add_leg:
+        kw = dict(prop="sizes", num=[1,10,100], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
+        ax.legend(*sc.legend_elements(**kw), loc="lower right", title="Massive clusters")
+
 
     ## Print lines of constant surface density ##
     densities = np.array([1, 10, 1e2, 1e3])
@@ -127,8 +128,9 @@ if __name__ == "__main__":
     #####################################
     # Define command line options
     parser = argparse.ArgumentParser()
+    parser.add_argument('--leg', dest='leg', action='store_true', help='Whether to add legend to the plot', default=False)
     parser.add_argument('--bar', dest='bar', action='store_true', help='Whether to add colorbar to the plot', default=False)
     args = parser.parse_args()
 
-    plot_Mgmc_Rgmc(add_bar=args.bar)
+    plot_Mgmc_Rgmc(add_leg=args.leg, add_bar=args.bar)
     plt.show()

@@ -28,7 +28,7 @@ def plot_Mgmc_Rgmc():
     logrbins = np.linspace(0, 4, 81)
     X, Y = np.meshgrid(logmbins[:-1],logrbins[:-1])
     cmap = plt.get_cmap('viridis')
-    norm = mpl.colors.LogNorm(vmin=1,vmax=2e3)
+    norm = mpl.colors.LogNorm(vmin=1,vmax=1e3)
 
     for n,simu in enumerate(['m11i','m11q','m11e','m11h']):
         ax = axes[n]
@@ -40,36 +40,34 @@ def plot_Mgmc_Rgmc():
             mass = c['Mass'][()]
             #radius = c['HalfMassRadius'][()]
             radius = c['Reff'][()]
+            snap = c['Snapshot'][()]
 
         H, _, _ = np.histogram2d(x=np.log10(mass), y=np.log10(radius), bins=[logmbins,logrbins])
-        #print(H[H>0].min())
-        #print(H.max())
         ax.pcolormesh(X, Y, H.T,
                       cmap=cmap,
                       norm=norm,
                       )
-        #H[H==0] = 1e-32
-        #ax.contourf(X, Y, H.T, 
-        #            levels=np.logspace(0,4,100),
-        #            cmap=cmap,
-        #            norm=norm,
-        #            )
+
 
         ## GMCs that produce massive clusters #
-        #cluster_file = os.path.join(sim_dir, 'AllMassiveClusters.hdf5')
-        #with h5py.File(cluster_file) as c:
-        #    mass = c['Mass'][()]
-        #    radius = c['HalfMassRadius'][()]
-        #    clid = c['id'][()]
-        #clid = np.array(clid, dtype=str)
-        #cloud_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
-        #in_sim = np.array([c.split('_')[0]=='m11d' for c in cluster_id])
-        #unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
-        #lochost = np.array([np.where(clid==i)[0][0] for i in unique])
-        #size = (2 + 3*np.log10(nbbhs))**2 
-        #ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
-        #           c='r', s=size, edgecolor='white', lw=lw-.5,
-        #           )
+        cluster_file = os.path.join(sim_dir, 'AllMassiveClusters_%s.hdf5' %simu)
+        with h5py.File(cluster_file) as c:
+            cluster_mass = c['Mass'][()]
+            cluster_radius = c['HalfMassRadius'][()]
+            GMC_id = c['GMC_ID'][()]
+            snap_cluster = c['Snapshot'][()]
+        host_id = np.zeros(len(cluster_mass),dtype='U10')
+        host_mass = np.zeros(len(cluster_mass))
+        host_radius = np.zeros(len(cluster_mass))
+        for n in range(len(cluster_mass)):
+            host_id[n] = 'snap%i_%i' %(snap_cluster[n],GMC_id[n])
+            host_mass[n] = mass[snap==snap_cluster[n]][GMC_id[n]]
+            host_radius[n] = radius[snap==snap_cluster[n]][GMC_id[n]]
+        unique, indices, n_clusters = np.unique(host_id, return_index=True, return_counts=True)
+        size = (2 + 3*np.log10(n_clusters))**2
+        sc = ax.scatter(np.log10(host_mass[indices]), np.log10(host_radius[indices]),
+                        c='r', s=size, edgecolor='white', lw=lw-.5,
+                        )
 
         ## Print lines of constant surface density ##
         densities = np.array([1, 10, 1e2, 1e3])
@@ -81,10 +79,8 @@ def plot_Mgmc_Rgmc():
                     )
 
 
-        #ax.set_xscale('log')
         ax.set_xlim(xmin=4, xmax=8.5)
         ax.tick_params(axis='x', which='minor', bottom=False)
-        #ax.set_yscale('log')
         ax.set_ylim(ymin=0, ymax=3.25)
         ax.tick_params(axis='y', which='minor', left=False)
         ax.set_box_aspect(1)
