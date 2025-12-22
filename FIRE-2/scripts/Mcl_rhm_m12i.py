@@ -6,7 +6,7 @@ import matplotlib as mpl
 import os
 
 
-def plot_Mcl_rhm(Zsun=0.017):
+def plot_Mcl_rhm():
 
     #####################################
     # Plot your result
@@ -14,7 +14,7 @@ def plot_Mcl_rhm(Zsun=0.017):
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    plt.rc('text', usetex=True)
+    #plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#e41a1c']
@@ -119,7 +119,8 @@ def plot_Mcl_rhm(Zsun=0.017):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
 
     plot_Mcl_rhm()
     plt.show()

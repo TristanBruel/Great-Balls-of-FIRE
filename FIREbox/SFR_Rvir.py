@@ -28,7 +28,7 @@ def getProperties():
     # Load star particles and properties
     snap_dir = '/net/cephfs/shares/feldmann.ics.mnf.uzh/data/FIREbox/production_runs/FB15N1024'
     part = gizmo.io.Read.read_snapshots(['star'], 'redshift', 0,
-            simulation_directory='/home/tbruel/GBoF_IV',
+            simulation_directory='/home/tbruel/Great-Balls-of-FIRE/FIREbox',
             snapshot_directory=snap_dir,
             )
     h = part.Cosmology['hubble']

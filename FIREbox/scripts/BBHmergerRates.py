@@ -10,8 +10,6 @@ from colossus.cosmology import cosmology
 cosmology.setCosmology('planck18');
 from colossus.lss import mass_function
 
-FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
-FIREbox_volume = (22.1)**3 # in unit Mpc^3
 
 def HaloMassFunction():
     dndM = lambda M: mass_function.massFunction(M, 0.0, mdef='vir', model='tinker08', q_out='dndlnM')
@@ -37,7 +35,7 @@ def plot_mergerRates():
     logMmin=10.
     logMmax=14.
     to_keep = (Mvir>np.power(10,logMmin))&(Mvir<np.power(10,logMmax))
-    print('Number of galaxies identified in FIREbox with halo mass in [10^{},10^{}]: {}'.format(logMmin,logMmax,np.sum(to_keep)))
+    print('Number of galaxies identified in FIREbox with halo mass in [10^{},10^{}]: {}\n'.format(logMmin,logMmax,np.sum(to_keep)))
     Mvir = Mvir[to_keep]
     Mstar = Mstar[to_keep]
     haloids = haloids[to_keep]
@@ -57,7 +55,7 @@ def plot_mergerRates():
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    plt.rc('text', usetex=True)
+    #plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#984ea3',
@@ -65,6 +63,7 @@ def plot_mergerRates():
 
     fig, axes = plt.subplots(1, 3, figsize=(8.25,2.35))
 
+    """
     LVK_dir = '/home/tristan-bruel/Documents/Science/LVK'
     color_plpeak = "#1f78b4"
     # Load new O3b fits
@@ -83,18 +82,20 @@ def plot_mergerRates():
     # For each of our randomly selected samples, compute and save R(z)
     for i,ind in enumerate(inds):
         Rz[i,:] = R0[ind]*(1.+zs)**kappas[ind]
-
+    """
 
     sampling_methods = np.array(['Gamma', 'ElBadry', 'SFR'])
     sampling_names = np.array([r'Gamma', r'EB18', r'SFRpeak'])
     xtext = np.array([4.2, 3.1, 4.7])
     for s,sample in enumerate(sampling_methods):
         ax = axes[s]
-        print('\nCluster sampling method:', sample)
+        print('Cluster sampling method:', sample)
         mergerRates = []
         #for seed in np.linspace(1,20,20, dtype='int'):
         #    bbhfile = os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed{}.h5'.format(sample,seed))
-        for bbhfile in glob(os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_seed*.h5'.format(sample))):
+        bbhfiles = glob(os.path.join(FIREbox_dir, 'BBHs/BBHs_{}_compiled_withKremer_seed*.h5'.format(sample)))
+        print('Number of files found: %i' %len(bbhfiles))
+        for bbhfile in bbhfiles:
             with h5py.File(bbhfile, 'r') as bbhs:
                 tmerger = bbhs['tmerger'][()]
                 Mgal = bbhs['Mgal'][()]
@@ -108,6 +109,7 @@ def plot_mergerRates():
             mergerrate = np.append(0, mergerrate)
             mergerRates.append(mergerrate)
 
+        print('Done computing all mergerRates\n')
         mergerRates = np.asarray(mergerRates)
         R_lower = np.percentile(mergerRates, 10, axis=0)
         R_upper = np.percentile(mergerRates, 90, axis=0)
@@ -130,20 +132,20 @@ def plot_mergerRates():
                     c=CB_color_cycle[n],
                     label=r'$%.1f\geq\mathrm{log}(\mathcal{M}_\star/\mathrm{M}_\odot)\geq %.1f$' %(Mgal_bins[n],Mgal_bins[n+1]),
                     )
-
+        
         ax.text(x=xtext[s], y=2e2, s=sampling_names[s], 
                 fontsize=fs, c='k',
                 bbox=dict(facecolor='none', edgecolor='black', boxstyle='round'),
                 )
 
-        ### ADD BBH MERGER RATE LVK GWTC-3 ##
-        ax.fill_between(tmax-ts, np.quantile(Rz,0.1,axis=0), np.quantile(Rz,0.9,axis=0), color=color_plpeak, alpha=0.3)
-        #ax.fill_between(ts, np.quantile(Rz,0.25,axis=0), np.quantile(Rz,0.75,axis=0), color=color_plpeak, alpha=0.3)
-        ax.plot(tmax-ts, np.median(Rz,axis=0),
-                c=color_plpeak, alpha=1, lw=lw,
-                )
-        if s==0:
-            ax.text(x=13.6, y=1e2, s=r'GWTC-3', color=color_plpeak, fontsize=.9*fs)
+        ### ADD BBH MERGER RATE LVK GWTC-3 ###
+        #ax.fill_between(tmax-ts, np.quantile(Rz,0.1,axis=0), np.quantile(Rz,0.9,axis=0), color=color_plpeak, alpha=0.3)
+        #ax.plot(tmax-ts, np.median(Rz,axis=0),
+        #        c=color_plpeak, alpha=1, lw=lw,
+        #        )
+        #if s==0:
+        #    ax.text(x=13.6, y=1e2, s=r'GWTC-3', color=color_plpeak, fontsize=.9*fs)
+
 
         ax.set_xlabel(r'Lookback time [Gyr]', fontsize=fs)
         ax.set_xlim(xmin=tmax, xmax=0)
@@ -181,6 +183,9 @@ def plot_mergerRates():
 ###
 ##################################################################
 if __name__ == "__main__":
+
+    FIREbox_dir = '/home/tbruel/Great-Balls-of-FIRE/FIREbox'
+    FIREbox_volume = (22.1)**3 # in unit Mpc^3
 
     plot_mergerRates()
     plt.show()

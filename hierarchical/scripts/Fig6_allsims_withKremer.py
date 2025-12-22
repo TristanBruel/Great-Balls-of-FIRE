@@ -76,13 +76,13 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                     )
 
     ## Add GW241011 and GW241110 posteriors ##
-    gw241011_am = np.loadtxt(os.path.join(w_dir,'gw241011_am.txt'))
+    gw241011_am = np.loadtxt('../gw241011_am.txt')
     s1_bins_241011 = gw241011_am[1:,0]
     log_m1_bins_241011 = gw241011_am[0,1:]
     heights_241011 = gw241011_am[1:,1:]
     c90_241011 = [gw241011_am[0,0]]
 
-    gw241110_am = np.loadtxt(os.path.join(w_dir,'gw241110_am.txt'))
+    gw241110_am = np.loadtxt('../gw241110_am.txt')
     s1_bins_241110 = gw241110_am[1:,0]
     log_m1_bins_241110 = gw241110_am[0,1:]
     heights_241110 = gw241110_am[1:,1:]
@@ -154,13 +154,13 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                     )
     
     ## Add GW241011 and GW241110 posteriors ##
-    gw241011_qm = np.loadtxt(os.path.join(w_dir,'gw241011_qm.txt'))
+    gw241011_qm = np.loadtxt('../gw241011_qm.txt')
     q_bins_241011 = gw241011_qm[1:,0]
     log_m1_bins_241011 = gw241011_qm[0,1:]
     heights_241011 = gw241011_qm[1:,1:]
     c90_241011 = [gw241011_qm[0,0]]
 
-    gw241110_qm = np.loadtxt(os.path.join(w_dir,'gw241110_qm.txt'))
+    gw241110_qm = np.loadtxt('../gw241110_qm.txt')
     q_bins_241110 = gw241110_qm[1:,0]
     log_m1_bins_241110 = gw241110_qm[0,1:]
     heights_241110 = gw241110_qm[1:,1:]
@@ -213,13 +213,11 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                     )
 
     ## Add GW241011 and GW241110 posteriors ##
-    gw241011_am = np.loadtxt(os.path.join(w_dir,'gw241011_am.txt'))
     s1_bins_241011 = gw241011_am[1:,0]
     log_m1_bins_241011 = gw241011_am[0,1:]
     heights_241011 = gw241011_am[1:,1:]
     c90_241011 = [gw241011_am[0,0]]
 
-    gw241110_am = np.loadtxt(os.path.join(w_dir,'gw241110_am.txt'))
     s1_bins_241110 = gw241110_am[1:,0]
     log_m1_bins_241110 = gw241110_am[0,1:]
     heights_241110 = gw241110_am[1:,1:]
@@ -285,13 +283,11 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                     )
 
     ## Add GW241011 and GW241110 posteriors ##
-    gw241011_qm = np.loadtxt(os.path.join(w_dir,'gw241011_qm.txt'))
     q_bins_241011 = gw241011_qm[1:,0]
     log_m1_bins_241011 = gw241011_qm[0,1:]
     heights_241011 = gw241011_qm[1:,1:]
     c90_241011 = [gw241011_qm[0,0]]
 
-    gw241110_qm = np.loadtxt(os.path.join(w_dir,'gw241110_qm.txt'))
     q_bins_241110 = gw241110_qm[1:,0]
     log_m1_bins_241110 = gw241110_qm[0,1:]
     heights_241110 = gw241110_qm[1:,1:]
@@ -357,7 +353,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     tosave[0,1:] = log_m1_bins_241011
     tosave[1:,1:] = heights_241011.reshape(s1_bins_241011.size, log_m1_bins_241011.size)
     tosave[0,0] = c90_241011[0]
-    np.savetxt(os.path.join(w_dir,'gw241011_am.txt'), tosave)
+    np.savetxt('gw241011_am.txt', tosave)
 
     log_m1_241110 = np.log10(data_s241110['mass_1_source'][()])
     s1_241110 = data_s241110['a_1'][()]
@@ -369,15 +365,13 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     tosave[0,1:] = log_m1_bins_241110
     tosave[1:,1:] = heights_241110.reshape(s1_bins_241110.size, log_m1_bins_241110.size)
     tosave[0,0] = c90_241110[0]
-    np.savetxt(os.path.join(w_dir,'gw241110_am.txt'), tosave)
+    np.savetxt('gw241110_am.txt', tosave)
     """
-    gw241011_am = np.loadtxt(os.path.join(w_dir,'gw241011_am.txt'))
     s1_bins_241011 = gw241011_am[1:,0]
     log_m1_bins_241011 = gw241011_am[0,1:]
     heights_241011 = gw241011_am[1:,1:]
     c90_241011 = [gw241011_am[0,0]]
 
-    gw241110_am = np.loadtxt(os.path.join(w_dir,'gw241110_am.txt'))
     s1_bins_241110 = gw241110_am[1:,0]
     log_m1_bins_241110 = gw241110_am[0,1:]
     heights_241110 = gw241110_am[1:,1:]
@@ -452,7 +446,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     tosave[0,1:] = log_m1_bins_241011
     tosave[1:,1:] = heights_241011.reshape(q_bins_241011.size, log_m1_bins_241011.size)
     tosave[0,0] = c90_241011[0]
-    np.savetxt(os.path.join(w_dir,'gw241011_qm.txt'), tosave)
+    np.savetxt('gw241011_qm.txt', tosave)
 
     log_m1_241110 = np.log10(data_s241110['mass_1_source'][()])
     q_241110 = data_s241110['mass_ratio'][()]
@@ -464,15 +458,13 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     tosave[0,1:] = log_m1_bins_241110
     tosave[1:,1:] = heights_241110.reshape(q_bins_241110.size, log_m1_bins_241110.size)
     tosave[0,0] = c90_241110[0]
-    np.savetxt(os.path.join(w_dir,'gw241110_qm.txt'), tosave)
+    np.savetxt('gw241110_qm.txt', tosave)
     """
-    gw241011_qm = np.loadtxt(os.path.join(w_dir,'gw241011_qm.txt'))
     q_bins_241011 = gw241011_qm[1:,0]
     log_m1_bins_241011 = gw241011_qm[0,1:]
     heights_241011 = gw241011_qm[1:,1:]
     c90_241011 = [gw241011_qm[0,0]]
 
-    gw241110_qm = np.loadtxt(os.path.join(w_dir,'gw241110_qm.txt'))
     q_bins_241110 = gw241110_qm[1:,0]
     log_m1_bins_241110 = gw241110_qm[0,1:]
     heights_241110 = gw241110_qm[1:,1:]
@@ -512,7 +504,8 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
 
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    #plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tbruel/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'Fig6_allsims_withKremer.png'), bbox_inches='tight')
 
 
@@ -523,12 +516,13 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     sim_names = ['m12i','m11d','m11h','m11e','m11q','m11i']
 
-    w_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical'
-    GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
+    #GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
+    GW24_dir = '/shared/tbruel/o4a-astro/GW241011_GW241110_data_release/data'
     gw241011_color = '#1f78b4'
     gw241110_color = '#33a02c'
 

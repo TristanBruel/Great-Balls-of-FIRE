@@ -21,7 +21,7 @@ def plot_CMF():
     lw = 1.4
     plt.rc('font', family='serif')
     plt.rc('lines', linewidth=lw)
-    plt.rc('text', usetex=True)
+    #plt.rc('text', usetex=True)
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                       '#f781bf', '#a65628', '#e41a1c',
@@ -74,7 +74,7 @@ def plot_CMF():
         ax.plot(logmbins, func_linear(logmbins, *popt),
                 color=CB_color_cycle[n+1], ls='--',
                 )
-        print('Best-fit powerlaw dN/dMcl = A * Mcl^alpha is: alpha=%.2f' %(popt[1]-1))
+        print('Best-fit powerlaw dN/dMcl = A * Mcl^alpha is: alpha=%.2f\n' %(popt[1]-1))
 
 
     ax.fill_between(logmbins[logmbins<np.log10(6e4)], y1=1, y2=8,
@@ -103,7 +103,8 @@ def plot_CMF():
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
 
     plot_CMF()
     plt.show()

@@ -1,56 +1,59 @@
+import os
 import h5py
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from scipy.stats import linregress
 
-import os
 import argparse
 
 
-def compileGMCs(simu):
-    ### Compile GMCs from all snapshots of the FIRE simulation $simu in one single file
-    nbr_clouds = int(1e9)
-    cloud_coordinates = np.zeros((nbr_clouds,3))
-    cloud_masses = np.zeros(nbr_clouds)
-    cloud_radii = np.zeros(nbr_clouds)
-    cloud_formtimes = np.zeros(nbr_clouds)
-    cloud_metallicities = np.zeros(nbr_clouds)
-    cloud_ids = np.zeros(nbr_clouds)
-    cloud_snapshots = np.zeros(nbr_clouds)
-    count = 0
+def compute_cloud_metallicity(simu):
 
-    cloud_path = os.path.join(simu_dir, simu, 'clouds')
-    print(cloud_path)
-    for snapnum in range(600):
-        filename = 'GMCPopulation_{}_42.hdf5'.format(snapnum)
-        file_path = os.path.join(cloud_path, filename)
-        if not os.path.isfile(file_path):
+    sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
+    snapshot_file = os.path.join(sim_dir, 'snapshot_times.txt')
+    times = np.loadtxt(snapshot_file, usecols=[3]).T
+
+    cloud_nparts = []
+    cloud_formtime = []
+    cloud_snaps = []
+    cloud_mass = []
+    cloud_rhm = []
+    cloud_reff = []
+    cloud_coord = []
+    cloud_Z = []
+
+    for snapnum in range(601):
+        filename = os.path.join(sim_dir, 'clouds/Clouds_{}_n1_alpha2.hdf5'.format(snapnum))
+        if not os.path.exists(filename):
             continue
-        with h5py.File(file_path) as clouds:
-            end = count+len(clouds['Mass'])
-            cloud_masses[count:end] = np.array(clouds['Mass'])
-            cloud_radii[count:end] = np.array(clouds['HalfMassRadius'])
-            cloud_coordinates[count:end,] = np.array(clouds['ClusterPos'])
-            cloud_formtimes[count:end] = np.array(clouds['FormationTime'])
-            cloud_metallicities[count:end] = np.array(clouds['Metallicity'])
-            cloud_ids[count:end] = np.array(clouds['TracerID'])
-            cloud_snapshots[count:end] = np.repeat(snapnum, end-count)
-            count = end
-        print(snapnum)
-
-    print('Number of clouds:', len(cloud_masses))
-
-    file_out = os.path.join(simu, 'AllGMCs.hdf5')
+        with h5py.File(filename) as cloud_table:
+            for n,c in enumerate(cloud_table):
+                cld = cloud_table[c]['PartType0']
+                cloud_nparts.append(len(cld['Masses']))
+                cloud_formtime.append(times[snapnum])
+                cloud_snaps.append(snapnum)
+                cloud_mass.append(np.sum(cld['Masses']) *1e10)
+                center = np.average(cld['Coordinates'][()] *1e3, weights=cld['Masses'], axis=0)
+                cloud_coord.append(center)
+                dx = cld['Coordinates'][()]*1e3 - center
+                ## find half mass radius, assumes all particles have same mass
+                r = np.sum(dx**2, axis=1) ** 0.5
+                cloud_rhm.append(np.median(r))
+                cloud_reff.append(np.sqrt(5.0 / 3 * np.average(r**2, weights=cld['Masses'])))
+                if cld['Metallicity'].ndim >1:
+                    cloud_Z.append(np.average(cld['Metallicity'][:,0], weights = cld['Masses']))
+                else:
+                    cloud_Z.append(np.average(cld['Metallicity'], weights = cld['Masses']))
+        print(snapnum) 
+        
+    file_out = os.path.join(sim_dir, 'AllGMCs_%s.hdf5' %simu)
     with h5py.File(file_out, 'w') as f:
-        f.create_dataset('Mass', data=cloud_masses)
-        f.create_dataset('HalfMassRadius', data=cloud_radii)
-        f.create_dataset('Coordinates', data=cloud_coordinates)
-        f.create_dataset('Metallicity', data=cloud_metallicities)
-        f.create_dataset('FormationTime', data=cloud_formtimes)
-        f.create_dataset('GMC_ID', data=cloud_GMCs, dtype='i8')
-        f.create_dataset('Snapshot', data=cloud_snapshots, dtype='i8')
-
+        #f.create_dataset('GMC_ID', data=cloud_id, dtype='i8')
+        f.create_dataset('FormationTime', data=cloud_formtime)
+        f.create_dataset('Snapshot', data=cloud_snaps, dtype='i8')
+        f.create_dataset('Mass', data=cloud_mass)
+        f.create_dataset('HalfMassRadius', data=cloud_rhm)
+        f.create_dataset('Reff', data=cloud_reff)
+        f.create_dataset('Coordinates', data=cloud_coord)
+        f.create_dataset('Metallicity', data=cloud_Z)
 
 
 ##################################################################
@@ -60,13 +63,13 @@ def compileGMCs(simu):
 ##################################################################
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--simu', dest='simu',  help="Name of the FIRE simulation", type=str, default=None)
-    args = parser.parse_args()
-
-    simu_dir = "/shares/feldmann.ics.mnf.uzh/Tristan/dwarfs/metal_diff"
+    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
 
     #####################################
-    # Run
-    compileGMCs(simu=args.simu)
+    # Define command line options
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--simu', dest='simu', type=str, help='Name of the individual FIRE-2 galaxy')
+    args = parser.parse_args()
 
+    #####################################
+    compute_cloud_metallicity(simu=args.simu)

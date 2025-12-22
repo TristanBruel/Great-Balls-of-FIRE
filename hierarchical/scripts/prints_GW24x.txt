@@ -1,0 +1,705 @@
+Total number of BBH mergers up to redshift z=1.90 (GWTC-4.0): 55940
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed38.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16260
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 414
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed5.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11609
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 299
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed24.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 20460
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 506
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+6
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed27.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 18875
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 481
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+6
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed14.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 20263
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 518
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+6
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed11.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 23786
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 601
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+7
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed39.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 18366
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 480
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+6
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed93.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16727
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 442
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed64.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 19286
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 429
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed80.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 23432
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 602
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+8
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed82.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16260
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 384
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed23.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 12618
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 331
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed83.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16130
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 389
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed76.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16135
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 405
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed53.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7585
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 205
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed42.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11674
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 304
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed67.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 16077
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 420
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed6.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6101
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 165
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed62.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8934
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 227
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed94.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9405
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 251
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed20.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 13893
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 364
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed46.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9267
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 249
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed36.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9028
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 243
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed52.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 13358
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 319
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed10.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 15911
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 419
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed90.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7546
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 197
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed84.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8242
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 210
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed99.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4919
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 132
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed78.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9487
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 245
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed66.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 21994
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 528
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+6
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed77.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8547
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 227
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed88.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5448
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 146
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed72.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11231
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 282
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed85.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5400
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 146
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed96.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8826
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 228
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed87.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 10372
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 271
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed92.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9188
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 244
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed73.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7189
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 189
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed74.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 13375
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 336
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed70.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 13678
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 356
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+4
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed69.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 15999
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 401
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+5
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed98.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7825
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 209
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed29.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5738
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 153
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed31.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6780
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 175
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed75.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5293
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 140
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed15.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6567
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 174
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed32.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5672
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 154
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed33.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7872
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 184
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed95.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5914
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 150
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed41.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6995
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 185
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed86.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6207
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 158
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed51.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6893
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 182
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed61.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5989
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 162
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed22.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 9096
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 213
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed21.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8273
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 216
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed91.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6366
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 157
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed8.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7208
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 195
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed9.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8777
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 227
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed7.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 23676
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 592
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+8
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed71.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7204
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 174
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed16.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 10531
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 245
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed18.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5391
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 145
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed37.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7217
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 195
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed19.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 10147
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 263
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed17.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11698
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 266
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed25.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7937
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 214
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed26.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11117
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 249
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed12.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 12373
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 311
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed57.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7968
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 206
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed45.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 8167
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 215
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed34.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 10773
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 271
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed28.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7623
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 203
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed43.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 11039
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 274
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+3
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed54.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2732
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 66
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed59.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2675
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 72
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed4.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 7937
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 211
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed97.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2802
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 70
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed89.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2794
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 71
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed55.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2964
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 75
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed100.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2607
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 69
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed50.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 3069
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 79
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed30.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2903
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 79
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed81.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 3863
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 92
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed49.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4698
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 118
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed48.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4915
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 120
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed56.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 3991
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 108
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed47.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 3951
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 108
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed44.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4171
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 112
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed68.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4488
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 119
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed13.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4748
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 128
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed60.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 4993
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 126
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed58.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5901
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 131
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed40.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5848
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 152
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed65.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 5270
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 134
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+1
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed35.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 2541
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 63
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed3.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 21254
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 549
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+7
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed1.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 23368
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 580
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+7
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed2.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 6538
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 171
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+2
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed79.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 920
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 22
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+/home/tbruel/Great-Balls-of-FIRE/FIREbox/BBHs/BBHs_SFR_compiled_withKremer_seed63.h5
+Estimated number of BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 1818
+Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
+Estimated number of these BBH mergers up to z=1.90 over 1 year of observation time at LIGO design sensitivity: 49
+Estimated number of these BBH mergers detectable over 1 year of observation time at LIGO design sensitivity
+0
+
+Median number of BBH mergers up to z=1.90: 7937 (2729 - 21290)
+Median number of GW24x-like events up to z=1.90: 210 (69 - 529)
+Median number of detectable up to z=1.90: 3 (1 - 7)
