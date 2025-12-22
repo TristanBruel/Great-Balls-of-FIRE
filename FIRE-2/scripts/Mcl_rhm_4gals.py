@@ -34,25 +34,18 @@ def plot_Mcl_rhm():
         ax = axes[n]
         sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
 
-        ## All clouds ##
+        ## All clusters ##
         cluster_file = os.path.join(sim_dir, 'AllClusters_%s.hdf5' %simu)
         with h5py.File(cluster_file) as c:
             mass = c['Mass'][()]
             radius = c['HalfMassRadius'][()]
 
         H, _, _ = np.histogram2d(x=np.log10(mass), y=np.log10(radius), bins=[logmbins,logrbins])
-        #print(H[H>0].min())
-        #print(H.max())
         ax.pcolormesh(X, Y, H.T,
                       cmap=cmap,
                       norm=norm,
                       )
-        #H[H==0] = 1e-32
-        #ax.contourf(X, Y, H.T, 
-        #            levels=np.logspace(0,4,100),
-        #            cmap=cmap,
-        #            norm=norm,
-        #            )
+
 
         ## Clusters that produce merging BBHs ##
         grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
@@ -60,17 +53,16 @@ def plot_Mcl_rhm():
             mass = c['Mass'][()]
             radius = c['HalfMassRadius'][()]
             clid = c['id'][()]
+            nbbhs = c['nBBHs'][()]
         clid = np.array(clid, dtype=str)
-        bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
-        cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
-        in_sim = np.array([c.split('_')[0]==simu for c in cluster_id])
-        unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
-        lochost = np.array([np.where(clid==i)[0][0] for i in unique])
-        if np.sum(lochost)>0:
-            size = (2 + 3*np.log10(nbbhs))**2
-            ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]),
-                       c='r', s=size, edgecolor='white', lw=lw-.5,
-                       )
+        in_sim = np.array([c.split('_')[0]==simu for c in clid])
+        has_bbhs = nbbhs[in_sim]>0
+        if np.sum(has_bbhs)>0:
+            size = (2 + 3*np.log10(nbbhs[in_sim][has_bbhs]))**2
+            sc = ax.scatter(np.log10(mass[in_sim][has_bbhs]),
+                            np.log10(radius[in_sim][has_bbhs]),
+                            c='r', s=size, edgecolor='white', lw=lw-.5,
+                            )
 
 
         ## Print lines of constant density ##

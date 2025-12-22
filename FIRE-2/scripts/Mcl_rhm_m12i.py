@@ -44,30 +44,25 @@ def plot_Mcl_rhm(add_bar=False):
                   cmap=cmap,
                   norm=norm,
                   )
-    #H[H==0] = 1e-32
-    #ax.contourf(X, Y, H.T, 
-    #            levels=np.logspace(0,4,100),
-    #            cmap=cmap,
-    #            norm=norm,
-    #            )
 
+
+    ## Clusters that produce merging BBHs ##
     ## Clusters that produce merging BBHs ##
     grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
     with h5py.File(grid_cluster_file) as c:
         mass = c['Mass'][()]
         radius = c['HalfMassRadius'][()]
         clid = c['id'][()]
+        nbbhs = c['nBBHs'][()]
     clid = np.array(clid, dtype=str)
-    bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
-    cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
-    in_sim = np.array([c.split('_')[0]=='m12i' for c in cluster_id])
-    unique, nbbhs = np.unique(cluster_id[in_sim], return_counts=True)
-    lochost = np.array([np.where(clid==i)[0][0] for i in unique])
-    #lochost = np.array([int(u.split('_')[1]) for u in unique])
-    size = (2 + 3*np.log10(nbbhs))**2 
-    sc = ax.scatter(np.log10(mass[lochost]), np.log10(radius[lochost]), 
-                    c='r', s=size, edgecolor='white', lw=lw-.5,
-                    )
+    in_sim = np.array([c.split('_')[0]=='m12i' for c in clid])
+    has_bbhs = nbbhs[in_sim]>0
+    if np.sum(has_bbhs)>0:
+        size = (2 + 3*np.log10(nbbhs[in_sim][has_bbhs]))**2
+        sc = ax.scatter(np.log10(mass[in_sim][has_bbhs]),
+                        np.log10(radius[in_sim][has_bbhs]),
+                        c='r', s=size, edgecolor='white', lw=lw-.5,
+                        )
 
     kw = dict(prop="sizes", num=[1,10,100,1000], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
     ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers", ncols=2)
