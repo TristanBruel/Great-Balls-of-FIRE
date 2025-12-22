@@ -95,11 +95,9 @@ def plot_Mcl_rhm(add_bar=False):
 
 
     ax.set_xlabel(r'$M_\mathrm{cl}\ [\mathrm{M}_\odot]$', fontsize=fs)
-    #ax.set_xscale('log')
     ax.set_xlim(xmin=4, xmax=7.25)
     ax.set_xticks(np.linspace(4,7,4),[r'$10^4$',r'$10^5$',r'$10^6$',r'$10^7$'])
     ax.set_ylabel(r'$r_\mathrm{hm}\ [\mathrm{pc}]$', fontsize=fs)
-    #ax.set_yscale('log')
     ax.set_ylim(ymin=-2, ymax=2.25)
     ax.set_yticks(np.linspace(-2,2,5),[r'$0.01$',r'$0.1$',r'$1$',r'$10$',r'$100$'])
     ax.set_box_aspect(1)
