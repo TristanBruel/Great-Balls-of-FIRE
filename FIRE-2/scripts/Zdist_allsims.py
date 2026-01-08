@@ -37,6 +37,7 @@ def plot_Zdist(Zsun=0.017):
               color=CB_color_cycle[0], lw=lw, label='m12i',
               )
 
+    ## Other FIRE-2 simulations
     for n,simu in enumerate(['m11d','m11h','m11e','m11q','m11i']):
         sim_dir = os.path.join(FIRE_dir,simu+'_res7100')
         cluster_file = os.path.join(sim_dir, 'AllClusters_%s.hdf5' %simu)

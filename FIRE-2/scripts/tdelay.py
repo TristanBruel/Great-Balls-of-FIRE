@@ -24,23 +24,39 @@ def plot_mBH1_dist():
     #tbins = np.linspace(0, 14, 57)
     tbins = np.logspace(-3, 2, 51)
 
+    ## Use the m12i MHD version of GBoF I & II ##
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    bbhfile = os.path.join(sim_dir,'bh_dyn.dat')
+    tform, m1, m2, tmerge, weights = np.loadtxt(bbhfile, usecols=[2,4,5,7,12], skiprows=1).T
+    m1_mhd = np.maximum(m1, m2)
+    tdelay_mhd = tmerge - tform
+    hist, _ = np.histogram(tdelay_mhd, bins=tbins, weights=weights)
+    dN = hist /np.diff(tbins)
+    ax.stairs(dN, tbins,
+              color=CB_color_cycle[0], lw=lw, label='m12i',
+        )
+
+    ## Other FIRE-2 simulations
     bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
     cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
     tform, m1, m2, tmerge = np.loadtxt(bbhfile, usecols=[2,4,5,7], skiprows=1).T
     m1 = np.maximum(m1,m2)
     tdelay = tmerge - tform
     
-    for n,simu in enumerate(['m12i','m11d','m11h','m11e']):
+    for n,simu in enumerate(['m11d','m11h','m11e']):
         in_sim = np.array([c.split('_')[0]==simu for c in cluster_id])
         hist, _ = np.histogram(tdelay[in_sim], bins=tbins)
         dN = hist /np.diff(tbins)
         ax.stairs(dN, tbins,
-                  color=CB_color_cycle[n], lw=lw, label=simu,
+                  color=CB_color_cycle[n+1], lw=lw, label=simu,
             )
 
     ## Time delays of massive BBH mergers ##
+    m1 = np.append(m1_mhd, m1)
+    tdelay = np.append(tdelay_mhd, tdelay)
+    weights = np.append(weights, np.ones_like(m2))
     massive = m1 >= 50
-    hist, _ = np.histogram(tdelay[massive], bins=tbins)
+    hist, _ = np.histogram(tdelay[massive], bins=tbins, weights=weights[massive])
     dN = hist /np.diff(tbins)
     ax.stairs(dN, tbins,
               color='k', lw=lw, hatch='//',
@@ -64,7 +80,7 @@ def plot_mBH1_dist():
     ax.set_xticks([1e-3,1e-2,1e-1,1,10],['1 Myr', '10 Myr', '100 Myr', '1 Gyr', '10 Gyr'])
     ax.set_ylabel(r'$\mathrm{dN}/\mathrm{d}\tau\ [\mathrm{Gyr}^{-1}]$', fontsize=fs)
     ax.set_yscale('log')
-    ax.set_ylim(ymin=1e0, ymax=5e5)
+    ax.set_ylim(ymin=1e0, ymax=1e6)
     ax.set_box_aspect(1)
     ax.legend(loc='upper right', fontsize=fs, ncols=2)
 

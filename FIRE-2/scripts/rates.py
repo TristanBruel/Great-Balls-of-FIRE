@@ -19,7 +19,8 @@ def plot_rates():
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#e41a1c']
 
-    fig, axes = plt.subplots(1, 4, figsize=(10,3.5))
+    fig, axes = plt.subplots(1, 4, figsize=(8.,3.5))
+    fig.subplots_adjust(wspace=0.1)
 
     ## Use the m12i MHD version of GBoF I & II ##
     ax = axes[-1]
@@ -59,22 +60,31 @@ def plot_rates():
               )
 
     ## BBH mergers ##
-    bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
+    bbhfile = os.path.join(sim_dir,'bh_dyn.dat')
     cluster_id = np.loadtxt(bbhfile, dtype='str', skiprows=1, usecols=0)
-    m1, m2, tmerge = np.loadtxt(bbhfile, skiprows=1, usecols=[4,5,7]).T
+    m1, m2, tmerge, a1, a2, weights = np.loadtxt(bbhfile, skiprows=1, usecols=[4,5,7,8,9,12]).T
     m1 = np.maximum(m1,m2)
-    in_sim = np.array([i.split('_')[0]=='m12i' for i in cluster_id])
-    Nbbhs, _ = np.histogram(tmax-tmerge[in_sim], bins=tbins)
-    merger_rate = Nbbhs /np.diff(tbins*1e9)
+    Nbbhs, _ = np.histogram(tmax-tmerge, bins=tbins, weights=weights)
+    merger_rate = Nbbhs /np.diff(tbins*1e9) # compensate for sub-sampling of simulated clusters
     merger_rate = np.append(merger_rate,0)
     ax.plot(tbins, merger_rate,
               c=CB_color_cycle[0], lw=lw,
               )
 
     ## Massive BBH mergers ##
+    """
     massive = in_sim & (m1 >= 50)
     Nmassive, _ = np.histogram(tmax-tmerge[massive], bins=tbins)
     merger_rate = Nmassive /np.diff(tbins*1e9)
+    merger_rate = np.append(merger_rate,0)
+    ax.plot(tbins, merger_rate,
+              c=CB_color_cycle[0], lw=lw, linestyle='--',
+              )
+    """
+    ## Hierarchical BBH mergers ##
+    hierarchical = a1+a2>0
+    Nhierar, _ = np.histogram(tmax-tmerge[hierarchical], bins=tbins)
+    merger_rate = Nhierar /np.diff(tbins*1e9) *3
     merger_rate = np.append(merger_rate,0)
     ax.plot(tbins, merger_rate,
               c=CB_color_cycle[0], lw=lw, linestyle='--',
@@ -142,7 +152,7 @@ def plot_rates():
         ## BBH mergers ##
         bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
         cluster_id = np.loadtxt(bbhfile, dtype='str', skiprows=1, usecols=0)
-        m1, m2, tmerge = np.loadtxt(bbhfile, skiprows=1, usecols=[4,5,7]).T
+        m1, m2, tmerge, a1, a2 = np.loadtxt(bbhfile, skiprows=1, usecols=[4,5,7,8,9]).T
         m1 = np.maximum(m1,m2)
         in_sim = np.array([i.split('_')[0]==simu for i in cluster_id])
         Nbbhs, _ = np.histogram(tmax-tmerge[in_sim], bins=tbins)
@@ -153,9 +163,19 @@ def plot_rates():
                   )
 
         ## Massive BBH mergers ##
+        """
         massive = in_sim & (m1 >= 50)
         Nmassive, _ = np.histogram(tmax-tmerge[massive], bins=tbins)
         merger_rate = Nmassive /np.diff(tbins*1e9)
+        merger_rate = np.append(merger_rate,0)
+        ax.plot(tbins, merger_rate,
+                  c=CB_color_cycle[n+1], lw=lw, linestyle='--',
+                  )
+        """
+        ## Hierarchical BBH mergers ##
+        hierarchical = in_sim & (a1+a2>0)
+        Nhierar, _ = np.histogram(tmax-tmerge[hierarchical], bins=tbins)
+        merger_rate = Nhierar /np.diff(tbins*1e9)
         merger_rate = np.append(merger_rate,0)
         ax.plot(tbins, merger_rate,
                   c=CB_color_cycle[n+1], lw=lw, linestyle='--',
@@ -193,16 +213,19 @@ def plot_rates():
     axes[0].plot([], [], c='k', lw=lw,
                  label=r'$\mathrm{SFR}/10^5\mathrm{M}_\odot$',
                  )
-    axes[0].plot([], [], c='gray', lw=lw,
-                 label='BBH mergers',
-                 )
-    axes[0].plot([], [], c='gray', lw=lw, linestyle='--',
-                 label='Massive BBH mergers\n'+r'$(M_\mathrm{BH1}>50\ \mathrm{M}_\odot)$',
-                 )
     axes[0].stairs([1e-10], [0,1], color='gray', fill=True, alpha=.5,
                    label='Massive cluster formation\n'+r'$(\Sigma M_\mathrm{cl}/10^5\mathrm{M}_\odot)$',
                    )
-    axes[0].legend(bbox_to_anchor=(2.25,-0.25), loc='upper center', fontsize=fs, ncols=4)
+    axes[0].plot([], [], c='gray', lw=lw,
+                 label='BBH mergers',
+                 )
+    #axes[0].plot([], [], c='gray', lw=lw, linestyle='--',
+    #             label='Massive BBH mergers\n'+r'$(M_\mathrm{BH1}>50\ \mathrm{M}_\odot)$',
+    #             )
+    axes[0].plot([], [], c='gray', lw=lw, linestyle='--',
+                 label='Hierarchical mergers',
+                 )
+    axes[0].legend(bbox_to_anchor=(2.,-0.3), loc='upper center', fontsize=fs, ncols=4)
 
 
     # Save

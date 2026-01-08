@@ -139,7 +139,7 @@ def plot_clusterGrid(Zsun=0.017):
     unique, indexes = np.unique(cluster_id[GW24x], return_index=True)
     lochost = np.array([np.where(cluster_ids==u)[0][0] for u in unique])
     print('\n')
-    print('Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses')
+    print('Looking for BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses (q<0.85)')
     print('Number of events found:', np.sum(GW24x))
     print('Number of clusters hosting these events:', len(lochost))
     print('Total number of BBH mergers from these clusters:',np.sum(cluster_nBBHs[lochost]),'\n')

@@ -35,6 +35,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     q = m2 /m1
     print('Total number of BBH mergers in CMC clusters: {}'.format(len(m1)))
     print('Number of hierarchical BBH mergers: {}\n'.format(np.sum(a1+a2>0)))
+    GW24x = (m1 < 30) & (q < 0.85) & (a1 > 0.05)
 
     ## Set colorbar limits and end
     H, xedges, yedges = np.histogram2d(x=np.log10(m1), y=a1, bins=[logm1bins,abins])
@@ -74,6 +75,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      cmap=cmap,
                      norm=norm,
                     )
+
 
     ## Add GW241011 and GW241110 posteriors ##
     gw241011_am = np.loadtxt('../gw241011_am.txt')
@@ -152,6 +154,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      cmap=cmap,
                      norm=norm,
                     )
+
     
     ## Add GW241011 and GW241110 posteriors ##
     gw241011_qm = np.loadtxt('../gw241011_qm.txt')
@@ -211,6 +214,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      cmap=cmap,
                      norm=norm,
                     )
+
 
     ## Add GW241011 and GW241110 posteriors ##
     s1_bins_241011 = gw241011_am[1:,0]
@@ -282,6 +286,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      norm=norm,
                     )
 
+
     ## Add GW241011 and GW241110 posteriors ##
     q_bins_241011 = gw241011_qm[1:,0]
     log_m1_bins_241011 = gw241011_qm[0,1:]
@@ -335,6 +340,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      cmap=cmap,
                      norm=norm,
                     )
+
 
     ## Add GW241011 and GW241110 posteriors ##
     """
@@ -434,6 +440,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
                      norm=norm,
                     )
 
+
     ## Add GW241011 and GW241110 posteriors ##
     """
     log_m1_241011 = np.log10(data_s241011['mass_1_source'][()])
@@ -501,11 +508,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
     cbar.ax.tick_params(labelsize=0.8*fs)
 
 
-
-
     # Save
-    #plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
-    plot_dir = '/home/tbruel/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'Fig6_allsims_withKremer.png'), bbox_inches='tight')
 
 
@@ -516,15 +519,17 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
 ##################################################################
 if __name__ == "__main__":
 
-    #FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
-    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    #FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     sim_names = ['m12i','m11d','m11h','m11e','m11q','m11i']
 
-    #GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
-    GW24_dir = '/shared/tbruel/o4a-astro/GW241011_GW241110_data_release/data'
+    GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
+    #GW24_dir = '/shared/tbruel/o4a-astro/GW241011_GW241110_data_release/data'
     gw241011_color = '#1f78b4'
     gw241110_color = '#33a02c'
 
+    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    #plot_dir = '/home/tbruel/Great-Balls-of-FIRE/hierarchical/plots'
     plot_mBH_spin()
     plt.show()

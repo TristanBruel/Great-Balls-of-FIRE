@@ -23,23 +23,39 @@ def plot_mBH1_dist():
 
     qbins = np.linspace(0, 1, 51)
 
+    ## Use the m12i MHD version of GBoF I & II ##
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+    bbhfile = os.path.join(sim_dir,'bh_dyn.dat')
+    m1, m2, weights = np.loadtxt(bbhfile, usecols=[4,5,12], skiprows=1).T
+    m1_mhd, m2_mhd = np.maximum(m1, m2), np.minimum(m1,m2)
+    q_mhd = m2_mhd /m1_mhd
+    hist, _ = np.histogram(q_mhd, bins=qbins, weights=weights)
+    dN = hist /np.diff(qbins)
+    ax.stairs(dN, qbins,
+              color=CB_color_cycle[0], lw=lw,
+        )
+
+    ## Other FIRE-2 simulations
     bbhfile = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
     cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
     m1, m2 = np.loadtxt(bbhfile, usecols=[4,5], skiprows=1).T
     m1, m2 = np.maximum(m1, m2), np.minimum(m1, m2)
     q = m2 /m1
     
-    for n,simu in enumerate(['m12i','m11d','m11h','m11e']):
+    for n,simu in enumerate(['m11d','m11h','m11e']):
         in_sim = np.array([c.split('_')[0]==simu for c in cluster_id])
         hist, _ = np.histogram(q[in_sim], bins=qbins)
         dN = hist /np.diff(qbins)
         ax.stairs(dN, qbins,
-                  color=CB_color_cycle[n], lw=lw,
+                  color=CB_color_cycle[n+1], lw=lw,
             )
 
     ## Mass ratios of massive BBH mergers ##
+    m1 = np.append(m1_mhd, m1)
+    q = np.append(q_mhd, q)
+    weights = np.append(weights, np.ones_like(m2))
     massive = m1 >= 50
-    hist, _ = np.histogram(q[massive], bins=qbins)
+    hist, _ = np.histogram(q[massive], bins=qbins, weights=weights[massive])
     dN = hist /np.diff(qbins)
     ax.stairs(dN, qbins,
               color='k', lw=lw, hatch='//',
