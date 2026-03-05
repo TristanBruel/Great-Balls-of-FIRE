@@ -65,7 +65,7 @@ def plot_CMF():
     pl = np.power(logm, -2)
     pl *= ntot /10 /np.trapezoid(x=logm, y=pl)
     ax.plot(np.log10(logm), np.log10(pl), c='k', ls='--', lw=lw,
-            label='Power-law with slope -2',
+            label=r'$\mathrm{dN}/\mathrm{d}M_\mathrm{cl}\propto M_\mathrm{cl}^{-2}$',
             )
 
     ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
@@ -74,7 +74,14 @@ def plot_CMF():
     ax.set_ylabel(r'$\mathrm{log}(\mathrm{dN}/\mathrm{d}M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
     #ax.set_ylim(ymin=1, ymax=7.5)
     ax.set_box_aspect(1)
-    #ax.legend(loc='upper right', fontsize=fs)
+    ax.legend(loc='upper right', fontsize=fs)
+
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=mpl.colors.Normalize(vmin=0, vmax=tmax))
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.086, pad=0.04, aspect=10)
+    cbar.set_label(r'Cosmic Time [Gyr]', fontsize=fs)
+    cbar.ax.tick_params(labelsize=0.8*fs)
+    #cbar.set_ticks([1,10,100])
+    #cbar.set_ticklabels([r'$1$',r'$10$',r'$10^2$'])
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
