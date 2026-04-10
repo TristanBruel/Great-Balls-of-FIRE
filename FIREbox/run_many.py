@@ -6,8 +6,8 @@ from compileClusters import compileClusters
 #from sampleBBHs import sampleBBHs
 from sampleBBHs_withKremer import sampleBBHs
 from compile_dynBBHs import compileBBHs
-from GCformrates import compute_form_rates
-from mergerRates import compute_merger_rates
+#from GCformrates import compute_form_rates
+#from mergerRates import compute_merger_rates
 
 import time
 import argparse

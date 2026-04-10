@@ -273,7 +273,7 @@ def plot_mBH_spin(sample, seed=1):
     cbar2.ax.tick_params(labelsize=0.8*fs)
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'mBH_spin_hierarchical_box.png'), bbox_inches='tight')
 
 
@@ -284,7 +284,7 @@ def plot_mBH_spin(sample, seed=1):
 ##################################################################
 if __name__ == "__main__":
 
-    FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
+    FIREbox_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIREbox'
     FIREbox_volume = (22.1)**3 # in unit Mpc^3
 
     #####################################

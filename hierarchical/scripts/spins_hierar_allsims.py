@@ -148,7 +148,7 @@ def plot_mBH_spin():
 
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'mBH_spin_hierarchical_allsims.png'), bbox_inches='tight')
 
 
@@ -159,7 +159,7 @@ def plot_mBH_spin():
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     sim_names = ['m12i','m11d','m11h','m11e','m11q','m11i']
 

@@ -51,7 +51,7 @@ def wrapped_auxilliary_fn( dfid, df, id_finder ):
         dfid,
         df,
         id_finder,
-        halo_data_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/m12i_res7100/halo_files',
+        halo_data_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/m12i_res7100/halo_files',
         main_halo_id = 0,
     )
 
@@ -61,13 +61,13 @@ linefinder_args = {
     'tag': 'full_m12i_clustersofFIRE_pop1',
     
     # Location to place output in
-    'out_dir': '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/m12i_res7100/data',
+    'out_dir': '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/m12i_res7100/data',
 
     # Location of simulation data
-    'sim_data_dir': '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/m12i_res7100/output',
+    'sim_data_dir': '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/m12i_res7100/output',
 
     # Location of halo file data
-    'halo_data_dir': '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/m12i_res7100/halo_files',
+    'halo_data_dir': '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/m12i_res7100/halo_files',
 
     # Arguments for id sampling
     'sampler_kwargs': {
@@ -98,7 +98,7 @@ linefinder_args = {
         'include_instantaneous': False,
         # These kwargs are used for tuning the Firefly visualization
         'export_to_firefly_kwargs': {
-            'firefly_dir': '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/m12i_res7100/firefly',
+            'firefly_dir': '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/m12i_res7100/firefly',
             'classifications': [ None ],
             'classification_ui_labels': [ 'All' ],
             'use_default_colors': False,

@@ -27,6 +27,7 @@ def plot_tdelay():
     tbins = np.logspace(-3,2,51)
 
     ### Show clusters that host GW241011-like BBH mergers ###
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
     #bbhfile = os.path.join(grid_dir, 'allBBHs.dat')
     bbhfile = os.path.join(grid_dir, 'allBBHs_withKremer.dat')
     cluster_id = np.loadtxt(bbhfile, usecols=0, skiprows=1, dtype=str)
@@ -68,7 +69,7 @@ def plot_tdelay():
 
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'tdelay_host_GW241011.png'), bbox_inches='tight')
 
 
@@ -78,8 +79,6 @@ def plot_tdelay():
 ###
 ##################################################################
 if __name__ == "__main__":
-
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
 
     plot_tdelay()
     plt.show()

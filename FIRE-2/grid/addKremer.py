@@ -51,7 +51,7 @@ def addKremerClusters():
 ##################################################################
 if __name__ == "__main__":
 
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
     GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
 
     #####################################

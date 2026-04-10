@@ -40,7 +40,7 @@ def plot_spin_posteriors():
     ax.set_ylabel(r'$p(\chi)$', fontsize=fs)
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'individual_spin_posteriors.png'), bbox_inches='tight')
 
 
@@ -51,7 +51,7 @@ def plot_spin_posteriors():
 ##################################################################
 if __name__ == "__main__":
 
-    posterior_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/Alex/lvc_data_lvc_samples_full'
+    posterior_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/Alex/lvc_data_lvc_samples_full'
 
     plot_spin_posteriors()
     plt.show()

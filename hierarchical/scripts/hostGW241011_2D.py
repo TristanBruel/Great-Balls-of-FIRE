@@ -135,7 +135,7 @@ def plot_clusterGrid(Zsun=0.017):
     print('Number of GW241110-like BBH mergers:', np.sum(GW241110))
     """
     # BBH mergers with stricly positive primary spin, m1 < 30 Msun, and unequal masses
-    GW24x = (m1 < 30) & (q < 0.85) & (a1 > 0.05)
+    GW24x = (m1<30) & (q<0.85) & (a1>0.05)
     unique, indexes = np.unique(cluster_id[GW24x], return_index=True)
     lochost = np.array([np.where(cluster_ids==u)[0][0] for u in unique])
     print('\n')
@@ -221,7 +221,7 @@ def plot_clusterGrid(Zsun=0.017):
     cbar.ax.tick_params(labelsize=0.8*fs)
     
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'2DGrid_hosts_GW24x.png'), bbox_inches='tight')
 
 
@@ -232,10 +232,10 @@ def plot_clusterGrid(Zsun=0.017):
 ##################################################################
 if __name__ == "__main__":
 
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
 
     GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
-    w_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical'
+    w_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical'
     gw241011_color = '#1f78b4'
     gw241110_color = '#33a02c'
 

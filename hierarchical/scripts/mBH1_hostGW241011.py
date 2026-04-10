@@ -62,7 +62,7 @@ def plot_mBH1():
 
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'mBH1_host_GW241011.png'), bbox_inches='tight')
 
 
@@ -73,10 +73,10 @@ def plot_mBH1():
 ##################################################################
 if __name__ == "__main__":
 
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
 
     GW24_dir = '/home/tristan-bruel/Documents/Science/o4a-astro/GW241011_GW241110_data_release/data'
-    w_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical'
+    w_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical'
     gw241011_color = '#1f78b4'
     gw241110_color = '#33a02c'
 

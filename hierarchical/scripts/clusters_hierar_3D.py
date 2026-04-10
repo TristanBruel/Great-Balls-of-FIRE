@@ -81,7 +81,7 @@ def plot_clusterGrid(Zsun=0.017):
     cbar.ax.tick_params(labelsize=0.8*fs)
     
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'3DGrid_hierar.png'), bbox_inches='tight')
 
 
@@ -92,8 +92,8 @@ def plot_clusterGrid(Zsun=0.017):
 ##################################################################
 if __name__ == "__main__":
 
-    FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    FIREbox_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIREbox'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
 
     plot_clusterGrid()
     plt.show()

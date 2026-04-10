@@ -13,14 +13,11 @@ from colossus.lss import mass_function
 from astropy.cosmology import Planck18 as planck
 
 import popsummary
-dir_GWTC4 = '/home/tristan-bruel/Documents/Science/o4a-astro'
+dir_GWTC4 = '/home/tristan-bruel/Documents/Science/LVK/o4a-astro'
 sys.path.append(os.path.join(dir_GWTC4,'figure_scripts'))
 import plot_funcs_bbh_mass as pf
 
 
-FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
-FIREbox_volume = (22.1)**3 # in unit Mpc^3
-Tobs = 2 # LVK observation time in yrs
 
 def HaloMassFunction():
     dndM = lambda M: mass_function.massFunction(M, 0.0, mdef='vir', model='tinker08', q_out='dndlnM')
@@ -178,7 +175,7 @@ def plot_dNdz(sample='SFR'):
     ax.legend(loc='lower right', fontsize=fs)
    
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'dNdz_%s.png' %sample), bbox_inches='tight')
 
 
@@ -188,6 +185,10 @@ def plot_dNdz(sample='SFR'):
 ###
 ##################################################################
 if __name__ == "__main__":
+
+    FIREbox_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIREbox'
+    FIREbox_volume = (22.1)**3 # in unit Mpc^3
+    Tobs = 1 # LVK observation time in yrs
 
     plot_dNdz()
     plt.show()

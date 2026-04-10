@@ -519,7 +519,7 @@ def plot_mBH_spin(Zsun=0.017, n=1000):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
     #FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     sim_names = ['m12i','m11d','m11h','m11e','m11q','m11i']
@@ -529,7 +529,7 @@ if __name__ == "__main__":
     gw241011_color = '#1f78b4'
     gw241110_color = '#33a02c'
 
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     #plot_dir = '/home/tbruel/Great-Balls-of-FIRE/hierarchical/plots'
     plot_mBH_spin()
     plt.show()

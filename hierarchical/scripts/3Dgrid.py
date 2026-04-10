@@ -34,9 +34,16 @@ def plot_clusterGrid(Zsun=0.017):
     # Plot your result
     fs = 10
     lw = 1.4
-    plt.rc('font', family='serif')
-    plt.rc('lines', linewidth=lw)
-    plt.rc('text', usetex=True)
+    plt.rcParams['font.size']=fs
+    plt.rcParams['font.family']='serif'
+    plt.rcParams['font.serif']='cmr10'
+    plt.rcParams['mathtext.fontset']='cm'
+    plt.rcParams['axes.unicode_minus']=False
+    plt.rcParams['axes.formatter.use_mathtext']=True
+    plt.rcParams['lines.linewidth']=lw
+    plt.rcParams['xtick.labelsize']=fs
+    plt.rcParams['ytick.labelsize']=fs
+    plt.rcParams['legend.fontsize']=.9*fs
 
     cmap = plt.get_cmap('viridis')
     norm = mpl.colors.LogNorm(vmin=1e0, vmax=2e3)
@@ -89,7 +96,7 @@ def plot_clusterGrid(Zsun=0.017):
     cbar.ax.tick_params(labelsize=0.8*fs)
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'3Dgrid.pdf'), format='pdf', 
                 bbox_inches='tight',
                 )
@@ -101,8 +108,8 @@ def plot_clusterGrid(Zsun=0.017):
 ##################################################################
 if __name__ == "__main__":
 
-    FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    FIREbox_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIREbox'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
 
     plot_clusterGrid()
     plt.show()

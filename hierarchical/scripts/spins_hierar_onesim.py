@@ -162,7 +162,7 @@ def plot_mBH_spin(simu):
     cbar.ax.tick_params(labelsize=0.8*fs)
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'mBH_spin_hierarchical_{}.png'.format(simu)), bbox_inches='tight')
 
 
@@ -173,7 +173,7 @@ def plot_mBH_spin(simu):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     # Define command line option for the path to the COSMIC simulations
     parser = argparse.ArgumentParser()

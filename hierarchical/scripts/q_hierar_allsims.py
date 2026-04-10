@@ -12,11 +12,18 @@ def plot_mBH_spin():
 
     #####################################
     # Plot your result
-    fs = 10
+    fs = 12
     lw = 1.4
-    plt.rc('font', family='serif')
-    plt.rc('lines', linewidth=lw)
-    plt.rc('text', usetex=True)
+    plt.rcParams['font.size']=fs
+    plt.rcParams['font.family']='serif'
+    plt.rcParams['font.serif']='cmr10'
+    plt.rcParams['mathtext.fontset']='cm'
+    plt.rcParams['axes.unicode_minus']=False
+    plt.rcParams['axes.formatter.use_mathtext']=True
+    plt.rcParams['lines.linewidth']=lw
+    plt.rcParams['xtick.labelsize']=fs
+    plt.rcParams['ytick.labelsize']=fs
+    plt.rcParams['legend.fontsize']=.9*fs
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
                   '#f781bf', '#a65628', '#984ea3',
@@ -149,7 +156,7 @@ def plot_mBH_spin():
 
 
     # Save
-    plot_dir = '/home/tristan-bruel/Documents/Science/GBoF/hierarchical/plots'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots'
     plt.savefig(os.path.join(plot_dir,'mBH_q_hierarchical_allsims.png'), bbox_inches='tight')
 
 
@@ -160,7 +167,7 @@ def plot_mBH_spin():
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
     sim_names = ['m12i','m11d','m11h','m11e','m11q','m11i']
 
