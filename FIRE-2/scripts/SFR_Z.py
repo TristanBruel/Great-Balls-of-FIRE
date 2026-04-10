@@ -151,7 +151,7 @@ def plot_SFR_Zdist(Zsun=0.017):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     plot_SFR_Zdist()
     plt.show()

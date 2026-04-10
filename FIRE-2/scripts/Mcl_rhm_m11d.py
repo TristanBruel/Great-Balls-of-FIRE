@@ -124,7 +124,7 @@ def plot_Mcl_rhm(add_leg=True, add_bar=False):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     #####################################
     # Define command line options

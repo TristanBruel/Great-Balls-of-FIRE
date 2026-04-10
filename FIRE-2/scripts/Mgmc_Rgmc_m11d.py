@@ -123,7 +123,7 @@ def plot_Mgmc_Rgmc(add_leg=False, add_bar=False):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     #####################################
     # Define command line options

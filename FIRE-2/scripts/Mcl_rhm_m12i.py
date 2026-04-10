@@ -47,7 +47,6 @@ def plot_Mcl_rhm(add_bar=False):
 
 
     ## Clusters that produce merging BBHs ##
-    ## Clusters that produce merging BBHs ##
     grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
     with h5py.File(grid_cluster_file) as c:
         mass = c['Mass'][()]
@@ -120,7 +119,7 @@ def plot_Mcl_rhm(add_bar=False):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
      #####################################
     # Define command line options

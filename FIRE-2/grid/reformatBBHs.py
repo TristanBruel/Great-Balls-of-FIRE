@@ -23,7 +23,7 @@ def identifyMergerGen():
 ##################################################################
 if __name__ == "__main__":
 
-    grid_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2/grid'
+    grid_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2/grid'
 
     #####################################
     # Run it
