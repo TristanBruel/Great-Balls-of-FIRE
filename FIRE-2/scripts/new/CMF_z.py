@@ -45,7 +45,8 @@ def plot_CMF():
         for t in range(len(tbins)-1):
             inbin = (tform>=tbins[t]) & (tform<tbins[t+1])
             Ncl, _ = np.histogram(np.log10(mass[inbin]), bins=logmbins)
-            dNcl = Ncl /np.diff(np.power(10,logmbins))
+            dNcl = Ncl /np.diff(logmbins)
+            #dNcl = Ncl /np.diff(np.power(10,logmbins))
             #ax.stairs(np.log10(dNcl), logmbins, 
             #          lw=lw, color=colors[t],
             #          )
@@ -53,7 +54,6 @@ def plot_CMF():
                     lw=lw, color=colors[t],
                     )
 
-        ## ADD BEST FIT POWER LAW MODEL ##
 
     print('Total number of clusters:', ntot)
     #ax.fill_between(logmbins[logmbins<np.log10(6e4)], y1=1, y2=8,
@@ -61,18 +61,25 @@ def plot_CMF():
     #                )
 
     ## Plot reference power-law with slope -2 ##
-    logm = np.logspace(3,8,1000)
-    pl = np.power(logm, -2)
-    pl *= ntot /10 /np.trapezoid(x=logm, y=pl)
-    ax.plot(np.log10(logm), np.log10(pl), c='k', ls='--', lw=lw,
+    #logm = np.logspace(3,8,1000)
+    #pl = np.power(logm, -2)
+    #pl *= ntot /10 /np.trapezoid(x=logm, y=pl)
+    #ax.plot(np.log10(logm), np.log10(pl), c='k', ls='--', lw=lw,
+    #        label=r'$\mathrm{dN}/\mathrm{d}M_\mathrm{cl}\propto M_\mathrm{cl}^{-2}$',
+    #        )
+    logm = np.linspace(3,8,1000)
+    pl = -logm + 9
+    ax.plot(logm, pl, 
+            c='k', ls='--', lw=lw,
             label=r'$\mathrm{dN}/\mathrm{d}M_\mathrm{cl}\propto M_\mathrm{cl}^{-2}$',
             )
 
-    ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
+    ax.set_xlabel(r'$\mathrm{log}_{10}(M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
     ax.set_xlim(xmin=3, xmax=8)
     ax.set_xticks(np.linspace(3,8,6))
-    ax.set_ylabel(r'$\mathrm{log}(\mathrm{dN}/\mathrm{d}M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
-    #ax.set_ylim(ymin=1, ymax=7.5)
+    #ax.set_ylabel(r'$\mathrm{log}(\mathrm{dN}/\mathrm{d}M_\mathrm{cl}/\mathrm{M}_\odot)$', fontsize=fs)
+    ax.set_ylabel(r'$\mathrm{log}_{10}(\mathrm{dN}/\mathrm{dlog}_{10}(M_\mathrm{cl}/\mathrm{M}_\odot))$', fontsize=fs)
+    ax.set_ylim(ymin=1, ymax=7.5)
     ax.set_box_aspect(1)
     ax.legend(loc='upper right', fontsize=fs)
 
@@ -85,7 +92,8 @@ def plot_CMF():
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
-    plt.savefig(os.path.join(plot_dir,'CMF.pdf'), format='pdf', bbox_inches='tight')
+    plt.savefig(os.path.join(plot_dir,'CMF_perz.png'), bbox_inches='tight', dpi=1200)
+    plt.savefig(os.path.join(plot_dir,'CMF_perz.pdf'), format='pdf', bbox_inches='tight')
 
 
 
@@ -95,7 +103,7 @@ def plot_CMF():
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     plot_CMF()
     plt.show()

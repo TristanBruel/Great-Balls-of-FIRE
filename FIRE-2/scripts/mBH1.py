@@ -61,6 +61,7 @@ def plot_mBH1_dist():
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'mBH1.png'), bbox_inches='tight', dpi=1200)
     plt.savefig(os.path.join(plot_dir,'mBH1.pdf'), format='pdf', bbox_inches='tight')
 
 

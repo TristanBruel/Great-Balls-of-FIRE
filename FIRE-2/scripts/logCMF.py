@@ -93,6 +93,7 @@ def plot_CMF():
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'logCMF.png'), bbox_inches='tight', dpi=1200)
     plt.savefig(os.path.join(plot_dir,'logCMF.pdf'), format='pdf', bbox_inches='tight')
 
 

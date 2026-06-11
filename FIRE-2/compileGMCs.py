@@ -63,7 +63,7 @@ def compute_cloud_metallicity(simu):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tbruel/Great-Balls-of-FIRE/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     #####################################
     # Define command line options

@@ -141,6 +141,7 @@ def plot_SFR_Zdist(Zsun=0.017):
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'SFRs_Zdist.png'), bbox_inches='tight', dpi=1200)
     plt.savefig(os.path.join(plot_dir,'SFRs_Zdist.pdf'), format='pdf', bbox_inches='tight')
 
 

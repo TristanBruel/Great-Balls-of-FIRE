@@ -26,15 +26,12 @@ def plot_Mgmc_Rgmc(add_bar=False):
     logrbins = np.linspace(0, 4, 81)
     X, Y = np.meshgrid(logmbins[:-1],logrbins[:-1])
     cmap = plt.get_cmap('viridis')
-    norm = mpl.colors.LogNorm(vmin=1,vmax=1e3)
+    norm = mpl.colors.LogNorm(vmin=1,vmax=1e4)
 
-    #sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
+    ## Use the standard version of m12i
+    sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
     
-    ## Use the m12i MHD version of GBoF I & II ##
-    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
-
     ## All clouds ##
-    """
     cloud_file = os.path.join(sim_dir, 'AllGMCs_m12i.hdf5')
     with h5py.File(cloud_file) as c:
         mass = c['Mass'][()]
@@ -49,7 +46,31 @@ def plot_Mgmc_Rgmc(add_bar=False):
                   cmap=cmap,
                   norm=norm,
                   )
+
+    ## GMCs that produce massive clusters #
+    cluster_file = os.path.join(sim_dir, 'AllMassiveClusters_m12i.hdf5')
+    with h5py.File(cluster_file) as c:
+        cluster_mass = c['Mass'][()]
+        cluster_radius = c['HalfMassRadius'][()]
+        GMC_id = c['GMC_ID'][()]
+        snap_cluster = c['Snapshot'][()]
+    host_id = np.zeros(len(cluster_mass),dtype='U10')
+    host_mass = np.zeros(len(cluster_mass))
+    host_radius = np.zeros(len(cluster_mass))
+    for n in range(len(cluster_mass)):
+        host_id[n] = 'snap%i_%i' %(snap_cluster[n],GMC_id[n])
+        host_mass[n] = mass[snap==snap_cluster[n]][GMC_id[n]]
+        host_radius[n] = radius[snap==snap_cluster[n]][GMC_id[n]]
+    unique, indices, n_clusters = np.unique(host_id, return_index=True, return_counts=True)
+    size = (2 + 3*np.log10(n_clusters))**2
+    sc = ax.scatter(np.log10(host_mass[indices]), np.log10(host_radius[indices]),
+                    c='r', s=size, edgecolor='white', lw=lw-.5,
+                    )
+
     """
+    ## Use the m12i MHD version of GBoF I & II ##
+    sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
+
     ## GMCs that produce star clusters #
     cluster_file = os.path.join(sim_dir, 'ClusterPopulation_1_reduced.hdf5')
     with h5py.File(cluster_file) as c:
@@ -64,7 +85,6 @@ def plot_Mgmc_Rgmc(add_bar=False):
                   norm=norm,
                   )
 
-
     ## GMCs that produce massive clusters #
     tokeep = cluster_mass>=6e4
     cluster_mass = cluster_mass[tokeep]
@@ -75,6 +95,7 @@ def plot_Mgmc_Rgmc(add_bar=False):
     sc = ax.scatter(np.log10(GMC_mass[indices]), np.log10(GMC_radius[indices]), 
                     c='r', s=size, edgecolor='white', lw=lw-.5,
                     )
+    """
 
     kw = dict(prop="sizes", num=[1,10,100], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
     ax.legend(*sc.legend_elements(**kw), loc="lower right", title="Massive clusters")
@@ -124,6 +145,7 @@ def plot_Mgmc_Rgmc(add_bar=False):
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'clouds_m12i.png'), bbox_inches='tight', dpi=1200)
     plt.savefig(os.path.join(plot_dir,'clouds_m12i.pdf'), format='pdf', bbox_inches='tight')
 
 

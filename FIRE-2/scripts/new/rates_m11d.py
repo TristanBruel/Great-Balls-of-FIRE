@@ -54,15 +54,35 @@ def plot_rates(simu='m11d'):
 
     all_bbh_file = os.path.join(FIRE_dir, 'grid/allBBHs.dat')
     bbh_ids = np.loadtxt(all_bbh_file, dtype='str', skiprows=1, usecols=0)
-    tmerge = np.loadtxt(all_bbh_file, skiprows=1, usecols=7)
+    m1, tmerge, a1, a2 = np.loadtxt(all_bbh_file, skiprows=1, usecols=[4,7,8,9]).T
     insim = np.array([i.split('_')[0]==simu for i in bbh_ids])
     Nbbhs, _ = np.histogram(tmax-tmerge[insim], bins=tbins)
     merger_rate = Nbbhs /np.diff(tbins*1e9)
     ax.plot(tbins[:-1], merger_rate,
               c=CB_color_cycle[1], lw=lw,
-              label='BBH mergers',
+              label=r'BBH mergers',
+              )
+
+    """
+    ## Massive BBH mergers ##
+    massive = insim & (m1 >= 50)
+    Nmassive, _ = np.histogram(tmax-tmerge[massive], bins=tbins)
+    merger_rate = Nmassive /np.diff(tbins*1e9)
+    ax.plot(tbins[:-1], merger_rate,
+              c=CB_color_cycle[1], lw=lw, linestyle='--',
+              label=r'Massive mergers',
+              )
+    """
+    ## Hierarchical BBH mergers ##
+    hierarchical = insim & (a1+a2>0)
+    Nhierar, _ = np.histogram(tmax-tmerge[hierarchical], bins=tbins)
+    merger_rate = Nhierar /np.diff(tbins*1e9)
+    ax.plot(tbins[:-1], merger_rate,
+              c=CB_color_cycle[1], lw=lw, linestyle='--',
+              label=r'hierarchical',
               )
     
+    """
     ## Plot galaxy SFR surface density ##
     ax_right = ax.twinx()
     gal_file = os.path.join(sim_dir, 'properties_{}.txt'.format(simu))
@@ -84,7 +104,7 @@ def plot_rates(simu='m11d'):
     ax_right.set_ylabel(r'$\Sigma_\mathrm{SFR}\ [\mathrm{M}_\odot \mathrm{yr}^{-1} \mathrm{kpc}^{-1}]$', fontsize=fs)
     ax_right.set_yscale('log')
     ax_right.set_ylim(ymin=1e-4, ymax=1e-1)
-
+    """
 
     ax.set_xlabel(r'Lookback time [Gyr]', fontsize=fs)
     ax.set_xlim(xmin=tmax, xmax=0)
@@ -110,7 +130,8 @@ def plot_rates(simu='m11d'):
 
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
-    plt.savefig(os.path.join(plot_dir,'SFRs_Zdist.pdf'), format='pdf', bbox_inches='tight')
+    plt.savefig(os.path.join(plot_dir,'rates_m11d.png'), bbox_inches='tight', dpi=1200)
+    plt.savefig(os.path.join(plot_dir,'rates_m11d.pdf'), format='pdf', bbox_inches='tight')
 
 
 
@@ -120,7 +141,7 @@ def plot_rates(simu='m11d'):
 ##################################################################
 if __name__ == "__main__":
 
-    FIRE_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIRE-2'
+    FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
 
     plot_rates()
     plt.show()

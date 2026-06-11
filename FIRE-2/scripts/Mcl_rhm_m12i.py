@@ -28,7 +28,25 @@ def plot_Mcl_rhm(add_bar=False):
     cmap = plt.get_cmap('plasma')
     norm = mpl.colors.LogNorm(vmin=1,vmax=6e2)
 
-    #sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
+    """
+    ## Use the standard version of m12i
+    sim_dir = os.path.join(FIRE_dir,'m12i_res7100')
+
+    ## All star clusters ##
+    cluster_file = os.path.join(sim_dir, 'AllClusters_m11d.hdf5')
+    with h5py.File(cluster_file) as c:
+        mass = c['Mass'][()]
+        radius = c['HalfMassRadius'][()]
+
+    tokeep = mass>=1e4
+    mass = mass[tokeep]
+    radius = radius[tokeep]
+    H, _, _ = np.histogram2d(x=np.log10(mass), y=np.log10(radius), bins=[logmbins,logrbins])
+    ax.pcolormesh(X, Y, H.T,
+                  cmap=cmap,
+                  norm=norm,
+                  )
+    """
 
     ## Use the m12i MHD version of GBoF I & II ##
     sim_dir = os.path.join(FIRE_dir,'m12i_MHD_res7100')
@@ -44,7 +62,6 @@ def plot_Mcl_rhm(add_bar=False):
                   cmap=cmap,
                   norm=norm,
                   )
-
 
     ## Clusters that produce merging BBHs ##
     grid_cluster_file = os.path.join(FIRE_dir, 'grid/gridClusters.hdf5')
@@ -64,7 +81,7 @@ def plot_Mcl_rhm(add_bar=False):
                         )
 
     kw = dict(prop="sizes", num=[1,10,100,1000], color='r', fmt=r"${x:.0f}$", func=lambda s: 10**((np.sqrt(s)-2)/3))
-    ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers", ncols=2)
+    #ax.legend(*sc.legend_elements(**kw), loc="lower right", title="BBH mergers", ncols=2)
 
 
     ## Print lines of constant density ##
@@ -109,6 +126,7 @@ def plot_Mcl_rhm(add_bar=False):
     
     # Save
     plot_dir = os.path.join(FIRE_dir, 'plots')
+    plt.savefig(os.path.join(plot_dir,'clusters_m12i.png'), bbox_inches='tight', dpi=1200)
     plt.savefig(os.path.join(plot_dir,'clusters_m12i.pdf'), format='pdf', bbox_inches='tight')
 
 
