@@ -54,16 +54,6 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
     print('Number of hierarchical mergers where primary is 1g: %i' %np.sum(primary_1g))
     GW24x = (m1 < 30) & (q < 0.85) & (a1 > 0.05)
 
-    ## Set colorbar limits and end
-    H, xedges, yedges = np.histogram2d(x=np.log10(m1), y=a1, bins=[logm1bins,abins])
-    X, Y = np.meshgrid(xedges[1:], yedges[1:])
-    Hmin=H[H>0].min()
-    Hmax=H[H>0].max()
-    vmin = int(Hmin /10**int(np.log10(Hmin)-1))*10**(int(np.log10(Hmin))-1)
-    vmax = int(Hmax /10**int(np.log10(Hmax))+1)*10**int(np.log10(Hmax))
-    cmap = plt.get_cmap('plasma')
-    norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
-
     ### First-generation mergers ###
     m1g = m1[a1+a2==0]
     q1g = q[a1+a2==0]
@@ -73,6 +63,17 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
     qng = q[a1+a2>0]
     Zng = Z[a1+a2>0]
     ang = a1[a1+a2>0]
+
+    ## Set colorbar limits for hierarchical mergers
+    H, xedges, yedges = np.histogram2d(x=np.log10(mng), y=ang, bins=[logm1bins,abins])
+    X, Y = np.meshgrid(xedges[1:], yedges[1:])
+    Hmin=H[H>0].min()
+    Hmax=H[H>0].max()
+    vmin = int(Hmin /10**int(np.log10(Hmin)-1))*10**(int(np.log10(Hmin))-1)
+    vmax = int(Hmax /10**int(np.log10(Hmax))+1)*10**int(np.log10(Hmax))
+    cmap = plt.get_cmap('plasma')
+    norm = mpl.colors.LogNorm(vmin=1, vmax=100)
+    #norm = mpl.colors.Normalize(vmin=1, vmax=100)
 
 
     ## Zero-ish metallicities ##
@@ -129,7 +130,7 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
     ax.set_xlim(np.log10(5), np.log10(120))
     ax.set_xticks(np.log10([10, 30, 100]))
     ax.set_xticklabels([])
-    ax.set_ylabel('$\chi_1$')
+    ax.set_ylabel(r'$\chi_1$')
     ax.set_ylim(ymin=0., ymax=1.0)
     ax.set_yticks(np.linspace(0.,1.0,6))
     #ax.set_box_aspect(1)
@@ -137,7 +138,7 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
               loc='lower right',
               )
     ax.grid(color='gray', linestyle='--')
-    ax.set_title('$Z\\sim 0.01\\ \\rm{Z}_\\odot$')
+    ax.set_title(r'$Z\sim 0.01\ \mathrm{Z}_\odot$')
 
 
     # Masses #
@@ -235,7 +236,7 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
         vmax = int(Hmax /10**int(np.log10(Hmax))+1)*10**int(np.log10(Hmax))
         H[H==0] = 1e-32
         cmap = plt.get_cmap('plasma')
-        norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
+        #norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
         im = ax.contourf(X, Y, H.T,
                          levels=np.logspace(np.log10(vmin),np.log10(vmax),10),
                          cmap=cmap,
@@ -277,7 +278,7 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
     ax.set_yticklabels([])
     #ax.set_box_aspect(1)
     ax.grid(color='gray', linestyle='--')
-    ax.set_title('$Z\\sim 0.1\\ \\rm{Z}_\\odot$')
+    ax.set_title(r'$Z\sim 0.1\ \mathrm{Z}_\odot$')
 
 
     # Masses #
@@ -506,7 +507,8 @@ def plot_mBH_spin(Zsun=0.017, plot_dir=None, Kremer=False, astro_prior=False):
 if __name__ == "__main__":
     
     w_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical'
-    plot_dir = os.path.join(w_dir,'plots/paper')
+    #plot_dir = os.path.join(w_dir,'plots/paper')
+    plot_dir = os.path.join(w_dir,'paper/Figures/Method')
 
     FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
     grid_dir = os.path.join(FIRE_dir,'grid')
