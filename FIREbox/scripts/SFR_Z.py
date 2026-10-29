@@ -8,7 +8,7 @@ from colossus.cosmology import cosmology
 cosmology.setCosmology('planck18');
 from colossus.lss import mass_function
 
-FIREbox_dir = '/home/tristan-bruel/Documents/Science/GBoF/FIREbox'
+FIREbox_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIREbox'
 FIREbox_volume = (22.1)**3 # in unit Mpc^3
 
 def HaloMassFunction():

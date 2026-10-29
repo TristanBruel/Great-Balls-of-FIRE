@@ -1,0 +1,16 @@
+opening existing popsummary file: /common/tristan.bruel/LVK/gwtc5/popsummary_files/gwtc5_updated_default_mmax_mass_TwoPeakBrokenPowerLawSmoothedMassDistribution_redshift_PowerLawRedshift_magnitude_iid_spin_magnitude_gaussian_tilt_iid_spin_orientation_popsummary_result.h5
+Median inferred merger rate density at redshift 0.20: 30.39 Gpc^-3 yr^-1 (DEFAULT)
+
+opening existing popsummary file: /common/tristan.bruel/LVK/gwtc5/popsummary_files/may26_datarelease/bbh_m1q_varcut1/bbh_m1q_varcut1_popsummary.h5
+opening existing popsummary file: /common/tristan.bruel/LVK/gwtc5/popsummary_files/may26_datarelease/m1m2_varcut1/m1m2_varcut1_popsummary.h5
+Median inferred merger rate density at redshift 0.20: 32.98 Gpc^-3 yr^-1 (PIXELPOP)
+
+Median BBH merger rate at redshift 0.20 over 100 realisations: 4.59 Gpc^-3 yr^-1
+Median fraction of the total rate at redshift 0.20 over 100 realisations: 0.15
+Median hierarchical BBH merger rate at redshift 0.20 over 100 realisations: 0.70 Gpc^-3 yr^-1
+
+Computing detectable population
+Median estimate observable merger rate: 30.20 yr^-1
+Median observable BBH merger rate over 100 realisations: 20.27 yr^-1
+Median fraction of the total rate over 100 realisations: 0.67
+Median observable hierarchical BBH merger rate over 100 realisations: 6.55 yr^-1
