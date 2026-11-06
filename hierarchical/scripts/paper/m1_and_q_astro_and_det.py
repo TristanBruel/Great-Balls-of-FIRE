@@ -79,7 +79,7 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
                              y=redshift_factor_strong_bbh_o4b*strong_bbh_O4b_Rm1,
                              )
     Rlvk_default = np.quantile(int_rates,0.5)
-    print('Median inferred merger rate density at redshift %.2f: %.2f Gpc^-3 yr^-1 (DEFAULT)\n' %(zeval,Rlvk_default))
+    print('Median inferred merger rate density at redshift %.1f: %.2f Gpc^-3 yr^-1 (DEFAULT)\n' %(zeval,Rlvk_default))
     axes[0].plot(strong_bbh_O4b_m1_grid, 
             np.quantile(redshift_factor_strong_bbh_o4b * strong_bbh_O4b_Rm1, 0.5, axis=0),
             color=spm_color, label='Default BBH, GWTC-5.0', lw=1.5, zorder=3)
@@ -111,7 +111,7 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
                                       y=redshift_factor_pixelpop_m1*pixelpop_Rm1/np.exp(pixelpop_m1_grid),
                                       )
     Rlvk_pixelpop = np.quantile(int_rates_pixelpop,0.5)
-    print('Median inferred merger rate density at redshift %.2f: %.2f Gpc^-3 yr^-1 (PIXELPOP)\n' %(zeval,Rlvk_pixelpop))
+    print('Median inferred merger rate density at redshift %.1f: %.2f Gpc^-3 yr^-1 (PIXELPOP)\n' %(zeval,Rlvk_pixelpop))
 
     axes[0].step(np.exp(pixelpop_m1_grid), 
             np.quantile(redshift_factor_pixelpop_m1 * pixelpop_Rm1 /np.exp(pixelpop_m1_grid) , 0.5, axis = 0),
@@ -139,9 +139,12 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
     #bbhfiles = glob(os.path.join(bbhs_dir, 'BBHs_{}_withKremer_seed*.h5'.format(method)))
     dRdm1 = np.zeros((len(bbhfiles),len(m1bins)-1))
     dRdq = np.zeros((len(bbhfiles),len(qbins)-1))
+    fractions = np.zeros(len(bbhfiles))
     dRdm1_hierar = np.zeros((len(bbhfiles),len(m1bins)-1))
     dRdq_hierar = np.zeros((len(bbhfiles),len(qbins)-1))
-    fractions = np.zeros(len(bbhfiles))
+    fractions_hierar = np.zeros(len(bbhfiles))
+    dRdm1_low = np.zeros((len(bbhfiles),len(m1bins)-1))
+    fractions_low = np.zeros(len(bbhfiles))
     for n,bbhfile in tqdm(enumerate(bbhfiles)):
         with h5py.File(bbhfile, 'r') as bbhs:
             m1 = bbhs['m1'][:]
@@ -177,13 +180,19 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
         hierar = a1 + a2 > 0
         hist, _ = np.histogram(m1[hierar], bins=m1bins, weights=weights[hierar])
         dRdm1_hierar[n,:] = hist * norm
+        fractions_hierar[n] = np.sum(hist *norm *np.diff(m1bins)) /Rlvk_default
         hist, _ = np.histogram(m2[hierar] /m1[hierar], bins=qbins, weights=weights[hierar])
         dRdq_hierar[n,:] = hist * normq
+        ## Low-mass hierarchical mergers ##
+        low_hierar = (a1 + a2 > 0) & (m1<30)
+        hist, _ = np.histogram(m1[low_hierar], bins=m1bins, weights=weights[low_hierar])
+        dRdm1_low[n,:] = hist * norm
+        fractions_low[n] = np.sum(hist *norm *np.diff(m1bins)) /Rlvk_default
 
     dRdm1 = np.asarray(dRdm1)
     R = np.median(np.sum(dRdm1 *np.diff(m1bins),axis=1))
-    print('Median BBH merger rate at redshift %.2f over %i realisations: %.2f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R))
-    print('Median fraction of the total rate at redshift %.2f over %i realisations: %.2f' %(zeval,len(bbhfiles),np.median(fractions)))
+    print('Median BBH merger rate at redshift %.1f over %i realisations: %.2f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R))
+    print('Median fraction of the total rate at redshift %.1f: %.2f' %(zeval,np.median(fractions)))
     R_low = np.percentile(dRdm1, 10, axis=0)
     R_up = np.percentile(dRdm1, 90, axis=0)
     R_med = np.percentile(dRdm1, 50, axis=0)
@@ -211,8 +220,9 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
             )
 
     dRdm1_hierar = np.asarray(dRdm1_hierar)
-    Rhierar = np.median(np.sum(dRdm1_hierar *np.diff(m1bins),axis=1))
-    print('Median hierarchical BBH merger rate at redshift %.2f over %i realisations: %.2f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),Rhierar))
+    R_hierar = np.median(np.sum(dRdm1_hierar *np.diff(m1bins),axis=1))
+    print('Median hierarchical merger rate at redshift %.1f over %i realisations: %.3f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R_hierar))
+    print('Median fraction of the rate of hierarchical mergers over total LVK rate at redshift %.1f: %.3f' %(zeval,np.median(fractions_hierar)))
     Rhierar_low = np.percentile(dRdm1_hierar, 10, axis=0)
     Rhierar_up = np.percentile(dRdm1_hierar, 90, axis=0)
     Rhierar_med = np.percentile(dRdm1_hierar, 50, axis=0)
@@ -225,6 +235,10 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
             alpha=0.4, color='darkorange',
             zorder=5,
             )
+
+    R_low = np.median(np.sum(dRdm1_low *np.diff(m1bins),axis=1))
+    print('Median low-mass hierarchical merger rate at redshift %.1f over %i realisations: %.3f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R_low))
+    print('Median fraction of the rate of low-mass hierarchical mergers over total LVK rate at redshift %.1f: %.3f' %(zeval,np.median(fractions_low)))
 
     axes[0].fill_betweenx(np.linspace(1e-3,1e2,100), 3, m1_ll_1percent, 
             alpha=0.15, facecolor='none', lw=0, edgecolor='lightgray', hatch='//////', zorder=1,
@@ -305,7 +319,7 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
     axes[0].plot(m1_grid,ppd_m1_med,
             color=color_obs,label=label_obs,lw=1.5,zorder=1)
     Ro_alex = np.trapezoid(x=m1_grid,y=ppd_m1_med)
-    print('Median estimate observable merger rate: %.2f yr^-1' %Ro_alex)
+    print('Median estimated observable merger rate: %.2f yr^-1' %Ro_alex)
 
     axes[1].fill_between(q_grid,ppd_q_low,ppd_q_up,
             color=color_obs,edgecolor=None, alpha=0.4, step='pre', zorder=1)
@@ -318,9 +332,12 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRodm1 = np.zeros((len(bbhfiles),len(m1bins)-1))
     dRodq = np.zeros((len(bbhfiles),len(qbins)-1))
+    fractions = np.zeros(len(bbhfiles))
     dRodm1_hierar = np.zeros((len(bbhfiles),len(m1bins)-1))
     dRodq_hierar = np.zeros((len(bbhfiles),len(qbins)-1))
-    fractions = np.zeros(len(bbhfiles))
+    fractions_hierar = np.zeros(len(bbhfiles))
+    dRodm1_low = np.zeros((len(bbhfiles),len(m1bins)-1))
+    fractions_low = np.zeros(len(bbhfiles))
     for n,bbhfile in tqdm(enumerate(bbhfiles)):
         with h5py.File(bbhfile, 'r') as bbhs:
             m1 = bbhs['m1'][:]
@@ -358,13 +375,20 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
         hierar = a1 + a2 > 0
         hist, _ = np.histogram(m1[hierar], bins=m1bins, weights=weights[hierar])
         dRodm1_hierar[n,:] = hist /np.diff(m1bins)
+        fractions_hierar[n] = np.sum(hist) /Ro_alex
         hist, _ = np.histogram(m2[hierar] /m1[hierar], bins=qbins, weights=weights[hierar])
         dRodq_hierar[n,:] = hist /np.diff(qbins)
+
+        ## Low-mass hierarchical mergers ##
+        low_hierar = (a1+a2>0) & (m1<30)
+        hist, _ = np.histogram(m1[low_hierar], bins=m1bins, weights=weights[low_hierar])
+        dRodm1_low[n,:] = hist /np.diff(m1bins)
+        fractions_low[n] = np.sum(hist) /Ro_alex
 
     dRodm1 = np.asarray(dRodm1)
     Ro = np.median(np.sum(dRodm1 *np.diff(m1bins),axis=1))
     print('Median observable BBH merger rate over %i realisations: %.2f yr^-1' %(len(bbhfiles),Ro))
-    print('Median fraction of the total rate over %i realisations: %.2f' %(len(bbhfiles),np.median(fractions)))
+    print('Median fraction of the total rate: %.2f' %(np.median(fractions)))
     R_low = np.percentile(dRodm1, 10, axis=0)
     R_up = np.percentile(dRodm1, 90, axis=0)
     R_med = np.percentile(dRodm1, 50, axis=0)
@@ -394,7 +418,8 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRodm1_hiera = np.asarray(dRodm1_hierar)
     Rohierar = np.median(np.sum(dRodm1_hierar *np.diff(m1bins),axis=1))
-    print('Median observable hierarchical BBH merger rate over %i realisations: %.2f yr^-1' %(len(bbhfiles),Rohierar))
+    print('Median observable hierarchical BBH merger rate over %i realisations: %.3f yr^-1' %(len(bbhfiles),Rohierar))
+    print('Median fraction of the hierarchical rate over the total observable rate: %.3f' %(np.median(fractions_hierar)))
     Rhierar_low = np.percentile(dRodm1_hierar, 10, axis=0)
     Rhierar_up = np.percentile(dRodm1_hierar, 90, axis=0)
     Rhierar_med = np.percentile(dRodm1_hierar, 50, axis=0)
@@ -407,6 +432,12 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
             alpha=0.4, color='darkorange',
             zorder=3,
             )
+
+    dRodm1_low = np.asarray(dRodm1_low)
+    Rolow = np.median(np.sum(dRodm1_low *np.diff(m1bins),axis=1))
+    print('Median observable low-mass hierarchical merger rate over %i realisations: %.3f yr^-1' %(len(bbhfiles),Rolow))
+    print('Median fraction of the low-mass hierarchical rate over the total observable rate: %.3f' %(np.median(fractions_low)))
+
     """
     axes[0].fill_betweenx(np.linspace(1e-3,1e2,100), 3, m1_ll_1percent,
             alpha=0.15, facecolor='none', lw=0, edgecolor='lightgray', hatch='//////', zorder=1,
