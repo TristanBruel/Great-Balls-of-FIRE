@@ -2,6 +2,8 @@ import numpy as np
 import h5py
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from astropy.constants import G
+import astropy.units as u
 
 from plotting_utils import get_contour_heights, Bounded_2d_kde
 
@@ -10,7 +12,7 @@ import argparse
 
 
 
-def plot_clusters_Mcl_rhm(events, Kremer=False, plot_dir=None):
+def plot_clusters_Mcl_rhm(event, Kremer=False, plot_dir=None):
 
     #####################################
     # Plot your result
@@ -25,7 +27,7 @@ def plot_clusters_Mcl_rhm(events, Kremer=False, plot_dir=None):
     plt.rcParams['lines.linewidth']=lw
     plt.rcParams['xtick.labelsize']=fs
     plt.rcParams['ytick.labelsize']=fs
-    plt.rcParams['legend.fontsize']=.85*fs
+    plt.rcParams['legend.fontsize']=.8*fs
     plt.rcParams['axes.titlesize']=fs
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
@@ -63,115 +65,134 @@ def plot_clusters_Mcl_rhm(events, Kremer=False, plot_dir=None):
     midm_bins = (logm_bins[1:]+logm_bins[:-1])/2
     logr_bins = np.linspace(-3, 3, 61)
     midr_bins = (logr_bins[1:]+logr_bins[:-1])/2
-    for event in events:
-        fig, ax = plt.subplots(1, 1, figsize=(2.7,2.7))
 
-        H, xedges, yedges = np.histogram2d(x=logMcl,
-                                           y=logRhm,
-                                           bins=[logm_bins,logr_bins],
-                                           density=True,
-                                           )
-        logvmin = (int(10*np.log10(H[H>0].min()))-1) /10
-        logvmax = (int(10*np.log10(H[H>0].max()))+1) /10
-        H[H<1e-32] = 1e-32
+    fig, ax = plt.subplots(1, 1, figsize=(2.6,2.6))
 
-        ax.scatter(logMcl, logRhm,
-                   color=color_all, marker='o', s=3**2,
-                   zorder=0,
-                   label='all MSCs'
+    ## All massive star clusters ##
+    H, xedges, yedges = np.histogram2d(
+            x=logMcl,
+            y=logRhm,
+            bins=[logm_bins,logr_bins],
+            density=True,
+            )
+    ax.scatter(logMcl, logRhm,
+               color=color_all, marker='o', s=3**2,
+               zorder=0,
+               label='all MSCs'
+               )
+
+    ## Clusters that host hierarchical mergers ##
+    H_hierar, xedges, yedges = np.histogram2d(
+            x=logMcl[host_hierar],
+            y=logRhm[host_hierar],
+            bins=[logm_bins,logr_bins],
+            density=True,
+            )
+    ax.scatter(logMcl[host_hierar], logRhm[host_hierar],
+               marker='*', s=6**2, linewidths=1.5,
+               edgecolor=color_hierar,
+               zorder=1,
+               label='Hosts of hierarchical mergers'
+               )
+
+    ## Mass marginal on the top subplot ##
+    ax_top = ax.inset_axes([0, 1.05, 1, 0.4])
+    CMF = np.sum(H /np.diff(logr_bins), axis=1)
+    CMF /= np.sum(CMF *np.diff(logm_bins))
+    ax_top.plot(midm_bins, CMF,
+                c=color_all,
+                )
+    CMF_hierar = np.sum(H_hierar /np.diff(logr_bins), axis=1)
+    CMF_hierar /= np.sum(CMF_hierar *np.diff(logm_bins))
+    ax_top.plot(midm_bins, CMF_hierar,
+                c=color_hierar,
+                )
+
+    ## Hal-mass radius marginal on the left subplot ##
+    ax_left = ax.inset_axes([-.45, 0, 0.4, 1], sharey=ax)
+    CRF = np.sum(H /np.diff(logm_bins)[:,None], axis=0)
+    CRF /= np.sum(CRF *np.diff(logr_bins))
+    ax_left.plot(CRF, midr_bins,
+                 c=color_all,
+                 )
+    CRF_hierar = np.sum(H_hierar /np.diff(logm_bins)[:,None], axis=0)
+    CRF_hierar /= np.sum(CRF_hierar *np.diff(logr_bins))
+    ax_left.plot(CRF_hierar, midr_bins,
+                 c=color_hierar,
+                 )
+
+    ## Print lines of constant escape velocities ##
+    vesc = np.array([1, 10, 100])
+    Mplot = np.logspace(4,8,4001)
+    labels = np.array([r'$%i\ \mathrm{km} \mathrm{s}^{-1}$' %v for v in vesc[:-1]])
+    labels = np.append(labels, r'$v_{\mathrm{esc},i} = 100\ \mathrm{km} \mathrm{s}^{-1}$')
+    xtext = np.array([4.8, 6.2, 5.0])
+    ytext = np.log10((G*np.power(10,xtext)*u.Msun /((vesc*u.km /u.s)**2)).to(u.pc).value) - 0.4
+    for k,v in enumerate(vesc):
+        rplot = (G*Mplot*u.Msun /(v*u.km/u.s)**2).to(u.pc).value
+        ax.plot(np.log10(Mplot), np.log10(rplot),
+                c='black', linestyle='--', zorder=0,
+                )
+        ax.text(xtext[k], ytext[k], labels[k],
+            c='black', fontsize=fs,
+            rotation=22, rotation_mode='anchor',
+            )
+
+
+
+    ### Load the BBHs identified inside the PE contours ###
+    filename = 'bbhs_in_%s.dat' %event
+    inPE_file = os.path.join(w_dir, filename)
+    cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
+    if cl_id_inPE.ndim==0:
+        cl_id_inPE = np.array([cl_id_inPE])
+    loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
+    if len(loc_cl)>0:
+        ax.scatter(logMcl[loc_cl], logRhm[loc_cl],
+                   marker='d', s=7**2, linewidths=1.5,
+                   facecolor='none', edgecolor=color_inPE,
+                   zorder=2,
                    )
-
-        ## Clusters that host hierarchical mergers ##
-        H_hierar, xedges, yedges = np.histogram2d(x=logMcl[host_hierar],
-                                                  y=logRhm[host_hierar],
-                                                  bins=[logm_bins,logr_bins],
-                                                  density=True,
-                                                  )
-        ax.scatter(logMcl[host_hierar], logRhm[host_hierar],
-                   marker='*', s=6**2, linewidths=1.5,
-                   edgecolor=color_hierar,
-                   zorder=1,
-                   label='Hosts of hierarchical mergers'
-                   )
-
-        ### Load the BBHs identified inside the PE contours ###
-        filename = 'bbhs_in_%s.dat' %event
-        inPE_file = os.path.join(w_dir, filename)
-        cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
-        if cl_id_inPE.ndim==0:
-            cl_id_inPE = np.array([cl_id_inPE])
-        loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
         H_inPE, xedges, yedges = np.histogram2d(
                 x=logMcl[loc_cl],
                 y=logRhm[loc_cl],
                 bins=[logm_bins,logr_bins],
                 density=True,
         )
+        CMF_inPE = np.sum(H_inPE /np.diff(logr_bins), axis=1)
+        CMF_inPE /= np.sum(CMF_inPE *np.diff(logm_bins))
+        ax_top.plot(midm_bins, CMF_inPE,
+                    c=color_inPE,
+                    )
+        CRF_inPE = np.sum(H_inPE /np.diff(logm_bins)[:,None], axis=0)
+        CRF_inPE /= np.sum(CRF_inPE *np.diff(logr_bins))
+        ax_left.plot(CRF_inPE, midr_bins,
+                    c=color_inPE,
+                    )
+
+    ### Load the BBHs identified inside the astro PE contours ###
+    filename = 'bbhs_in_%s_astro.dat' %event
+    inPE_file = os.path.join(w_dir, filename)
+    cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
+    if cl_id_inPE.ndim==0:
+        cl_id_inPE = np.array([cl_id_inPE])
+    loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
+    if len(loc_cl)>0:
         ax.scatter(logMcl[loc_cl], logRhm[loc_cl],
-                   marker='d', s=7**2, linewidths=1.5,
-                   facecolor='none', edgecolor=color_inPE,
+                   marker='d', s=6**2, linewidths=1.5,
+                   facecolor=color_inPE_astro, edgecolor='none',
                    zorder=2,
                    )
-
-        ### Load the BBHs identified inside the astro PE contours ###
-        filename = 'bbhs_in_%s_astro.dat' %event
-        inPE_file = os.path.join(w_dir, filename)
-        cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
-        if cl_id_inPE.ndim==0:
-            cl_id_inPE = np.array([cl_id_inPE])
-        loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
         H_inPE_astro, xedges, yedges = np.histogram2d(
                 x=logMcl[loc_cl],
                 y=logRhm[loc_cl],
                 bins=[logm_bins,logr_bins],
                 density=True,
         )
-        ax.scatter(logMcl[loc_cl], logRhm[loc_cl],
-                   marker='d', s=6**2, linewidths=1.5,
-                   facecolor=color_inPE_astro, edgecolor='none',
-                   zorder=2,
-                   )
-
-
-        ## Mass marginal on the top subplot ##
-        ax_top = ax.inset_axes([0, 1.05, 1, 0.4])
-        CMF = np.sum(H /np.diff(logr_bins), axis=1)
-        CMF /= np.sum(CMF *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF,
-                    c=color_all,
-                    )
-        CMF_hierar = np.sum(H_hierar /np.diff(logr_bins), axis=1)
-        CMF_hierar /= np.sum(CMF_hierar *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF_hierar,
-                    c=color_hierar,
-                    )
-        CMF_inPE = np.sum(H_inPE /np.diff(logr_bins), axis=1)
-        CMF_inPE /= np.sum(CMF_inPE *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF_inPE,
-                    c=color_inPE,
-                    )
         CMF_inPE_astro = np.sum(H_inPE_astro /np.diff(logr_bins), axis=1)
         CMF_inPE_astro /= np.sum(CMF_inPE_astro *np.diff(logm_bins))
         ax_top.plot(midm_bins, CMF_inPE_astro,
                     c=color_inPE_astro,
-                    )
-
-        ## Hal-mass radius marginal on the left subplot ##
-        ax_left = ax.inset_axes([-.45, 0, 0.4, 1], sharey=ax)
-        CRF = np.sum(H /np.diff(logm_bins)[:,None], axis=0)
-        CRF /= np.sum(CRF *np.diff(logr_bins))
-        ax_left.plot(CRF, midr_bins,
-                     c=color_all,
-                     )
-        CRF_hierar = np.sum(H_hierar /np.diff(logm_bins)[:,None], axis=0)
-        CRF_hierar /= np.sum(CRF_hierar *np.diff(logr_bins))
-        ax_left.plot(CRF_hierar, midr_bins,
-                     c=color_hierar,
-                     )
-        CRF_inPE = np.sum(H_inPE /np.diff(logm_bins)[:,None], axis=0)
-        CRF_inPE /= np.sum(CRF_inPE *np.diff(logr_bins))
-        ax_left.plot(CRF_inPE, midr_bins,
-                    c=color_inPE,
                     )
         CRF_inPE_astro = np.sum(H_inPE_astro /np.diff(logm_bins)[:,None], axis=0)
         CRF_inPE_astro /= np.sum(CRF_inPE_astro *np.diff(logr_bins))
@@ -179,45 +200,39 @@ def plot_clusters_Mcl_rhm(events, Kremer=False, plot_dir=None):
                     c=color_inPE_astro,
                     )
 
-        ax_left.set_xlabel(r'$\mathrm{dn}/\mathrm{d}r_\mathrm{hm}\ [\mathrm{pc}{-1}]$')
-        ax_left.set_xscale('log')
-        ax_left.set_xlim(xmin=1e-2, xmax=1e1)
-        ax_left.set_xticks(np.logspace(-2,1,4))
-        ax_left.set_ylabel(r'$\mathrm{log}(r_\mathrm{hm}/\mathrm{pc})$')
-        ax_left.set_ylim(ymin=-3., ymax=3.)
-        ax_left.set_yticks(np.linspace(-3,3,7))
 
-        # Add redshift axis on top
-        ax_top.set_xlim(xmin=4.5, xmax=7)
-        ax_top.set_xticks([])
+    ax_left.set_xlabel(r'$\mathrm{dn}/\mathrm{d}r_\mathrm{hm}\ [\mathrm{pc}{-1}]$')
+    ax_left.set_xscale('log')
+    ax_left.set_xlim(xmin=1e-2, xmax=1e1)
+    ax_left.set_xticks(np.logspace(-2,1,4))
+    ax_left.set_ylabel(r'$\mathrm{log}(r_\mathrm{hm}/\mathrm{pc})$')
+    ax_left.set_ylim(ymin=-3., ymax=3.)
+    ax_left.set_yticks(np.linspace(-3,3,7))
 
-        ax_top.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
-        ax_top.set_yscale('log')
-        ax_top.set_ylim(ymin=1e-2, ymax=1e1)
-        ax_top.set_yticks(np.logspace(-2,1,4))
-        ax_top.set_yticks([], minor=True)
-        #ax3 = ax_top.twinx()
-        #ax3.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
-        #ax3.set_yscale('log')
-        #ax3.set_ylim(ymin=1e-2, ymax=1e1)
-        #ax3.set_yticks(np.logspace(-2,1,4))
-        #ax3.set_yticks([], minor=True)
+    # Add redshift axis on top
+    ax_top.set_xlim(xmin=4.5, xmax=7)
+    ax_top.set_xticks([])
 
-        #ax_top.legend(bbox_to_anchor=(0.,-0.1), loc='lower right')
-
-        ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$')
-        ax.set_xlim(xmin=4.5, xmax=7)
-        ax.set_xticks(np.linspace(5,7,3))
-        ax.set_ylim(ymin=-3., ymax=3.)
-        ax.tick_params(axis='y', which='both', left=False, labelleft=False)
-        ax.legend(loc='lower right')
-        ax.set_box_aspect(1)
-
-        # Save
-        plt.savefig(os.path.join(plot_dir,'naive_hosts_%s_Mcl_rhm' %event +'.pdf'), format='pdf', bbox_inches='tight')
+    ax_top.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
+    ax_top.set_yscale('log')
+    ax_top.set_ylim(ymin=1e-2, ymax=1e1)
+    ax_top.set_yticks(np.logspace(-2,1,4))
+    ax_top.set_yticks([], minor=True)
 
 
-def plot_clusters_Mcl_Z(events, Kremer=False, plot_dir=None):
+    ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$')
+    ax.set_xlim(xmin=4.5, xmax=7)
+    ax.set_xticks(np.linspace(5,7,3))
+    ax.set_ylim(ymin=-3., ymax=3.)
+    ax.tick_params(axis='y', which='both', left=False, labelleft=False)
+    ax.legend(loc='lower right')
+    ax.set_box_aspect(1)
+
+    # Save
+    plt.savefig(os.path.join(plot_dir,'naive_hosts_%s_Mcl_rhm' %event +'.pdf'), format='pdf', bbox_inches='tight')
+
+
+def plot_clusters_Mcl_Z(event, Kremer=False, plot_dir=None):
 
     #####################################
     # Plot your result
@@ -232,7 +247,7 @@ def plot_clusters_Mcl_Z(events, Kremer=False, plot_dir=None):
     plt.rcParams['lines.linewidth']=lw
     plt.rcParams['xtick.labelsize']=fs
     plt.rcParams['ytick.labelsize']=fs
-    plt.rcParams['legend.fontsize']=.85*fs
+    plt.rcParams['legend.fontsize']=.8*fs
     plt.rcParams['axes.titlesize']=fs
 
     CB_color_cycle = ['#377eb8', '#ff7f00', '#4daf4a',
@@ -267,178 +282,187 @@ def plot_clusters_Mcl_Z(events, Kremer=False, plot_dir=None):
     unique, indexes = np.unique(cl_id_bbhs[hierar], return_index=True)
     host_hierar = np.array([np.where(cluster_id==u)[0][0] for u in unique])
 
-
     w_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/scripts/paper/contours'
     logm_bins = np.linspace(4, 7, 31)
     midm_bins = (logm_bins[1:]+logm_bins[:-1])/2
     logZ_bins = np.linspace(-3, 1, 41)
     midZ_bins = (logZ_bins[1:]+logZ_bins[:-1])/2
-    for event in events:
-        fig, ax = plt.subplots(1, 1, figsize=(2.7,2.7))
 
-        H, xedges, yedges = np.histogram2d(
-                x=logMcl, 
-                y=logZ, 
-                bins=[logm_bins,logZ_bins],
-                density=True,
-        )
-        logvmin = (int(10*np.log10(H[H>0].min()))-1) /10
-        logvmax = (int(10*np.log10(H[H>0].max()))+1) /10
-        H[H<1e-32] = 1e-32
+    fig, ax = plt.subplots(1, 1, figsize=(2.6,2.6))
 
-        ax.scatter(logMcl, logZ,
-                   color=color_all, marker='o', s=3**2,
-                   zorder=0,
-                   #label='all MSCs'
-                   )
+    ## All massive star clusters ##
+    H, xedges, yedges = np.histogram2d(
+            x=logMcl, 
+            y=logZ, 
+            bins=[logm_bins,logZ_bins],
+            density=True,
+    )
+    ax.scatter(logMcl, logZ,
+               color=color_all, marker='o', s=3**2,
+               zorder=0,
+               #label='all MSCs'
+               )
 
-        ## Clusters that host hierarchical mergers ##
-        H_hierar, xedges, yedges = np.histogram2d(
-                x=logMcl[host_hierar], 
-                y=logZ[host_hierar], 
-                bins=[logm_bins,logZ_bins],
-                density=True,
-        )
-        ax.scatter(logMcl[host_hierar], logZ[host_hierar],
-                   marker='*', s=6**2, linewidths=1.5,
-                   edgecolor=color_hierar,
-                   zorder=1,
-                   #label='Hosts of hierar. mergers'
-                   )
+    ## Clusters that host hierarchical mergers ##
+    H_hierar, xedges, yedges = np.histogram2d(
+            x=logMcl[host_hierar], 
+            y=logZ[host_hierar], 
+            bins=[logm_bins,logZ_bins],
+            density=True,
+    )
+    ax.scatter(logMcl[host_hierar], logZ[host_hierar],
+               marker='*', s=6**2, linewidths=1.5,
+               edgecolor=color_hierar,
+               zorder=1,
+               #label='Hosts of hierar. mergers'
+               )
 
-        ### Load the BBHs identified inside the PE contours ###
-        filename = 'bbhs_in_%s.dat' %event
-        inPE_file = os.path.join(w_dir, filename)
-        cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
-        if cl_id_inPE.ndim==0:
-            cl_id_inPE = np.array([cl_id_inPE])
-        print('Number of BBHs identified inside PE contours (std):', len(cl_id_inPE))
-        print('Ids of clusters that contain those BBHs:', np.unique(cl_id_inPE))
+    ## Mass marginal on the top subplot ##
+    ax_top = ax.inset_axes([0, 1.05, 1, 0.4])
+    CMF = np.sum(H /np.diff(logZ_bins), axis=1)
+    CMF /= np.sum(CMF *np.diff(logm_bins))
+    ax_top.plot(midm_bins, CMF,
+                c=color_all, 
+                )
+    CMF_hierar = np.sum(H_hierar /np.diff(logZ_bins), axis=1)
+    CMF_hierar /= np.sum(CMF_hierar *np.diff(logm_bins))
+    ax_top.plot(midm_bins, CMF_hierar,
+                c=color_hierar, 
+                )
+
+    ## Metallicity marginal on the left subplot ##
+    ax_left = ax.inset_axes([-.45, 0, 0.4, 1], sharey=ax)
+    CRF = np.sum(H /np.diff(logm_bins)[:,None], axis=0)
+    CRF /= np.sum(CRF *np.diff(logZ_bins))
+    ax_left.plot(CRF, midZ_bins,
+                 c=color_all,
+                 )
+    CRF_hierar = np.sum(H_hierar /np.diff(logm_bins)[:,None], axis=0)
+    CRF_hierar /= np.sum(CRF_hierar *np.diff(logZ_bins))
+    ax_left.plot(CRF_hierar, midZ_bins,
+                 c=color_hierar,
+                 )
+
+
+    ### Load the BBHs identified inside the PE contours ###
+    filename = 'bbhs_in_%s.dat' %event
+    inPE_file = os.path.join(w_dir, filename)
+    cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
+    if cl_id_inPE.ndim==0:
+        cl_id_inPE = np.array([cl_id_inPE])
+    print('Standard LVK priors')
+    print('\tNumber of BBHs identified inside PE contours:', len(cl_id_inPE))
+    if len(cl_id_inPE)>0:
+        print('\tNumber of clusters that contain those BBHs:', len(np.unique(cl_id_inPE)))
+        print('\tIds of those clusters:', np.unique(cl_id_inPE))
         loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
-        print('Cluster masses:',10**logMcl[loc_cl])
-        print('Cluster radii:',10**logRhm[loc_cl])
-        print('Cluster metallicities:',10**logZ[loc_cl])
-        H_inPE, xedges, yedges = np.histogram2d(
-                x=logMcl[loc_cl],
-                y=logZ[loc_cl],
-                bins=[logm_bins,logZ_bins],
-                density=True,
-        )
+        print('\tRange of cluster masses: [%.2e, %.2e]' %(np.min(10**logMcl[loc_cl]), np.max(10**logMcl[loc_cl])))
+        print('\tRange of cluster radii: [%.2e, %.2e]' %(np.min(10**logRhm[loc_cl]), np.max(10**logRhm[loc_cl])))
+        print('\tRange of cluster metallicities: [%.2e, %.2e]' %(np.min(10**logZ[loc_cl]), np.max(10**logZ[loc_cl])))
         ax.scatter(logMcl[loc_cl], logZ[loc_cl],
                    marker='d', s=7**2, linewidths=1.5,
                    facecolor='none', edgecolor=color_inPE,
                    zorder=2,
                    label=r'Inside PE contours (std LVK)'
                    )
-
-        ### Load the BBHs identified inside the astro PE contours ###
-        filename = 'bbhs_in_%s_astro.dat' %event
-        inPE_file = os.path.join(w_dir, filename)
-        cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
-        if cl_id_inPE.ndim==0:
-            cl_id_inPE = np.array([cl_id_inPE])
-        print('Number of BBHs identified inside PE contours (astro):', len(cl_id_inPE))
-        print('Ids of clusters that contain those BBHs:', np.unique(cl_id_inPE))
-        loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
-        print('Cluster masses:',10**logMcl[loc_cl])
-        print('Cluster radii:',10**logRhm[loc_cl])
-        print('Cluster metallicities:',10**logZ[loc_cl])
-        H_inPE_astro, xedges, yedges = np.histogram2d(
+        H_inPE, xedges, yedges = np.histogram2d(
                 x=logMcl[loc_cl],
                 y=logZ[loc_cl],
                 bins=[logm_bins,logZ_bins],
                 density=True,
         )
+        CMF_inPE = np.sum(H_inPE /np.diff(logZ_bins), axis=1)
+        CMF_inPE /= np.sum(CMF_inPE *np.diff(logm_bins))
+        ax_top.plot(midm_bins, CMF_inPE,
+                    c=color_inPE, 
+                    )
+        CRF_inPE = np.sum(H_inPE /np.diff(logm_bins)[:,None], axis=0)
+        CRF_inPE /= np.sum(CRF_inPE *np.diff(logZ_bins))
+        ax_left.plot(CRF_inPE, midZ_bins,
+                    c=color_inPE, 
+                    )
+    else:
+        ax.scatter([], [],
+                   marker='d', s=7**2, linewidths=1.5,
+                   facecolor='none', edgecolor=color_inPE,
+                   zorder=2,
+                   label=r'Inside PE contours (std LVK)'
+                   )
+
+    ### Load the BBHs identified inside the astro PE contours ###
+    filename = 'bbhs_in_%s_astro.dat' %event
+    inPE_file = os.path.join(w_dir, filename)
+    cl_id_inPE = np.loadtxt(inPE_file, skiprows=1, usecols=0, dtype=str)
+    if cl_id_inPE.ndim==0:
+        cl_id_inPE = np.array([cl_id_inPE])
+    print('Astro priors')
+    print('\tNumber of BBHs identified inside PE contours (astro):', len(cl_id_inPE))
+    if len(cl_id_inPE)>0:
+        print('\tNumber of clusters that contain those BBHs:', len(np.unique(cl_id_inPE)))
+        print('\tIds of those clusters:', np.unique(cl_id_inPE))
+        loc_cl = np.array([np.where(cluster_id==clid)[0][0] for clid in cl_id_inPE])
+        print('\tRange of cluster masses: [%.2e, %.2e]' %(np.min(10**logMcl[loc_cl]), np.max(10**logMcl[loc_cl])))
+        print('\tRange of cluster radii: [%.2e, %.2e]' %(np.min(10**logRhm[loc_cl]), np.max(10**logRhm[loc_cl])))
+        print('\tRange of cluster metallicities: [%.2e, %.2e]' %(np.min(10**logZ[loc_cl]), np.max(10**logZ[loc_cl])))
         ax.scatter(logMcl[loc_cl], logZ[loc_cl],
                    marker='d', s=6**2, linewidths=1.5,
                    facecolor=color_inPE_astro, edgecolor='none',
                    zorder=2,
                    label=r'Inside PE contours (astro)'
                    )
-
-        
-        ## Mass marginal on the top subplot ##
-        ax_top = ax.inset_axes([0, 1.05, 1, 0.4])
-        CMF = np.sum(H /np.diff(logZ_bins), axis=1)
-        CMF /= np.sum(CMF *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF,
-                    c=color_all, 
-                    )
-        CMF_hierar = np.sum(H_hierar /np.diff(logZ_bins), axis=1)
-        CMF_hierar /= np.sum(CMF_hierar *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF_hierar,
-                    c=color_hierar, 
-                    )
-        CMF_inPE = np.sum(H_inPE /np.diff(logZ_bins), axis=1)
-        CMF_inPE /= np.sum(CMF_inPE *np.diff(logm_bins))
-        ax_top.plot(midm_bins, CMF_inPE,
-                    c=color_inPE, 
-                    )
+        H_inPE_astro, xedges, yedges = np.histogram2d(
+                x=logMcl[loc_cl],
+                y=logZ[loc_cl],
+                bins=[logm_bins,logZ_bins],
+                density=True,
+        )
         CMF_inPE_astro = np.sum(H_inPE_astro /np.diff(logZ_bins), axis=1)
         CMF_inPE_astro /= np.sum(CMF_inPE_astro *np.diff(logm_bins))
         ax_top.plot(midm_bins, CMF_inPE_astro,
                     c=color_inPE_astro, 
-                    )
-
-        ## Metallicity marginal on the left subplot ##
-        ax_left = ax.inset_axes([-.45, 0, 0.4, 1], sharey=ax)
-        CRF = np.sum(H /np.diff(logm_bins)[:,None], axis=0)
-        CRF /= np.sum(CRF *np.diff(logZ_bins))
-        ax_left.plot(CRF, midZ_bins,
-                     c=color_all,
-                     )
-        CRF_hierar = np.sum(H_hierar /np.diff(logm_bins)[:,None], axis=0)
-        CRF_hierar /= np.sum(CRF_hierar *np.diff(logZ_bins))
-        ax_left.plot(CRF_hierar, midZ_bins,
-                     c=color_hierar,
-                     )
-        CRF_inPE = np.sum(H_inPE /np.diff(logm_bins)[:,None], axis=0)
-        CRF_inPE /= np.sum(CRF_inPE *np.diff(logZ_bins))
-        ax_left.plot(CRF_inPE, midZ_bins,
-                    c=color_inPE, 
                     )
         CRF_inPE_astro = np.sum(H_inPE_astro /np.diff(logm_bins)[:,None], axis=0)
         CRF_inPE_astro /= np.sum(CRF_inPE_astro *np.diff(logZ_bins))
         ax_left.plot(CRF_inPE_astro, midZ_bins,
                     c=color_inPE_astro, 
                     )
+    else:
+        ax.scatter([], [],
+                   marker='d', s=6**2, linewidths=1.5,
+                   facecolor=color_inPE_astro, edgecolor='none',
+                   zorder=2,
+                   label=r'Inside PE contours (astro)'
+                   )
 
-        ax_left.set_xlabel(r'$\mathrm{dn}/\mathrm{d}Z\ [\mathrm{Z}_\odot^{-1}]$')
-        ax_left.set_xscale('log')
-        ax_left.set_xlim(xmin=1e-2, xmax=1e1)
-        ax_left.set_xticks(np.logspace(-2,1,4))
-        ax_left.set_ylabel(r'$\mathrm{log}(Z/\mathrm{Z}_\odot)$')
-        ax_left.set_ylim(ymin=-3., ymax=1.)
-        ax_left.set_yticks(np.linspace(-3,1,5))
-        
-        # Add redshift axis on top
-        ax_top.set_xlim(xmin=4.5, xmax=7)
-        ax_top.set_xticks([])
+    
+    ax_left.set_xlabel(r'$\mathrm{dn}/\mathrm{d}Z\ [\mathrm{Z}_\odot^{-1}]$')
+    ax_left.set_xscale('log')
+    ax_left.set_xlim(xmin=1e-2, xmax=1e1)
+    ax_left.set_xticks(np.logspace(-2,1,4))
+    ax_left.set_ylabel(r'$\mathrm{log}(Z/\mathrm{Z}_\odot)$')
+    ax_left.set_ylim(ymin=-3., ymax=1.)
+    ax_left.set_yticks(np.linspace(-3,1,5))
+    
+    # Add redshift axis on top
+    ax_top.set_xlim(xmin=4.5, xmax=7)
+    ax_top.set_xticks([])
 
-        ax_top.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
-        ax_top.set_yscale('log')
-        ax_top.set_ylim(ymin=1e-2, ymax=1e1)
-        ax_top.set_yticks(np.logspace(-2,1,4))
-        ax_top.set_yticks([], minor=True)
-        #ax3 = ax_top.twinx()
-        #ax3.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
-        #ax3.set_yscale('log')
-        #ax3.set_ylim(ymin=1e-2, ymax=1e1)
-        #ax3.set_yticks(np.logspace(-2,1,4))
-        #ax3.set_yticks([], minor=True)
+    ax_top.set_ylabel(r'$\mathrm{dn}/\mathrm{d}M_\mathrm{cl}\ [\mathrm{M}_\odot^{-1}]$')
+    ax_top.set_yscale('log')
+    ax_top.set_ylim(ymin=1e-2, ymax=1e1)
+    ax_top.set_yticks(np.logspace(-2,1,4))
+    ax_top.set_yticks([], minor=True)
 
-        #ax_top.legend(bbox_to_anchor=(0.,-0.1), loc='lower right')
+    ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$')
+    ax.set_xlim(xmin=4.5, xmax=7)
+    ax.set_xticks(np.linspace(5,7,3))
+    ax.set_ylim(ymin=-3., ymax=1.)
+    ax.tick_params(axis='y', which='both', left=False, labelleft=False)
+    ax.legend(loc='lower right', title=event)
+    ax.set_box_aspect(1)
 
-        ax.set_xlabel(r'$\mathrm{log}(M_\mathrm{cl}/\mathrm{M}_\odot)$')
-        ax.set_xlim(xmin=4.5, xmax=7)
-        ax.set_xticks(np.linspace(5,7,3))
-        ax.set_ylim(ymin=-3., ymax=1.)
-        ax.tick_params(axis='y', which='both', left=False, labelleft=False)
-        ax.legend(loc='lower right', title=event)
-        ax.set_box_aspect(1)
-
-        # Save
-        plt.savefig(os.path.join(plot_dir,'naive_hosts_%s_Mcl_Z' %event +'.pdf'), format='pdf', bbox_inches='tight')
+    # Save
+    plt.savefig(os.path.join(plot_dir,'naive_hosts_%s_Mcl_Z' %event +'.pdf'), format='pdf', bbox_inches='tight')
 
 
 
@@ -448,7 +472,7 @@ def plot_clusters_Mcl_Z(events, Kremer=False, plot_dir=None):
 ##################################################################
 if __name__ == "__main__":
 
-    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/plots/paper'
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/paper/Figures/Results'
 
     #####################################
     # Define command line options
@@ -457,12 +481,14 @@ if __name__ == "__main__":
     parser.add_argument("--Kremer", action='store_true', help="Include CMC clusters from Kremer et al. 2018")
     args = parser.parse_args()
 
-    plot_clusters_Mcl_Z(events=args.events, 
-                        Kremer=args.Kremer,
-                        plot_dir=plot_dir,
-                        )
-    plot_clusters_Mcl_rhm(events=args.events, 
-                        Kremer=args.Kremer,
-                        plot_dir=plot_dir,
-                        )
+    for event in args.events:
+        print('\nEvent:', event)
+        plot_clusters_Mcl_Z(event=event,
+                            Kremer=args.Kremer,
+                            plot_dir=plot_dir,
+                            )
+        plot_clusters_Mcl_rhm(event=event,
+                            Kremer=args.Kremer,
+                            plot_dir=plot_dir,
+                            )
     plt.show()

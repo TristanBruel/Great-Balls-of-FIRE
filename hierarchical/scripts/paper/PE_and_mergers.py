@@ -12,7 +12,7 @@ import os
 import argparse
 
 
-def plot_mBH_spin(events, Kremer=False, cluster=None):
+def plot_mBH_spin(event, Kremer=False, cluster=None, plot_dir=None):
 
     w_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical'
 
@@ -41,8 +41,8 @@ def plot_mBH_spin(events, Kremer=False, cluster=None):
     gw_colors = [gw241011_color, gw241110_color]
 
 
-    fig, axes = plt.subplots(2, 2, figsize=(6.3,6.))
-    fig.subplots_adjust(wspace=0.25)
+    fig, axes = plt.subplots(2, 2, figsize=(5.,5.))
+    fig.subplots_adjust(hspace=0.1, wspace=0.3)
 
 
     FIRE_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/FIRE-2'
@@ -51,18 +51,29 @@ def plot_mBH_spin(events, Kremer=False, cluster=None):
         bbh_file = os.path.join(grid_dir, 'allBBHs_withKremer.dat')
     else:
         bbh_file = os.path.join(grid_dir, 'allBBHs.dat')
-    cmc_cluster_ids = np.loadtxt(bbh_file, usecols=0, skiprows=1, dtype=str)
+    cl_id_bbhs = np.loadtxt(bbh_file, usecols=0, skiprows=1, dtype=str)
     Z, m1, m2, tmerge, a1, a2 = np.loadtxt(bbh_file, usecols=[1,4,5,7,8,9]).T
     a1[m1<m2], a2[m1<m2] = a2[m1<m2], a1[m1<m2]
     m1, m2 = np.maximum(m1,m2), np.minimum(m1,m2)
     q = m2 /m1
     print('Total number of BBH mergers in CMC clusters: %i' %(len(m1)))
-    print('Number of hierarchical BBH mergers: %i' %(np.sum(a1+a2>0)))
+    unique, occurences = np.unique(cl_id_bbhs, return_counts=True)
+    print('Number of clusters that host mergers: %i' %len(unique))
+    print('Id of the cluster with most BBH mergers (Behemoth): %s' %unique[np.argmax(occurences)])
+
+    hierar = a1+a2>0
+    print('Number of hierarchical BBH mergers: %i' %(np.sum(hierar)))
+    unique, occurrences = np.unique(cl_id_bbhs[hierar], return_counts=True)
+    print('Number of clusters that host hierarchical mergers: %i' %len(unique))
+    Nmergers_hosts_hierar = np.array([np.sum(cl_id_bbhs==u) for u in unique])
+    print('Total number of BBH mergers in those clusters: %i' %np.sum(Nmergers_hosts_hierar))
+
+
 
     s=1**2
     alpha=0.5
     if cluster:
-        in_cluster = cmc_cluster_ids == cluster
+        in_cluster = cl_id_bbhs == cluster
         m1 = m1[in_cluster]
         q = q[in_cluster]
         a1 = a1[in_cluster]
@@ -138,136 +149,133 @@ def plot_mBH_spin(events, Kremer=False, cluster=None):
 
     # Add GW241011 and GW241110 posteriors #
     legend_elements = []
-    for event in events:
-        if event not in gw_events:
-            raise ValueError('Events must be part of %s' %gw_events)
-        n = np.where(gw_events==event)[0][0]
-        ## Mass - spin ##
-        gw_am = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_am.txt'))
-        s1_bins = gw_am[1:,0]
-        log_m1_bins = gw_am[0,1:]
-        heights = gw_am[1:,1:]
-        c90 = [gw_am[0,0]]
+    if event not in gw_events:
+        raise ValueError('Event must be part of %s' %gw_events)
+    n = np.where(gw_events==event)[0][0]
+    ## Mass - spin ##
+    gw_am = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_am.txt'))
+    s1_bins = gw_am[1:,0]
+    log_m1_bins = gw_am[0,1:]
+    heights = gw_am[1:,1:]
+    c90 = [gw_am[0,0]]
 
-        ax = axes[0,0]
-        ax.contourf(log_m1_bins, s1_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
-        contour_am = ax.contour(log_m1_bins, s1_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
-        c = contour_am.get_paths()[0]
-        mask_am = c.contains_points(np.hstack((np.log10(m1)[:,None],a1[:,None])))
+    ax = axes[0,0]
+    ax.contourf(log_m1_bins, s1_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
+    contour_am = ax.contour(log_m1_bins, s1_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
+    c = contour_am.get_paths()[0]
+    mask_am = c.contains_points(np.hstack((np.log10(m1)[:,None],a1[:,None])))
 
-        ### With astro priors ###
-        gw_am = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_am_astro.txt'))
-        s1_bins = gw_am[1:,0]
-        log_m1_bins = gw_am[0,1:]
-        heights = gw_am[1:,1:]
-        c90 = [gw_am[0,0]]
+    ### With astro priors ###
+    gw_am = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_am_astro.txt'))
+    s1_bins = gw_am[1:,0]
+    log_m1_bins = gw_am[0,1:]
+    heights = gw_am[1:,1:]
+    c90 = [gw_am[0,0]]
 
-        ax = axes[0,1]
-        ax.contourf(log_m1_bins, s1_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
-        contour_am = ax.contour(log_m1_bins, s1_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
-        c = contour_am.get_paths()[0]
-        mask_am_astro = c.contains_points(np.hstack((np.log10(m1)[:,None],a1[:,None])))
+    ax = axes[0,1]
+    ax.contourf(log_m1_bins, s1_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
+    contour_am = ax.contour(log_m1_bins, s1_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
+    c = contour_am.get_paths()[0]
+    mask_am_astro = c.contains_points(np.hstack((np.log10(m1)[:,None],a1[:,None])))
 
-        legend_elements.append(
-            Patch(color=gw_colors[n], alpha=0.5, label=event),
-        )
+    legend_elements.append(
+        Patch(color=gw_colors[n], alpha=0.5, label=event),
+    )
 
-        ## Mass - mass ratio ##
-        gw_qm = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_qm.txt'))
-        q_bins = gw_qm[1:,0]
-        log_m1_bins = gw_qm[0,1:]
-        heights = gw_qm[1:,1:]
-        c90 = [gw_qm[0,0]]
+    ## Mass - mass ratio ##
+    gw_qm = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_qm.txt'))
+    q_bins = gw_qm[1:,0]
+    log_m1_bins = gw_qm[0,1:]
+    heights = gw_qm[1:,1:]
+    c90 = [gw_qm[0,0]]
 
-        ax = axes[1,0]
-        ax.contourf(log_m1_bins, q_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
-        contour_qm = ax.contour(log_m1_bins, q_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
-        c = contour_qm.get_paths()[0]
-        mask_qm = c.contains_points(np.hstack((np.log10(m1)[:,None],q[:,None])))
+    ax = axes[1,0]
+    ax.contourf(log_m1_bins, q_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
+    contour_qm = ax.contour(log_m1_bins, q_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
+    c = contour_qm.get_paths()[0]
+    mask_qm = c.contains_points(np.hstack((np.log10(m1)[:,None],q[:,None])))
 
-        ### With astro prior ###
-        gw_qm = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_qm_astro.txt'))
-        q_bins = gw_qm[1:,0]
-        log_m1_bins = gw_qm[0,1:]
-        heights = gw_qm[1:,1:]
-        c90 = [gw_qm[0,0]]
+    ### With astro prior ###
+    gw_qm = np.loadtxt(os.path.join(w_dir,'scripts/paper/contours',event+'_qm_astro.txt'))
+    q_bins = gw_qm[1:,0]
+    log_m1_bins = gw_qm[0,1:]
+    heights = gw_qm[1:,1:]
+    c90 = [gw_qm[0,0]]
 
-        ax = axes[1,1]
-        ax.contourf(log_m1_bins, q_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
-        contour_qm = ax.contour(log_m1_bins, q_bins, heights,
-                   levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
-        c = contour_qm.get_paths()[0]
-        mask_qm_astro = c.contains_points(np.hstack((np.log10(m1)[:,None],q[:,None])))
+    ax = axes[1,1]
+    ax.contourf(log_m1_bins, q_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2, alpha=0.5)
+    contour_qm = ax.contour(log_m1_bins, q_bins, heights,
+               levels=[*c90, np.inf], colors=gw_colors[n], zorder=2)
+    c = contour_qm.get_paths()[0]
+    mask_qm_astro = c.contains_points(np.hstack((np.log10(m1)[:,None],q[:,None])))
 
-        ## Show BBH mergers that fall within the PE contours ##
-        event_like = mask_am & mask_qm
-        print('Number of %s-like mergers: %i' %(event,np.sum(event_like)))
-        bbh_file = './contours/bbhs_in_%s.dat' %event
-        header='#1:ID #2:Metal #3:M1[Msun] #4:M2[Msun] #5:a1 #6:a2\n'
-        with open(bbh_file, 'w') as s:
-            s.write(header)
-            for i in range(np.sum(event_like)):
-                s.write(
-                    cmc_cluster_ids[event_like][i] +
-                    ' {:.5e} {:.5e} {:.5e} {:.5e} {:.5e}\n'.format(
-                        Z[event_like][i],
-                        m1[event_like][i],
-                        m2[event_like][i],
-                        a1[event_like][i],
-                        a2[event_like][i])
-                )
-        axes[0,0].scatter(np.log10(m1[event_like]), a1[event_like],
-                          facecolor=gw_colors[n], edgecolor='k', 
-                          s=3**2, zorder=3,
-                          )
-        axes[1,0].scatter(np.log10(m1[event_like]), q[event_like],
-                          facecolor=gw_colors[n], edgecolor='k',
-                          s=3**2, zorder=3,
-                          )
+    ## Show BBH mergers that fall within the PE contours ##
+    event_like = mask_am & mask_qm
+    print('Number of %s-like mergers: %i' %(event,np.sum(event_like)))
+    bbh_file = './contours/bbhs_in_%s.dat' %event
+    header='#1:ID #2:Metal #3:M1[Msun] #4:M2[Msun] #5:a1 #6:a2\n'
+    with open(bbh_file, 'w') as s:
+        s.write(header)
+        for i in range(np.sum(event_like)):
+            s.write(
+                cl_id_bbhs[event_like][i] +
+                ' {:.5e} {:.5e} {:.5e} {:.5e} {:.5e}\n'.format(
+                    Z[event_like][i],
+                    m1[event_like][i],
+                    m2[event_like][i],
+                    a1[event_like][i],
+                    a2[event_like][i])
+            )
+    axes[0,0].scatter(np.log10(m1[event_like]), a1[event_like],
+                      facecolor=gw_colors[n], edgecolor='k', 
+                      s=3**2, zorder=3,
+                      )
+    axes[1,0].scatter(np.log10(m1[event_like]), q[event_like],
+                      facecolor=gw_colors[n], edgecolor='k',
+                      s=3**2, zorder=3,
+                      )
 
-        event_like = mask_am_astro & mask_qm_astro
-        print('Number of %s-like mergers with astro priors: %i' %(event,np.sum(event_like)))
-        bbh_file = './contours/bbhs_in_%s_astro.dat' %event
-        with open(bbh_file, 'w') as s:
-            s.write(header)
-            for i in range(np.sum(event_like)):
-                s.write(
-                    cmc_cluster_ids[event_like][i] +
-                    ' {:.5e} {:.5e} {:.5e} {:.5e} {:.5e}\n'.format(
-                        Z[event_like][i],
-                        m1[event_like][i],
-                        m2[event_like][i],
-                        a1[event_like][i],
-                        a2[event_like][i])
-                )
-        axes[0,1].scatter(np.log10(m1[event_like]), a1[event_like],
-                          facecolor=gw_colors[n], edgecolor='k',
-                          s=3**2, zorder=3,
-                          label='Events in\nPE contours',
-                          )
-        axes[1,1].scatter(np.log10(m1[event_like]), q[event_like],
-                          facecolor=gw_colors[n], edgecolor='k',
-                          s=3**2, zorder=3,
-                          )
+    event_like = mask_am_astro & mask_qm_astro
+    print('Number of %s-like mergers with astro priors: %i' %(event,np.sum(event_like)))
+    bbh_file = './contours/bbhs_in_%s_astro.dat' %event
+    with open(bbh_file, 'w') as s:
+        s.write(header)
+        for i in range(np.sum(event_like)):
+            s.write(
+                cl_id_bbhs[event_like][i] +
+                ' {:.5e} {:.5e} {:.5e} {:.5e} {:.5e}\n'.format(
+                    Z[event_like][i],
+                    m1[event_like][i],
+                    m2[event_like][i],
+                    a1[event_like][i],
+                    a2[event_like][i])
+            )
+    axes[0,1].scatter(np.log10(m1[event_like]), a1[event_like],
+                      facecolor=gw_colors[n], edgecolor='k',
+                      s=3**2, zorder=3,
+                      label='Mergers inside\nPE contours',
+                      )
+    axes[1,1].scatter(np.log10(m1[event_like]), q[event_like],
+                      facecolor=gw_colors[n], edgecolor='k',
+                      s=3**2, zorder=3,
+                      )
 
 
     axes[0,1].legend(loc='lower right')
     axes[0,0].legend(handles=legend_elements, loc='lower right')
 
     # Save
-    plot_dir = os.path.join(w_dir,'plots/paper')
-    name = '_'.join(events)
     if cluster:
-        filename = 'PE_%s_and_mergers' %name +Kremer*'_withKremer'+'_%s'%cluster+'.pdf'
+        filename = 'PE_%s_and_mergers' %event +Kremer*'_withKremer'+'_%s'%cluster+'.pdf'
     else:
-        filename = 'PE_%s_and_mergers' %name +Kremer*'_withKremer'+'.pdf'
+        filename = 'PE_%s_and_mergers' %event +Kremer*'_withKremer'+'.pdf'
     plt.savefig(os.path.join(plot_dir,filename), format='pdf', bbox_inches='tight')
 
 
@@ -278,6 +286,7 @@ def plot_mBH_spin(events, Kremer=False, cluster=None):
 ##################################################################
 if __name__ == "__main__":
     
+    plot_dir = '/home/tristan-bruel/Documents/Science/Great-Balls-of-FIRE/hierarchical/paper/Figures/Method'
 
     #####################################
     # Define command line options
@@ -287,5 +296,9 @@ if __name__ == "__main__":
     parser.add_argument("--cluster", dest='cluster', help="Id of the cluster for which to show BBH mergers", type=str, default=None)
     args = parser.parse_args()
 
-    plot_mBH_spin(events=args.events, Kremer=args.Kremer, cluster=args.cluster)
+    for event in args.events:
+        print('\nEvent:', event)
+        plot_mBH_spin(event=event, Kremer=args.Kremer, cluster=args.cluster,
+                      plot_dir=plot_dir,
+                      )
     plt.show()

@@ -524,5 +524,5 @@ if __name__ == "__main__":
     parser.add_argument("--Kremer", dest='Kremer', action='store_true', help="Include Kremer CMC clusters")
     args = parser.parse_args()
 
-    plot_mBH_spin(plot_dir=plot_dir, Kremer=args.Kremer, astro_prior=args.astro_prior)
+    plot_mBH_spin(Kremer=args.Kremer, astro_prior=args.astro_prior, plot_dir=plot_dir)
     plt.show()

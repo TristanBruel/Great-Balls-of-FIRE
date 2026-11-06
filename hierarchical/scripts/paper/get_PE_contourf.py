@@ -176,9 +176,11 @@ if __name__ == "__main__":
 
     # Define command line options
     parser = argparse.ArgumentParser()
-    parser.add_argument("--event", dest='event', help="GW event to compute Bayes factor for", type=str, default='GW241011')
+    parser.add_argument("--events", help="GW event to consider", nargs='+', default=['GW241011','GW241110'])
     parser.add_argument("--astro", dest='astro_prior', action='store_true', help="Uses PE samples with astro priors")
     args = parser.parse_args()
 
-    PE = load_PE_samples(event=args.event, astro=args.astro_prior)
-    save_contours(PE, event=args.event, astro=args.astro_prior)
+    for event in args.events:
+        print('\nEvent:', event)
+        PE = load_PE_samples(event=event, astro=args.astro_prior)
+        save_contours(PE, event=event, astro=args.astro_prior)

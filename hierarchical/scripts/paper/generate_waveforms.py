@@ -317,9 +317,11 @@ if __name__ == "__main__":
     #####################################
     # Define command line options
     parser = argparse.ArgumentParser()
-    parser.add_argument("--event", help="GW event to consider", default='GW241011')
+    parser.add_argument("--events", help="GW event to consider", nargs='+', default=['GW241011','GW241110'])
     parser.add_argument("--det", help="Detector to use for the gw strain", default='H1')
     args = parser.parse_args()
 
-    times_det, strain_det = load_strain(event=args.event, det=args.det)
-    compute_waveforms(event=args.event, det=args.det)
+    for event in args.events:
+        print('\nEvent:', event)
+        times_det, strain_det = load_strain(event=event, det=args.det)
+        compute_waveforms(event=event, det=args.det)
