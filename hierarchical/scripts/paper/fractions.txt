@@ -6,17 +6,31 @@ opening existing popsummary file: /common/tristan.bruel/LVK/gwtc5/popsummary_fil
 Median inferred merger rate density at redshift 0.2: 32.98 Gpc^-3 yr^-1 (PIXELPOP)
 
 Median BBH merger rate at redshift 0.2 over 100 realisations: 4.59 Gpc^-3 yr^-1
+Lower edge 1.83 Gpc^-3 yr^-1
+Upper edge 9.17 Gpc^-3 yr^-1
 Median fraction of the total rate at redshift 0.2: 0.15
 Median hierarchical merger rate at redshift 0.2 over 100 realisations: 0.696 Gpc^-3 yr^-1
+Lower edge 0.24 Gpc^-3 yr^-1
+Upper edge 1.48 Gpc^-3 yr^-1
 Median fraction of the rate of hierarchical mergers over total LVK rate at redshift 0.2: 0.023
 Median low-mass hierarchical merger rate at redshift 0.2 over 100 realisations: 0.187 Gpc^-3 yr^-1
+Lower edge 0.06 Gpc^-3 yr^-1
+Upper edge 0.40 Gpc^-3 yr^-1
 Median fraction of the rate of low-mass hierarchical mergers over total LVK rate at redshift 0.2: 0.006
 
 Computing detectable population
 Median estimated observable merger rate: 30.20 yr^-1
+Lower edge 11.29 yr^-1
+Upper edge 76.57 yr^-1
 Median observable BBH merger rate over 100 realisations: 20.27 yr^-1
+Lower edge 8.04 yr^-1
+Upper edge 41.31 yr^-1
 Median fraction of the total rate: 0.67
 Median observable hierarchical BBH merger rate over 100 realisations: 6.555 yr^-1
+Lower edge 2.40 yr^-1
+Upper edge 13.33 yr^-1
 Median fraction of the hierarchical rate over the total observable rate: 0.217
 Median observable low-mass hierarchical merger rate over 100 realisations: 0.918 yr^-1
+Lower edge 0.33 yr^-1
+Upper edge 1.93 yr^-1
 Median fraction of the low-mass hierarchical rate over the total observable rate: 0.030

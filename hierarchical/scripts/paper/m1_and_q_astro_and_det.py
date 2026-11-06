@@ -26,6 +26,10 @@ def HaloMassFunction():
 
 def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
+    FIREbox_dir = '/home/tristan.bruel/Great-Balls-of-FIRE/FIREbox'
+    FIREbox_volume = (22.1)**3 # in unit Mpc^3
+    bbhs_dir = '/home/tristan.bruel/Great-Balls-of-FIRE/hierarchical/BBHs'
+
     snapshot_file = os.path.join(FIREbox_dir, 'snapshot_times.txt')
     redshifts, times = np.loadtxt(snapshot_file, usecols=[2,3]).T
     tmax = times.max()
@@ -58,6 +62,13 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
     wpm_color = '#2C5AA0'
 
     ### Astro ###
+    #gwtc4_dir = '/common/tristan.bruel/LVK/o4a-astro'
+    #sys.path.append(os.path.join(gwtc4_dir,'figure_scripts'))
+    #import plot_funcs_bbh_mass as pf
+    gwtc5_dir = '/common/tristan.bruel/LVK/gwtc5/'
+    O4b_run_dir = os.path.join(gwtc5_dir,'popsummary_files')
+    pixelpop_run_dir = os.path.join(gwtc5_dir,'popsummary_files/may26_datarelease')
+
     fig, axes = plt.subplots(1, 2, figsize=(8.,3.), 
             gridspec_kw={'width_ratios': [1.5, 1]},
             )
@@ -191,7 +202,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRdm1 = np.asarray(dRdm1)
     R = np.median(np.sum(dRdm1 *np.diff(m1bins),axis=1))
+    Rlow = np.quantile(np.sum(dRdm1 *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Rhigh = np.quantile(np.sum(dRdm1 *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median BBH merger rate at redshift %.1f over %i realisations: %.2f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R))
+    print('Lower edge %.2f Gpc^-3 yr^-1' %(Rlow))
+    print('Upper edge %.2f Gpc^-3 yr^-1' %(Rhigh))
     print('Median fraction of the total rate at redshift %.1f: %.2f' %(zeval,np.median(fractions)))
     R_low = np.percentile(dRdm1, 10, axis=0)
     R_up = np.percentile(dRdm1, 90, axis=0)
@@ -221,7 +236,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRdm1_hierar = np.asarray(dRdm1_hierar)
     R_hierar = np.median(np.sum(dRdm1_hierar *np.diff(m1bins),axis=1))
+    Rlow_hierar = np.quantile(np.sum(dRdm1_hierar *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Rhigh_hierar = np.quantile(np.sum(dRdm1_hierar *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median hierarchical merger rate at redshift %.1f over %i realisations: %.3f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R_hierar))
+    print('Lower edge %.2f Gpc^-3 yr^-1' %(Rlow_hierar))
+    print('Upper edge %.2f Gpc^-3 yr^-1' %(Rhigh_hierar))
     print('Median fraction of the rate of hierarchical mergers over total LVK rate at redshift %.1f: %.3f' %(zeval,np.median(fractions_hierar)))
     Rhierar_low = np.percentile(dRdm1_hierar, 10, axis=0)
     Rhierar_up = np.percentile(dRdm1_hierar, 90, axis=0)
@@ -237,7 +256,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
             )
 
     R_low = np.median(np.sum(dRdm1_low *np.diff(m1bins),axis=1))
+    Rlow_low = np.quantile(np.sum(dRdm1_low *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Rhigh_low = np.quantile(np.sum(dRdm1_low *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median low-mass hierarchical merger rate at redshift %.1f over %i realisations: %.3f Gpc^-3 yr^-1' %(zeval,len(bbhfiles),R_low))
+    print('Lower edge %.2f Gpc^-3 yr^-1' %(Rlow_low))
+    print('Upper edge %.2f Gpc^-3 yr^-1' %(Rhigh_low))
     print('Median fraction of the rate of low-mass hierarchical mergers over total LVK rate at redshift %.1f: %.3f' %(zeval,np.median(fractions_low)))
 
     axes[0].fill_betweenx(np.linspace(1e-3,1e2,100), 3, m1_ll_1percent, 
@@ -300,6 +323,7 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
 
     ### Detectable ###
+    gwtc3_dir = '/common/tristan.bruel/LVK/gwtc3'
     print('\nComputing detectable population')
     fig, axes = plt.subplots(1, 2, figsize=(8.,3.), 
             gridspec_kw={'width_ratios': [1.5, 1]},
@@ -320,6 +344,8 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
             color=color_obs,label=label_obs,lw=1.5,zorder=1)
     Ro_alex = np.trapezoid(x=m1_grid,y=ppd_m1_med)
     print('Median estimated observable merger rate: %.2f yr^-1' %Ro_alex)
+    print('Lower edge %.2f yr^-1' %np.trapezoid(x=m1_grid,y=ppd_m1_low))
+    print('Upper edge %.2f yr^-1' %np.trapezoid(x=m1_grid,y=ppd_m1_up))
 
     axes[1].fill_between(q_grid,ppd_q_low,ppd_q_up,
             color=color_obs,edgecolor=None, alpha=0.4, step='pre', zorder=1)
@@ -387,7 +413,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRodm1 = np.asarray(dRodm1)
     Ro = np.median(np.sum(dRodm1 *np.diff(m1bins),axis=1))
+    Ro_low = np.quantile(np.sum(dRodm1 *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Ro_high = np.quantile(np.sum(dRodm1 *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median observable BBH merger rate over %i realisations: %.2f yr^-1' %(len(bbhfiles),Ro))
+    print('Lower edge %.2f yr^-1' %(Ro_low))
+    print('Upper edge %.2f yr^-1' %(Ro_high))
     print('Median fraction of the total rate: %.2f' %(np.median(fractions)))
     R_low = np.percentile(dRodm1, 10, axis=0)
     R_up = np.percentile(dRodm1, 90, axis=0)
@@ -418,7 +448,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRodm1_hiera = np.asarray(dRodm1_hierar)
     Rohierar = np.median(np.sum(dRodm1_hierar *np.diff(m1bins),axis=1))
+    Rohierar_low = np.quantile(np.sum(dRodm1_hierar *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Rohierar_high = np.quantile(np.sum(dRodm1_hierar *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median observable hierarchical BBH merger rate over %i realisations: %.3f yr^-1' %(len(bbhfiles),Rohierar))
+    print('Lower edge %.2f yr^-1' %(Rohierar_low))
+    print('Upper edge %.2f yr^-1' %(Rohierar_high))
     print('Median fraction of the hierarchical rate over the total observable rate: %.3f' %(np.median(fractions_hierar)))
     Rhierar_low = np.percentile(dRodm1_hierar, 10, axis=0)
     Rhierar_up = np.percentile(dRodm1_hierar, 90, axis=0)
@@ -435,7 +469,11 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
 
     dRodm1_low = np.asarray(dRodm1_low)
     Rolow = np.median(np.sum(dRodm1_low *np.diff(m1bins),axis=1))
+    Rolow_low = np.quantile(np.sum(dRodm1_low *np.diff(m1bins),axis=1), 0.05, axis=0)
+    Rolow_high = np.quantile(np.sum(dRodm1_low *np.diff(m1bins),axis=1), 0.95, axis=0)
     print('Median observable low-mass hierarchical merger rate over %i realisations: %.3f yr^-1' %(len(bbhfiles),Rolow))
+    print('Lower edge %.2f yr^-1' %(Rolow_low))
+    print('Upper edge %.2f yr^-1' %(Rolow_high))
     print('Median fraction of the low-mass hierarchical rate over the total observable rate: %.3f' %(np.median(fractions_low)))
 
     """
@@ -497,27 +535,12 @@ def plot_mBH1_astro_and_det(zeval=0.2, Tobs=1, method='Gamma'):
     plt.savefig(os.path.join(plot_dir,'m1_and_q_det.pdf'), format='pdf', bbox_inches='tight')
 
 
-
 ##################################################################
 ### Run it!
 ###
 ##################################################################
 if __name__ == "__main__":
 
-    FIREbox_dir = '/home/tristan.bruel/Great-Balls-of-FIRE/FIREbox'
-    FIREbox_volume = (22.1)**3 # in unit Mpc^3
-    bbhs_dir = '/home/tristan.bruel/Great-Balls-of-FIRE/hierarchical/BBHs'
-
-    ### Astro ###
-    #gwtc4_dir = '/common/tristan.bruel/LVK/o4a-astro'
-    #sys.path.append(os.path.join(gwtc4_dir,'figure_scripts'))
-    #import plot_funcs_bbh_mass as pf
-    gwtc5_dir = '/common/tristan.bruel/LVK/gwtc5/'
-    O4b_run_dir = os.path.join(gwtc5_dir,'popsummary_files')
-    pixelpop_run_dir = os.path.join(gwtc5_dir,'popsummary_files/may26_datarelease')
-
-    ### Detectable ###
-    gwtc3_dir = '/common/tristan.bruel/LVK/gwtc3'
 
     #####################################
     # Define command line option for the path to the simulations and the path to save the plots
